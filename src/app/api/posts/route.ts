@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { getSessionUser } from '@/lib/auth';
-import { postService } from '@/backend/services/post.service';
-import { PostType } from '../../generated/client';
+import { getSessionUser } from '@/backend/shared/middleware/auth';
+import { postService } from '@/backend/modules/post/post.service';
+import { PostType } from '@/generated/client';
 
 export const dynamic = 'force-dynamic';
 
@@ -57,6 +57,38 @@ export async function POST(request: Request) {
     console.error('❌ [POST /api/posts] Lỗi:', error.message);
     return NextResponse.json(
       { error: error.message || 'Lỗi hệ thống khi tạo bài đăng!' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const limitStr = searchParams.get('limit') || '10';
+    const cursor = searchParams.get('cursor') || undefined;
+
+    const limit = parseInt(limitStr, 10);
+    if (isNaN(limit) || limit <= 0) {
+      return NextResponse.json(
+        { error: 'Tham số limit không hợp lệ!' },
+        { status: 400 }
+      );
+    }
+
+    const currentUser = await getSessionUser();
+    const currentUserId = currentUser?.id;
+
+    const result = await postService.getGlobalPosts(limit, cursor, currentUserId);
+
+    return NextResponse.json({
+      success: true,
+      data: result,
+    });
+  } catch (error: any) {
+    console.error('❌ [GET /api/posts] Lỗi:', error.message);
+    return NextResponse.json(
+      { error: 'Lỗi hệ thống khi tải bảng tin!' },
       { status: 500 }
     );
   }

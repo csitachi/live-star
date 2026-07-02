@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/backend/shared/database/prisma';
 
 export class StreamService {
   async getStreams(category?: string | null) {

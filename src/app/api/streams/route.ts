@@ -1,4 +1,4 @@
-import { streamController } from '@/backend/controllers/stream.controller';
+import { streamController } from '@/backend/modules/stream/stream.controller';
 
 export const dynamic = 'force-dynamic';
 

@@ -1,5 +1,5 @@
-import { prisma } from '../../lib/prisma';
-import { redis } from '../../lib/redis';
+import { prisma } from '@/backend/shared/database/prisma';
+import { redis } from '@/backend/shared/cache/redis';
 
 export class LikeService {
   /**

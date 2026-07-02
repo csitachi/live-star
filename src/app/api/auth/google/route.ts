@@ -4,7 +4,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { OAuth2Client } from "google-auth-library";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/backend/shared/database/prisma";
 
 // Khởi tạo OAuth2 Client của Google bằng Client ID
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;

@@ -8,10 +8,10 @@ import { useParams, useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 // Nhập các Component đã chia tách độc lập
-import LiveChat, { ChatMessage } from "@/components/LiveChat";
-import Leaderboard, { LeaderboardEntry } from "@/components/Leaderboard";
-import GiftSelector, { GiftTier } from "@/components/GiftSelector";
-import GiftAnimationCanvas from "@/components/GiftAnimationCanvas";
+import LiveChat, { ChatMessage } from "@/features/stream/components/LiveChat";
+import Leaderboard, { LeaderboardEntry } from "@/features/stream/components/Leaderboard";
+import GiftSelector, { GiftTier } from "@/features/gift/components/GiftSelector";
+import GiftAnimationCanvas from "@/features/gift/components/GiftAnimationCanvas";
 import { getViewerLevel, getStreamerLevel } from "@/lib/level";
 
 interface User {
@@ -37,6 +37,8 @@ interface Stream {
   goalTarget: number;
   goalCurrent: number;
   streamer: {
+    id: string;
+    username: string;
     displayName: string;
     avatarUrl: string;
     starsGifted: number;
@@ -429,7 +431,7 @@ export default function ViewerPage() {
             }
             
             if (updatedPkBattle) {
-              setPkBattle(prev => prev ? {
+              setPkBattle((prev: any) => prev ? {
                 ...prev,
                 score1: updatedPkBattle.score1,
                 score2: updatedPkBattle.score2

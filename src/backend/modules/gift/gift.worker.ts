@@ -1,6 +1,6 @@
-import { giftQueue, GiftJob } from '../../lib/giftQueue';
-import { prisma } from '../../lib/prisma';
-import { redis } from '../../lib/redis';
+import { giftQueue, GiftJob } from '@/backend/shared/queue/giftQueue';
+import { prisma } from '@/backend/shared/database/prisma';
+import { redis } from '@/backend/shared/cache/redis';
 
 interface BufferedJob {
   job: any;

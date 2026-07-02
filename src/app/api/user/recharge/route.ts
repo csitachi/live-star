@@ -2,7 +2,7 @@
 // Phục vụ tính năng trải nghiệm mua thêm sao để tặng quà mà không cần tích hợp cổng thanh toán thực tế.
 
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/backend/shared/database/prisma";
 
 export async function POST(request: Request) {
   try {

@@ -3,7 +3,7 @@
 // Body: { battleId: string, forfeiterId: string } 
 
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/backend/shared/database/prisma";
 
 export async function PUT(request: Request) {
   try {

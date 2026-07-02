@@ -18,14 +18,14 @@
  */
 
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/backend/shared/database/prisma';
 import {
   checkUserRateLimit,
   checkRoomRateLimit,
   deductCoinsAtomic,
   warmCoinCache,
-} from '@/lib/rateLimiter';
-import { giftQueue } from '@/lib/giftQueue';
+} from '@/backend/shared/middleware/rateLimiter';
+import { giftQueue } from '@/backend/shared/queue/giftQueue';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: Request) {

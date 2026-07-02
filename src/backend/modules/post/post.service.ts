@@ -1,6 +1,6 @@
-import { prisma } from '../../lib/prisma';
-import { storageService } from './storage.service';
-import { PostType } from '../../generated/client';
+import { prisma } from '@/backend/shared/database/prisma';
+import { storageService } from '@/backend/modules/storage/storage.service';
+import { PostType } from '@/generated/client';
 
 export class PostService {
   /**
@@ -148,6 +148,81 @@ export class PostService {
     const formattedPosts = posts.map(p => {
       const isLiked = p.likes && p.likes.length > 0;
       // Tránh trả về mảng likes thô để giảm băng thông tải
+      const { likes, ...rest } = p as any;
+      return {
+        ...rest,
+        isLiked,
+      };
+    });
+
+    return {
+      posts: formattedPosts,
+      nextCursor,
+      hasNextPage,
+    };
+  }
+
+  /**
+   * Lấy toàn bộ feed bài viết trên hệ thống (Bảng tin chung)
+   */
+  async getGlobalPosts(limit = 10, cursor?: string, currentUserId?: string) {
+    const whereClause: any = {};
+
+    // Xử lý Cursor pagination
+    if (cursor) {
+      const parts = cursor.split('_');
+      if (parts.length === 2) {
+        const cursorDate = new Date(parts[0]);
+        const cursorId = parts[1];
+
+        whereClause.OR = [
+          {
+            createdAt: { lt: cursorDate },
+          },
+          {
+            createdAt: cursorDate,
+            id: { lt: cursorId },
+          },
+        ];
+      }
+    }
+
+    // Thực hiện truy vấn DB
+    const posts = await prisma.post.findMany({
+      where: whereClause,
+      take: limit + 1,
+      orderBy: [
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ],
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+        likes: currentUserId ? {
+          where: { userId: currentUserId },
+          select: { userId: true },
+        } : false,
+      },
+    });
+
+    let hasNextPage = false;
+    let nextCursor: string | undefined = undefined;
+
+    if (posts.length > limit) {
+      hasNextPage = true;
+      const nextPost = posts[limit - 1];
+      nextCursor = `${nextPost.createdAt.toISOString()}_${nextPost.id}`;
+      posts.pop();
+    }
+
+    const formattedPosts = posts.map(p => {
+      const isLiked = p.likes && p.likes.length > 0;
       const { likes, ...rest } = p as any;
       return {
         ...rest,

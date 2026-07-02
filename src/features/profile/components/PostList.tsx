@@ -4,12 +4,13 @@ import PostCard, { Post } from './PostCard';
 import CreatePostCard from './CreatePostCard';
 
 interface PostListProps {
-  username: string;
+  username?: string;
   currentUserId?: string;
-  isOwnProfile: boolean;
+  isOwnProfile?: boolean;
+  global?: boolean;
 }
 
-export default function PostList({ username, currentUserId, isOwnProfile }: PostListProps) {
+export default function PostList({ username, currentUserId, isOwnProfile = false, global = false }: PostListProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -20,7 +21,7 @@ export default function PostList({ username, currentUserId, isOwnProfile }: Post
   // Load feed ban đầu
   useEffect(() => {
     loadPosts(false);
-  }, [username]);
+  }, [username, global]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -55,9 +56,9 @@ export default function PostList({ username, currentUserId, isOwnProfile }: Post
     }
 
     try {
-      const url = `/api/users/${username}/posts?limit=5${
-        isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''
-      }`;
+      const url = global
+        ? `/api/posts?limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`
+        : `/api/users/${username}/posts?limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
       const res = await fetch(url);
       const data = await res.json();
 

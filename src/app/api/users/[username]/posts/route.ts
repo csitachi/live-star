@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSessionUser } from '@/lib/auth';
-import { postService } from '@/backend/services/post.service';
+import { getSessionUser } from '@/backend/shared/middleware/auth';
+import { postService } from '@/backend/modules/post/post.service';
 
 export const dynamic = 'force-dynamic';
 

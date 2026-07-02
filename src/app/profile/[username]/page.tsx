@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import styles from '../../../components/profile-feed/Profile.module.css';
-import PostList from '../../../components/profile-feed/PostList';
+import styles from '@/features/profile/components/Profile.module.css';
+import PostList from '@/features/profile/components/PostList';
 
 interface ProfileUser {
   id: string;

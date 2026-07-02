@@ -4,7 +4,7 @@
 
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/backend/shared/database/prisma";
 
 /**
  * GET: Lấy thông tin tài khoản hiện tại từ database bằng ID.

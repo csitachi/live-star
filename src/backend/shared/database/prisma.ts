@@ -1,7 +1,7 @@
 // Tệp quản lý kết nối cơ sở dữ liệu Prisma Client.
 // Áp dụng mô hình Singleton để tránh cạn kiệt tài nguyên kết nối (Connection Pooling).
 
-import { PrismaClient } from "../generated/client";
+import { PrismaClient } from "@/generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 

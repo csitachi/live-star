@@ -8,7 +8,7 @@
  * - Lua script = check + decrement trong 1 atomic operation duy nhất.
  */
 
-import { redis } from './redis';
+import { redis } from '@/backend/shared/cache/redis';
 
 // ==========================================
 // LUA SCRIPTS (chạy atomic trên Redis)

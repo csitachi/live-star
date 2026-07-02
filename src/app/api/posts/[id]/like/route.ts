@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getSessionUser } from '@/lib/auth';
-import { likeService } from '@/backend/services/like.service';
+import { getSessionUser } from '@/backend/shared/middleware/auth';
+import { likeService } from '@/backend/modules/post/like.service';
 
 /**
  * API Thích/Bỏ thích bài đăng (Toggle Like)

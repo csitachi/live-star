@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { getStreamerLevel } from "@/lib/level";
+import PostList from "@/features/profile/components/PostList";
 
 // Khai báo kiểu dữ liệu cho User và Stream (Đồng bộ với Prisma Schema)
 interface User {
@@ -69,6 +70,7 @@ export default function HomePage() {
   const [newStreamCategory, setNewStreamCategory] = useState("Talkshow");
   const [submitting, setSubmitting] = useState(false);
   const [sandboxUser, setSandboxUser] = useState("bob");
+  const [activeTab, setActiveTab] = useState<"feed" | "live">("feed");
 
   // 1. Tải thông tin người dùng bằng Cookie và tải danh sách phòng
   useEffect(() => {
@@ -351,37 +353,48 @@ export default function HomePage() {
         {/* Left Sidebar Menu */}
         <aside className={styles.sidebarMenu}>
           <div className={styles.menuGroup}>
-            <button className={`${styles.menuItem} ${styles.menuItemActive}`}>
+            <button 
+              className={`${styles.menuItem} ${activeTab === 'feed' ? styles.menuItemActive : ''}`}
+              onClick={() => setActiveTab('feed')}
+              type="button"
+            >
               <span className={styles.menuIcon}>🏠</span>
-              <span className={styles.menuLabel}>Trang chủ</span>
+              <span className={styles.menuLabel}>Bảng tin chung</span>
+            </button>
+            <button 
+              className={`${styles.menuItem} ${activeTab === 'live' ? styles.menuItemActive : ''}`}
+              onClick={() => setActiveTab('live')}
+              type="button"
+            >
+              <span className={styles.menuIcon}>🎥</span>
+              <span className={styles.menuLabel}>Xem Livestream</span>
             </button>
             <button className={styles.menuItem} onClick={() => alert("Tính năng Game Center đang phát triển!")} type="button">
               <span className={styles.menuIcon}>🎮</span>
               <span className={styles.menuLabel}>Game Center</span>
             </button>
             <button className={styles.menuItem} onClick={() => {
-              const el = document.getElementById("top-kols-section");
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }} type="button">
-              <span className={styles.menuIcon}>🏆</span>
-              <span className={styles.menuLabel}>Siêu sao KOLs</span>
-            </button>
-            <button className={styles.menuItem} onClick={() => {
               if (!currentUser) {
-                alert("Vui lòng đăng nhập trước khi truy cập Kênh của tôi!");
+                alert("Vui lòng đăng nhập trước khi truy cập trang cá nhân!");
               } else {
-                router.push(`/streamer/setup`);
+                router.push(`/profile/${currentUser.username}`);
               }
             }} type="button">
               <span className={styles.menuIcon}>👤</span>
-              <span className={styles.menuLabel}>Kênh của tôi</span>
+              <span className={styles.menuLabel}>Trang cá nhân</span>
             </button>
           </div>
           <div className={styles.sidebarDivider} />
           <div className={styles.menuGroup}>
-            <button className={styles.menuItem} onClick={() => alert("Tính năng Cấu hình đang phát triển!")} type="button">
-              <span className={styles.menuIcon}>⚙</span>
-              <span className={styles.menuLabel}>Cấu hình</span>
+            <button className={styles.menuItem} onClick={() => {
+              if (!currentUser) {
+                alert("Vui lòng đăng nhập trước khi phát livestream!");
+              } else {
+                router.push(`/streamer/setup`);
+              }
+            }} type="button">
+              <span className={styles.menuIcon}>⚙️</span>
+              <span className={styles.menuLabel}>Thiết lập Live</span>
             </button>
           </div>
         </aside>
@@ -457,98 +470,140 @@ export default function HomePage() {
           <div className={styles.homepageBody} id="top-kols-section">
             {/* Streams container bên trái */}
             <div className={styles.streamsContainer}>
-              {/* Thanh lọc thể loại (Category Pill Filters) */}
-              <div className={styles.categoryFilterBar}>
-                {CATEGORIES.map((cat) => (
-                  <button
-                    key={cat.id}
-                    className={`${styles.categoryPill} ${selectedCategory === cat.id ? styles.categoryPillActive : ""}`}
-                    onClick={() => setSelectedCategory(cat.id)}
-                  >
-                    {cat.label}
-                  </button>
-                ))}
-              </div>
-
-              <h2 className={styles.sectionTitle} style={{ borderBottom: "1px solid var(--border-subtle)", paddingBottom: "12px" }}>
-                <span>📺</span> Các phòng đang phát sóng ({selectedCategory})
-              </h2>
-
-              {loading ? (
-                <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>
-                  🔄 Đang tải các phòng stream giải trí...
-                </div>
-              ) : streams.length === 0 ? (
-                <div style={{ textAlign: "center", padding: "60px", background: "var(--bg-surface)", borderRadius: "16px", color: "var(--text-secondary)", border: "1px dashed var(--border-subtle)" }}>
-                  Chưa có phòng stream nào thuộc danh mục này. Hãy là người đầu tiên phát sóng!
-                </div>
-              ) : (
-                <div className={styles.grid}>
-                  {streams.map((stream) => {
-                    const streamerStars = stream.streamer.starsEarned || 0;
-                    const streamerLevelInfo = getStreamerLevel(streamerStars);
-                    const categoryLabel = CATEGORIES.find(c => c.id === stream.category)?.label || stream.category;
-
-                    return (
-                      <div
-                        key={stream.id}
-                        className={`${styles.streamCard} premium-card`}
-                        style={{
-                          borderTop: `3px solid ${stream.status === "LIVE" ? "var(--color-primary)" : "#374151"}`
-                        }}
-                        onClick={() => {
-                          if (stream.status === "LIVE") {
-                            router.push(`/viewer/${stream.id}`);
-                          } else {
-                            alert("Livestream này đã kết thúc. Bạn có thể xem bảng xếp hạng và tạo phòng phát mới.");
-                          }
-                        }}
-                      >
-                        <div className={styles.cardTop}>
-                          {stream.status === "LIVE" ? (
-                            <span className="live-badge">TRỰC TIẾP</span>
-                          ) : (
-                            <span style={{ background: "#374151", color: "#d1d5db", padding: "4px 10px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: "700" }}>
-                              ĐÃ KẾT THÚC
+              {activeTab === "feed" ? (
+                <>
+                  {/* Bong bóng Streamer Đang Live (Live Carousel) */}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(255, 255, 255, 0.02)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
+                    <h3 style={{ fontSize: '0.95rem', fontWeight: '800', color: 'var(--color-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+                      <span className="live-dot" style={{ display: 'inline-block', width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%' }}></span>
+                      🔴 STREAMERS ĐANG PHÁT LIVE
+                    </h3>
+                    <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', padding: '10px 0' }}>
+                      {streams.filter(s => s.status === 'LIVE').length === 0 ? (
+                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Chưa có ai lên sóng. Hãy bắt đầu live đầu tiên! 🎙️</span>
+                      ) : (
+                        streams.filter(s => s.status === 'LIVE').map((stream) => (
+                          <div 
+                            key={stream.id} 
+                            onClick={() => router.push(`/viewer/${stream.id}`)}
+                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', cursor: 'pointer', flexShrink: 0 }}
+                          >
+                            <div style={{ position: 'relative' }}>
+                              <img 
+                                src={stream.streamer.avatarUrl} 
+                                alt={stream.streamer.displayName} 
+                                style={{ width: '56px', height: '56px', borderRadius: '50%', border: '2px solid #a855f7', padding: '2px', objectFit: 'cover' }}
+                              />
+                              <span style={{ position: 'absolute', bottom: 0, right: 0, width: '12px', height: '12px', background: '#ef4444', borderRadius: '50%', border: '2px solid #0f0f15' }} />
+                            </div>
+                            <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#fff', maxWidth: '70px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                              {stream.streamer.displayName}
                             </span>
-                          )}
+                          </div>
+                        ))
+                      )}
+                    </div>
+                  </div>
 
-                          <span style={{ background: "rgba(157, 78, 221, 0.2)", border: "1px solid var(--color-primary)", color: "var(--color-primary)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.7rem", fontWeight: "700" }}>
-                            {categoryLabel}
-                          </span>
+                  {/* Bảng tin chung */}
+                  <PostList global={true} currentUserId={currentUser?.id} />
+                </>
+              ) : (
+                <>
+                  {/* Thanh lọc thể loại (Category Pill Filters) */}
+                  <div className={styles.categoryFilterBar}>
+                    {CATEGORIES.map((cat) => (
+                      <button
+                        key={cat.id}
+                        className={`${styles.categoryPill} ${selectedCategory === cat.id ? styles.categoryPillActive : ""}`}
+                        onClick={() => setSelectedCategory(cat.id)}
+                      >
+                        {cat.label}
+                      </button>
+                    ))}
+                  </div>
 
-                          <span className={styles.statsBadge}>
-                            {stream.status === "LIVE" ? (
-                              <>👤 {stream.viewerCount} xem</>
-                            ) : (
-                              <>✨ {stream.totalStars} sao</>
-                            )}
-                          </span>
-                        </div>
+                  <h2 className={styles.sectionTitle} style={{ borderBottom: "1px solid var(--border-subtle)", paddingBottom: "12px" }}>
+                    <span>📺</span> Các phòng đang phát sóng ({selectedCategory})
+                  </h2>
 
-                        <div className={styles.cardBottom}>
-                          <h3 className={styles.streamTitle}>{stream.title}</h3>
-                          <div className={styles.streamerInfo}>
-                            <img src={stream.streamer.avatarUrl} alt={stream.streamer.displayName} className={styles.streamerAvatar} />
-                            <div style={{ display: "flex", flexDirection: "column" }}>
-                              <span className={styles.streamerName}>
-                                Phát bởi <strong>{stream.streamer.displayName}</strong>
+                  {loading ? (
+                    <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>
+                      🔄 Đang tải các phòng stream giải trí...
+                    </div>
+                  ) : streams.length === 0 ? (
+                    <div style={{ textAlign: "center", padding: "60px", background: "var(--bg-surface)", borderRadius: "16px", color: "var(--text-secondary)", border: "1px dashed var(--border-subtle)" }}>
+                      Chưa có phòng stream nào thuộc danh mục này. Hãy là người đầu tiên phát sóng!
+                    </div>
+                  ) : (
+                    <div className={styles.grid}>
+                      {streams.map((stream) => {
+                        const streamerStars = stream.streamer.starsEarned || 0;
+                        const streamerLevelInfo = getStreamerLevel(streamerStars);
+                        const categoryLabel = CATEGORIES.find(c => c.id === stream.category)?.label || stream.category;
+
+                        return (
+                          <div
+                            key={stream.id}
+                            className={`${styles.streamCard} premium-card`}
+                            style={{
+                              borderTop: `3px solid ${stream.status === "LIVE" ? "var(--color-primary)" : "#374151"}`
+                            }}
+                            onClick={() => {
+                              if (stream.status === "LIVE") {
+                                router.push(`/viewer/${stream.id}`);
+                              } else {
+                                alert("Livestream này đã kết thúc. Bạn có thể xem bảng xếp hạng và tạo phòng phát mới.");
+                              }
+                            }}
+                          >
+                            <div className={styles.cardTop}>
+                              {stream.status === "LIVE" ? (
+                                <span className="live-badge">TRỰC TIẾP</span>
+                              ) : (
+                                <span style={{ background: "#374151", color: "#d1d5db", padding: "4px 10px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: "700" }}>
+                                  ĐÃ KẾT THÚC
+                                </span>
+                              )}
+
+                              <span style={{ background: "rgba(157, 78, 221, 0.2)", border: "1px solid var(--color-primary)", color: "var(--color-primary)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.7rem", fontWeight: "700" }}>
+                                {categoryLabel}
                               </span>
-                              <span style={{ fontSize: "0.7rem", color: streamerLevelInfo.color, fontWeight: "bold" }}>
-                                {streamerLevelInfo.title} (Lvl {streamerLevelInfo.level})
+
+                              <span className={styles.statsBadge}>
+                                {stream.status === "LIVE" ? (
+                                  <>👤 {stream.viewerCount} xem</>
+                                ) : (
+                                  <>✨ {stream.totalStars} sao</>
+                                )}
                               </span>
                             </div>
+
+                            <div className={styles.cardBottom}>
+                              <h3 className={styles.streamTitle}>{stream.title}</h3>
+                              <div className={styles.streamerInfo}>
+                                <img src={stream.streamer.avatarUrl} alt={stream.streamer.displayName} className={styles.streamerAvatar} />
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                  <span className={styles.streamerName}>
+                                    Phát bởi <strong>{stream.streamer.displayName}</strong>
+                                  </span>
+                                  <span style={{ fontSize: "0.7rem", color: streamerLevelInfo.color, fontWeight: "bold" }}>
+                                    {streamerLevelInfo.title} (Lvl {streamerLevelInfo.level})
+                                  </span>
+                                </div>
+                              </div>
+                              {stream.status === "LIVE" && (
+                                <span style={{ color: "var(--color-secondary)", fontSize: "0.85rem", fontWeight: "700", textAlign: "right" }}>
+                                  Xem ngay ➔
+                                </span>
+                              )}
+                            </div>
                           </div>
-                          {stream.status === "LIVE" && (
-                            <span style={{ color: "var(--color-secondary)", fontSize: "0.85rem", fontWeight: "700", textAlign: "right" }}>
-                              Xem ngay ➔
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
               )}
             </div>
 

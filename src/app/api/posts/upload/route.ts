@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { storageService } from '@/backend/services/storage.service';
+import { storageService } from '@/backend/modules/storage/storage.service';
 
 /**
  * Local Upload Mock API

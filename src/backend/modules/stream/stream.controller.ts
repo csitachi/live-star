@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { streamService } from '../services/stream.service';
+import { streamService } from './stream.service';
 
 export class StreamController {
   async getStreams(request: Request) {

@@ -1,5 +1,5 @@
 import { cookies } from 'next/headers';
-import { prisma } from './prisma';
+import { prisma } from '@/backend/shared/database/prisma';
 
 /**
  * Lấy thông tin User hiện tại từ Session cookie

@@ -6,7 +6,7 @@
 import { useEffect, useState, useRef, Suspense } from "react";
 import { useRouter, useParams } from "next/navigation";
 import styles from "../../page.module.css";
-import LiveChat from "@/components/LiveChat";
+import LiveChat from "@/features/stream/components/LiveChat";
 import { getStreamerLevel } from "@/lib/level";
 
 interface User {
@@ -469,7 +469,7 @@ function StreamerContent() {
             }
             
             if (updatedPkBattle) {
-              setPkBattle(prev => prev ? {
+              setPkBattle((prev: any) => prev ? {
                 ...prev,
                 score1: updatedPkBattle.score1,
                 score2: updatedPkBattle.score2

@@ -3,7 +3,7 @@
 // Trả về thông tin phòng stream, toàn bộ bình luận cũ và danh sách top người tặng sao (Leaderboard).
 
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/backend/shared/database/prisma";
 
 export async function GET(
   request: Request,
