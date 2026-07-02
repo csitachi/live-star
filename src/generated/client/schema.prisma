@@ -48,6 +48,9 @@ model User {
   receivedGifts GiftTransaction[] @relation("ReceiverRelation")
   comments      Comment[]         @relation("UserComments")
   sessions      Session[]
+  posts         Post[]
+  postLikes     PostLike[]
+  postComments  PostComment[]
 }
 
 model Stream {
@@ -72,6 +75,8 @@ model Stream {
   chests     TreasureChest[]
   comments   Comment[]
   gifts      GiftTransaction[]
+
+  @@index([status, createdAt])
 }
 
 model GiftTransaction {
@@ -91,6 +96,7 @@ model GiftTransaction {
   createdAt  DateTime @default(now())
 
   @@index([streamId])
+  @@index([streamId, createdAt])
   @@index([senderId])
   @@index([receiverId])
 }
@@ -185,4 +191,56 @@ model TreasureClaim {
 
   @@index([chestId])
   @@index([userId])
+}
+
+enum PostType {
+  STATUS
+  PHOTO
+  VIDEO
+}
+
+model Post {
+  id            String   @id @default(uuid())
+  content       String   @db.Text
+  type          PostType @default(STATUS)
+  mediaUrl      String? // URL của hình ảnh hoặc video lưu trên Cloudflare R2 / S3
+  likesCount    Int      @default(0)
+  commentsCount Int      @default(0)
+
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  likes    PostLike[]
+  comments PostComment[]
+
+  @@index([authorId, createdAt(sort: Desc)])
+}
+
+model PostLike {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+  @@index([userId])
+}
+
+model PostComment {
+  id       String @id @default(uuid())
+  content  String @db.Text
+  postId   String
+  post     Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  authorId String
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([postId, createdAt(sort: Asc)])
 }

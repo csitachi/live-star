@@ -414,6 +414,75 @@ export default function ViewerPage() {
             updateLeaderboardInRealtime(payload.sender, payload.starAmount);
             break;
 
+          case "gift-batch": {
+            const { gifts, totalStars: newStars, activeGoal, pkBattle: updatedPkBattle } = payload;
+            
+            if (newStars !== undefined) setTotalStars(newStars);
+            
+            if (activeGoal && stream) {
+              setStream(prev => prev ? {
+                ...prev,
+                goalCurrent: activeGoal.currentStars,
+                goalTitle: activeGoal.title,
+                goalTarget: activeGoal.targetStars
+              } : null);
+            }
+            
+            if (updatedPkBattle) {
+              setPkBattle(prev => prev ? {
+                ...prev,
+                score1: updatedPkBattle.score1,
+                score2: updatedPkBattle.score2
+              } : null);
+            }
+            
+            const newChatMessages = gifts.map((g: any) => ({
+              id: g.id,
+              sender: g.sender,
+              text: g.message 
+                ? `Đã tặng ${g.starAmount} sao! 🌟 "${g.message}"` 
+                : `Đã tặng ${g.starAmount} sao! 🌟`,
+              createdAt: g.createdAt,
+              isGift: true,
+              giftStars: g.starAmount
+            }));
+
+            setMessages((prev) => [...prev, ...newChatMessages]);
+            setTimeout(scrollToBottom, 50);
+
+            if (gifts.length > 0) {
+              const maxGift = gifts.reduce((p: any, c: any) => 
+                (p.starAmount > c.starAmount) ? p : c
+              );
+
+              setActiveGiftToast({
+                senderName: maxGift.sender.displayName,
+                avatarUrl: maxGift.sender.avatarUrl,
+                starAmount: maxGift.starAmount,
+                message: maxGift.message
+              });
+
+              const lastGift = gifts[gifts.length - 1];
+              setLastGiftEvent({ id: lastGift.id, amount: lastGift.starAmount });
+
+              const bigGift = gifts.find((g: any) => g.starAmount >= 100);
+              if (bigGift) {
+                setBigGiftEffect({
+                  senderName: bigGift.sender.displayName,
+                  avatarUrl: bigGift.sender.avatarUrl,
+                  starAmount: bigGift.starAmount,
+                  streamName: stream?.title || ""
+                });
+                setTimeout(() => setBigGiftEffect(null), 3000);
+              }
+
+              gifts.forEach((g: any) => {
+                updateLeaderboardInRealtime(g.sender, g.starAmount);
+              });
+            }
+            break;
+          }
+
           case "pk-start-broadcast":
             const battleData = payload.battle;
             const isStream1 = battleData.streamId1 === streamId;
@@ -675,6 +744,11 @@ export default function ViewerPage() {
 
         if (newPkBattle) {
           setPkBattle(newPkBattle);
+        }
+
+        if (res.status === 202) {
+          setGiftMessage("");
+          return;
         }
 
         // B. Phát tán sự kiện tặng quà qua WebSocket để đồng bộ tới Streamer và toàn bộ Viewers khác
@@ -956,7 +1030,13 @@ export default function ViewerPage() {
             >
               ←
             </button>
-            <img src={stream?.streamer?.avatarUrl} alt={stream?.streamer?.displayName || "Idol Streamer"} className={styles.streamerAvatar} />
+            <img 
+              src={stream?.streamer?.avatarUrl} 
+              alt={stream?.streamer?.displayName || "Idol Streamer"} 
+              className={styles.streamerAvatar} 
+              onClick={() => router.push(`/profile/${stream?.streamer?.username}`)}
+              style={{ cursor: "pointer" }}
+            />
             <div className={styles.streamInfoText}>
               <div className={styles.streamTitleContainer}>
                 <h2 className={styles.streamTitle}>{stream?.title}</h2>
@@ -971,7 +1051,11 @@ export default function ViewerPage() {
                   Idol Lv.{streamerLevel.level}
                 </span>
               </div>
-              <span className={styles.streamerName}>
+              <span 
+                className={styles.streamerName}
+                onClick={() => router.push(`/profile/${stream?.streamer?.username}`)}
+                style={{ cursor: "pointer" }}
+              >
                 Idol Streamer: <strong>{stream?.streamer?.displayName}</strong>
               </span>
             </div>

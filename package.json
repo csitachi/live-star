@@ -6,14 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "workers": "tsx src/backend/workers/index.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
     "@reduxjs/toolkit": "^2.12.0",
     "axios": "^1.18.1",
+    "bull": "^4.16.5",
     "google-auth-library": "^10.9.0",
+    "ioredis": "^5.11.1",
     "next": "16.2.9",
     "pg": "^8.22.0",
     "react": "19.2.4",
@@ -22,6 +25,7 @@
     "ws": "^8.21.0"
   },
   "devDependencies": {
+    "@types/bull": "^4.10.4",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",

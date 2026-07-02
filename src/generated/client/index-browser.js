@@ -218,6 +218,34 @@ exports.Prisma.TreasureClaimScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.PostScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  type: 'type',
+  mediaUrl: 'mediaUrl',
+  likesCount: 'likesCount',
+  commentsCount: 'commentsCount',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PostLikeScalarFieldEnum = {
+  id: 'id',
+  postId: 'postId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PostCommentScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  postId: 'postId',
+  authorId: 'authorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -238,6 +266,12 @@ exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN'
 };
 
+exports.PostType = exports.$Enums.PostType = {
+  STATUS: 'STATUS',
+  PHOTO: 'PHOTO',
+  VIDEO: 'VIDEO'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Stream: 'Stream',
@@ -247,7 +281,10 @@ exports.Prisma.ModelName = {
   StreamGoal: 'StreamGoal',
   PKBattle: 'PKBattle',
   TreasureChest: 'TreasureChest',
-  TreasureClaim: 'TreasureClaim'
+  TreasureClaim: 'TreasureClaim',
+  Post: 'Post',
+  PostLike: 'PostLike',
+  PostComment: 'PostComment'
 };
 
 /**

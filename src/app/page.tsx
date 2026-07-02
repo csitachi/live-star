@@ -317,8 +317,18 @@ export default function HomePage() {
 
         {currentUser ? (
           <div className={`${styles.userPanel} glass`}>
-            <img src={currentUser.avatarUrl} alt={currentUser.displayName} className={styles.avatar} />
-            <div className={styles.userInfo}>
+            <img 
+              src={currentUser.avatarUrl} 
+              alt={currentUser.displayName} 
+              className={styles.avatar} 
+              onClick={() => router.push(`/profile/${currentUser.username}`)}
+              style={{ cursor: "pointer" }}
+            />
+            <div 
+              className={styles.userInfo}
+              onClick={() => router.push(`/profile/${currentUser.username}`)}
+              style={{ cursor: "pointer" }}
+            >
               <span className={styles.username}>{currentUser.displayName}</span>
               <span className={styles.balance}>
                 🪙 {currentUser.starBalance.toLocaleString()} sao
@@ -564,7 +574,12 @@ export default function HomePage() {
                       const rankClass = idx === 0 ? styles.kolRank1 : idx === 1 ? styles.kolRank2 : idx === 2 ? styles.kolRank3 : "";
                       
                       return (
-                        <div key={kol.id} className={styles.topKOLCard}>
+                        <div 
+                          key={kol.id} 
+                          className={styles.topKOLCard}
+                          onClick={() => router.push(`/profile/${kol.username}`)}
+                          style={{ cursor: "pointer" }}
+                        >
                           <span className={`${styles.kolRank} ${rankClass}`}>
                             {idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : idx + 1}
                           </span>

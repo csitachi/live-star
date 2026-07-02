@@ -7,6 +7,36 @@ const { WebSocketServer, WebSocket } = require("ws");
 const PORT = 3001;
 const wss = new WebSocketServer({ port: PORT });
 
+// Cấu hình Redis Pub/Sub để nhận sự kiện từ Gift Worker
+const Redis = require("ioredis");
+const fs = require("fs");
+const path = require("path");
+
+// Đọc file .env thủ công để lấy REDIS_URL nếu có
+let redisUrl = "redis://localhost:6379";
+try {
+  const envPath = path.join(__dirname, ".env");
+  if (fs.existsSync(envPath)) {
+    const envContent = fs.readFileSync(envPath, "utf-8");
+    const match = envContent.match(/^REDIS_URL\s*=\s*["']?([^"'\r\n]+)["']?/m);
+    if (match) {
+      redisUrl = match[1];
+    }
+  }
+} catch (e) {
+  console.warn("⚠️ Không thể đọc file .env, sử dụng mặc định:", e.message);
+}
+
+const redisSub = new Redis(redisUrl);
+
+redisSub.on("connect", () => {
+  console.log("✅ [WS Redis] Kết nối thành công tới Redis Pub/Sub");
+});
+
+redisSub.on("error", (err) => {
+  console.error("❌ [WS Redis] Lỗi kết nối Redis:", err.message);
+});
+
 // Lưu trữ danh sách các phòng đang livestream và các kết nối hoạt động.
 // Cấu trúc: rooms[streamId] = {
 //   streamer: socketInstance,
@@ -14,6 +44,32 @@ const wss = new WebSocketServer({ port: PORT });
 //   viewerCount: number
 // }
 const rooms = new Map();
+
+// Đăng ký nhận message pattern
+redisSub.psubscribe("room:*:gifts", (err, count) => {
+  if (err) {
+    console.error("❌ [WS Redis] Lỗi đăng ký pattern:", err.message);
+  } else {
+    console.log(`📡 [WS Redis] Đăng ký thành công pattern room:*:gifts`);
+  }
+});
+
+redisSub.on("pmessage", (pattern, channel, message) => {
+  try {
+    const parts = channel.split(":");
+    const streamId = parts[1];
+    
+    const room = rooms.get(streamId);
+    if (!room) return; // Không có ai trong phòng này trên server node này
+    
+    const parsedData = JSON.parse(message);
+    
+    // Broadcast gift-batch tới tất cả clients trong phòng
+    broadcastToRoom(streamId, parsedData);
+  } catch (error) {
+    console.error("❌ [WS Redis] Lỗi xử lý tin nhắn Pub/Sub:", error.message);
+  }
+});
 
 // Trình đếm ID tự động tăng để định danh mỗi kết nối WebSocket
 let socketIdCounter = 0;

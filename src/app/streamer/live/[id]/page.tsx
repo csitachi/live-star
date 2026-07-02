@@ -454,6 +454,68 @@ function StreamerContent() {
             ]);
             break;
 
+          case "gift-batch": {
+            const { gifts, totalStars: newStars, activeGoal, pkBattle: updatedPkBattle } = payload;
+            
+            if (newStars !== undefined) setTotalStars(newStars);
+            
+            if (activeGoal && stream) {
+              setStream(prev => prev ? {
+                ...prev,
+                goalCurrent: activeGoal.currentStars,
+                goalTitle: activeGoal.title,
+                goalTarget: activeGoal.targetStars
+              } : null);
+            }
+            
+            if (updatedPkBattle) {
+              setPkBattle(prev => prev ? {
+                ...prev,
+                score1: updatedPkBattle.score1,
+                score2: updatedPkBattle.score2
+              } : null);
+            }
+            
+            const newChatMessages = gifts.map((g: any) => ({
+              id: g.id,
+              sender: g.sender,
+              text: g.message 
+                ? `Đã tặng ${g.starAmount} sao! 🌟 "${g.message}"` 
+                : `Đã tặng ${g.starAmount} sao! 🌟`,
+              createdAt: g.createdAt,
+              isGift: true,
+              giftStars: g.starAmount
+            }));
+
+            setMessages((prev) => [...prev, ...newChatMessages]);
+
+            if (gifts.length > 0) {
+              const maxGift = gifts.reduce((p: any, c: any) => 
+                (p.starAmount > c.starAmount) ? p : c
+              );
+
+              setActiveGift({
+                id: maxGift.id,
+                senderName: maxGift.sender.displayName,
+                avatarUrl: maxGift.sender.avatarUrl,
+                starAmount: maxGift.starAmount,
+                message: maxGift.message,
+              });
+
+              const bigGift = gifts.find((g: any) => g.starAmount >= 100);
+              if (bigGift) {
+                setBigGiftEffect({
+                  senderName: bigGift.sender.displayName,
+                  avatarUrl: bigGift.sender.avatarUrl,
+                  starAmount: bigGift.starAmount,
+                  streamName: stream?.title || ""
+                });
+                setTimeout(() => setBigGiftEffect(null), 3000);
+              }
+            }
+            break;
+          }
+
           case "pk-invited":
             setIncomingInvite(payload);
             break;
@@ -848,6 +910,11 @@ function StreamerContent() {
           if (res.ok) {
             const data = await res.json();
             const resData = data.data;
+
+            if (res.status === 202) {
+              return;
+            }
+
             // Giao dịch thành công trong PostgreSQL! Bây giờ ta phát tín hiệu WebSocket để hiển thị hiệu ứng
             if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
               wsRef.current.send(JSON.stringify({
