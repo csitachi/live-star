@@ -33,6 +33,9 @@ interface Stream {
   viewerCount: number;
   totalStars: number;
   streamerId: string;
+  goalTitle?: string | null;
+  goalTarget: number;
+  goalCurrent: number;
   streamer: {
     displayName: string;
     avatarUrl: string;
@@ -89,12 +92,160 @@ export default function ViewerPage() {
   // Lưu trữ sự kiện quà tặng cuối cùng để kích hoạt hoạt họa Canvas bay sao reactive
   const [lastGiftEvent, setLastGiftEvent] = useState<{ id: string; amount: number } | null>(null);
 
+  // Trạng thái PK Battles
+  const [pkBattle, setPkBattle] = useState<any | null>(null);
+  const [pkTimeLeft, setPkTimeLeft] = useState<number | null>(null);
+  const [bigGiftEffect, setBigGiftEffect] = useState<{ senderName: string; avatarUrl: string; starAmount: number; streamName: string } | null>(null);
+
+  // Trạng thái Rương Quà May Mắn
+  const [activeChest, setActiveChest] = useState<any | null>(null);
+  const [chestTimeLeft, setChestTimeLeft] = useState<number | null>(null);
+  const [showChestModal, setShowChestModal] = useState(false);
+  const [claimAmount, setClaimAmount] = useState<number | null>(null);
+  const [claiming, setClaiming] = useState(false);
+
+  // Trạng thái Đóng góp mục tiêu nhóm
+  const [goalAchieved, setGoalAchieved] = useState(false);
+
   // Refs WebSockets, WebRTC và Canvas hoạt họa
   const wsRef = useRef<WebSocket | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null); // Canvas hiển thị luồng giả lập
   const pcRef = useRef<RTCPeerConnection | null>(null);
   const animationFrameIdRef = useRef<number | null>(null);
+
+  // 1.1 Khởi chạy các đồng hồ đếm ngược
+  useEffect(() => {
+    if (pkBattle && pkBattle.status === "LIVE" && pkBattle.endTime) {
+      const targetTime = new Date(pkBattle.endTime).getTime();
+      const interval = setInterval(() => {
+        const diff = Math.max(0, Math.floor((targetTime - Date.now()) / 1000));
+        setPkTimeLeft(diff);
+        if (diff <= 0) {
+          clearInterval(interval);
+          fetchPKStatus();
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    } else {
+      setPkTimeLeft(null);
+    }
+  }, [pkBattle]);
+
+  useEffect(() => {
+    if (activeChest && activeChest.expiresAt) {
+      const targetTime = new Date(activeChest.expiresAt).getTime();
+      const interval = setInterval(() => {
+        const diff = Math.max(0, Math.floor((targetTime - Date.now()) / 1000));
+        setChestTimeLeft(diff);
+        if (diff <= 0) {
+          clearInterval(interval);
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    } else {
+      setChestTimeLeft(null);
+    }
+  }, [activeChest]);
+
+  const fetchPKStatus = async () => {
+    if (!stream) return;
+    try {
+      const res = await fetch(`/api/pk/status?streamerId=${stream.streamerId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setPkBattle(data);
+      }
+    } catch (err) {
+      console.error("Lỗi lấy trạng thái PK:", err);
+    }
+  };
+
+  const handleClaimChest = async () => {
+    if (!currentUser || !activeChest || claiming) return;
+    try {
+      setClaiming(true);
+      const res = await fetch("/api/chests/claim", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chestId: activeChest.id, userId: currentUser.id }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setClaimAmount(data.amount);
+        // Cập nhật số dư sao cục bộ
+        setCurrentUser(prev => prev ? { ...prev, starBalance: prev.starBalance + data.amount } : null);
+        // Đồng bộ lên WebSocket
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({
+            type: "chest-claimed",
+            payload: {
+              remainingSlots: data.remainingSlots,
+              remainingStars: data.remainingStars,
+            }
+          }));
+        }
+      } else {
+        alert(data.error || "Không thể mở rương!");
+      }
+    } catch (err) {
+      console.error("Lỗi mở rương:", err);
+      alert("Đã xảy ra lỗi khi mở rương!");
+    } finally {
+      setClaiming(false);
+    }
+  };
+
+  const handleDropChest = async () => {
+    if (!currentUser || !stream) return;
+    const totalStars = prompt("Nhập tổng số sao muốn thả (ví dụ: 1000):", "200");
+    if (!totalStars) return;
+    const slots = prompt("Nhập số lượt mở tối đa (ví dụ: 10 người):", "5");
+    if (!slots) return;
+
+    const starsNum = parseInt(totalStars);
+    const slotsNum = parseInt(slots);
+
+    if (isNaN(starsNum) || starsNum <= 0 || isNaN(slotsNum) || slotsNum <= 0) {
+      alert("Vui lòng nhập số hợp lệ!");
+      return;
+    }
+
+    if (currentUser.starBalance < starsNum) {
+      alert("Số dư của bạn không đủ!");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/chests/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          streamId,
+          creatorId: currentUser.id,
+          totalStars: starsNum,
+          totalSlots: slotsNum,
+        }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("Đã thả rương quà thành công!");
+        // Trừ sao cục bộ
+        setCurrentUser(prev => prev ? { ...prev, starBalance: prev.starBalance - starsNum } : null);
+        // Đồng bộ lên WebSocket
+        if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
+          wsRef.current.send(JSON.stringify({
+            type: "chest-spawned",
+            payload: { chest: data }
+          }));
+        }
+      } else {
+        alert(data.error || "Không thể thả rương!");
+      }
+    } catch (err) {
+      console.error("Lỗi tạo rương:", err);
+    }
+  };
 
   // 1. Khởi chạy trang: Xác thực danh tính bằng Cookie và lấy dữ liệu ban đầu
   useEffect(() => {
@@ -123,12 +274,32 @@ export default function ViewerPage() {
         }
 
         const detailData = await detailRes.json();
+
+        // Kiểm tra xem viewer hiện tại có phải streamer chủ phòng hay không
+        if (userData && detailData.stream.streamerId === userData.id && detailData.stream.status === "LIVE") {
+          router.replace(`/streamer/live/${streamId}`);
+          return;
+        }
+
         setStream(detailData.stream);
         setTotalStars(detailData.stream.totalStars);
         setViewerCount(detailData.stream.viewerCount);
         setMessages(detailData.comments);
         setLeaderboard(detailData.leaderboard);
         setLoading(false);
+
+        // Lấy trạng thái trận PK Battle hiện tại
+        try {
+          const pkRes = await fetch(`/api/pk/status?streamerId=${detailData.stream.streamerId}`);
+          if (pkRes.ok) {
+            const pkData = await pkRes.json();
+            if (pkData) {
+              setPkBattle(pkData);
+            }
+          }
+        } catch (pkErr) {
+          console.error("Lỗi lấy trạng thái PK khởi chạy:", pkErr);
+        }
 
         // Chỉ thiết lập kết nối thời gian thực nếu stream đang LIVE
         if (detailData.stream.status === "LIVE") {
@@ -228,8 +399,100 @@ export default function ViewerPage() {
             // 4. KÍCH HOẠT HIỆU ỨNG HẠT HOẠT HỌA BAY LÊN TRÊN CANVAS QUA STATE
             setLastGiftEvent({ id: payload.id, amount: payload.starAmount });
 
-            // 5. Cập nhật Bảng xếp hạng Leaderboard thời gian thực (tránh reload trang)
+            // 5. Trigger hiệu ứng quà lớn nếu tặng từ 100 sao trở lên
+            if (payload.starAmount >= 100) {
+              setBigGiftEffect({
+                senderName: payload.sender.displayName,
+                avatarUrl: payload.sender.avatarUrl,
+                starAmount: payload.starAmount,
+                streamName: stream?.title || ""
+              });
+              setTimeout(() => setBigGiftEffect(null), 3000);
+            }
+
+            // 6. Cập nhật Bảng xếp hạng Leaderboard thời gian thực (tránh reload trang)
             updateLeaderboardInRealtime(payload.sender, payload.starAmount);
+            break;
+
+          case "pk-start-broadcast":
+            const battleData = payload.battle;
+            const isStream1 = battleData.streamId1 === streamId;
+            const opponentStream = isStream1 ? battleData.stream2 : battleData.stream1;
+            const resolvedOpponent = opponentStream?.streamer ? {
+              id: opponentStream.streamer.id,
+              displayName: opponentStream.streamer.displayName,
+              avatarUrl: opponentStream.streamer.avatarUrl
+            } : null;
+            setPkBattle({
+              ...battleData,
+              opponent: resolvedOpponent || battleData.opponent
+            });
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `⚔️ Trận chiến PK thời gian thực đã bắt đầu! Hãy tặng sao cổ vũ!`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            scrollToBottom();
+            break;
+
+          case "pk-score-broadcast":
+            setPkBattle((prev: any) => prev ? { ...prev, score1: payload.score1, score2: payload.score2 } : null);
+            break;
+
+          case "pk-forfeit-broadcast": {
+            const { forfeitedByStreamId, forfeitedByUser, reason } = payload;
+            const reasonText = reason === "DISCONNECT" ? "mất kết nối" : "tự ý rời khỏi";
+            // Viewer cần biết ai bỏ cuộc và kết quả
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `❌ PK kết thúc sớm! ${forfeitedByUser?.displayName || "Một streamer"} đã ${reasonText} trước khi hết giờ.`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            scrollToBottom();
+            setPkBattle(null);
+            setPkTimeLeft(null);
+            break;
+          }
+
+          case "pk-big-gift-broadcast": {
+            setBigGiftEffect({
+              senderName: payload.senderName,
+              avatarUrl: payload.avatarUrl,
+              starAmount: payload.starAmount,
+              streamName: payload.streamName || ""
+            });
+            setTimeout(() => setBigGiftEffect(null), 3000);
+            break;
+          }
+
+          case "goal-broadcast":
+            setStream((prev: any) => prev ? { ...prev, goalTitle: payload.goalTitle, goalTarget: payload.goalTarget, goalCurrent: payload.goalCurrent } : null);
+            if (payload.goalCurrent >= payload.goalTarget && payload.goalTarget > 0) {
+              setGoalAchieved(true);
+              // Kích hoạt pháo hoa canvas hoạt họa chúc mừng
+              setLastGiftEvent({ id: Math.random().toString(), amount: 1000 });
+            }
+            break;
+
+          case "chest-broadcast":
+            setActiveChest(payload.chest);
+            setClaimAmount(null); // reset claim result
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `🎁 Rương Quà May Mắn trị giá ${payload.chest.totalStars} sao đã được thả! Rương sẽ mở sau ${Math.ceil((new Date(payload.chest.expiresAt).getTime() - Date.now()) / 1000)} giây.`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            scrollToBottom();
+            break;
+
+          case "chest-claim-broadcast":
+            setActiveChest((prev: any) => prev ? { ...prev, remainingSlots: payload.remainingSlots, remainingStars: payload.remainingStars } : null);
             break;
 
           // ==========================================
@@ -397,7 +660,7 @@ export default function ViewerPage() {
       const resData = await res.json();
 
       if (res.ok) {
-        const { updatedSenderBalance, totalStars: newStreamStars, transactionId } = resData.data;
+        const { updatedSenderBalance, totalStars: newStreamStars, goalCurrent, transactionId, pkBattle: newPkBattle } = resData.data;
 
         // A. Cập nhật số dư sao hiển thị và tổng số sao đã tặng của Viewer
         setCurrentUser(prev => prev ? { 
@@ -405,6 +668,14 @@ export default function ViewerPage() {
           starBalance: updatedSenderBalance,
           starsGifted: prev.starsGifted + gift.amount 
         } : null);
+
+        if (goalCurrent !== undefined && stream) {
+          setStream(prev => prev ? { ...prev, goalCurrent } : null);
+        }
+
+        if (newPkBattle) {
+          setPkBattle(newPkBattle);
+        }
 
         // B. Phát tán sự kiện tặng quà qua WebSocket để đồng bộ tới Streamer và toàn bộ Viewers khác
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -425,6 +696,32 @@ export default function ViewerPage() {
               totalStars: newStreamStars
             }
           }));
+
+          // Đồng bộ tiến trình mục tiêu nhóm
+          if (goalCurrent !== undefined && stream && stream.goalTarget > 0) {
+            wsRef.current.send(JSON.stringify({
+              type: "goal-updated",
+              payload: {
+                goalTitle: stream.goalTitle,
+                goalTarget: stream.goalTarget,
+                goalCurrent
+              }
+            }));
+          }
+
+          // Đồng bộ điểm PK Battle nếu có
+          if (newPkBattle) {
+            const opponentStreamId = newPkBattle.streamId1 === streamId ? newPkBattle.streamId2 : newPkBattle.streamId1;
+            wsRef.current.send(JSON.stringify({
+              type: "pk-score-update",
+              payload: {
+                battleId: newPkBattle.id,
+                score1: newPkBattle.score1,
+                score2: newPkBattle.score2,
+                opponentStreamId
+              }
+            }));
+          }
         }
 
         setGiftMessage("");
@@ -661,18 +958,12 @@ export default function ViewerPage() {
             </button>
             <img src={stream?.streamer?.avatarUrl} alt={stream?.streamer?.displayName || "Idol Streamer"} className={styles.streamerAvatar} />
             <div className={styles.streamInfoText}>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div className={styles.streamTitleContainer}>
                 <h2 className={styles.streamTitle}>{stream?.title}</h2>
                 <span
+                  className={styles.levelBadge}
                   style={{
                     backgroundColor: streamerLevel.color,
-                    color: "#fff",
-                    padding: "2px 6px",
-                    borderRadius: "4px",
-                    fontSize: "0.65rem",
-                    fontWeight: "bold",
-                    marginLeft: "10px",
-                    textShadow: "0 1px 2px rgba(0,0,0,0.4)",
                     boxShadow: `0 0 6px ${streamerLevel.color}44`
                   }}
                   title={streamerLevel.title}
@@ -690,14 +981,9 @@ export default function ViewerPage() {
             <div className={styles.viewerUserPanel}>
               {/* Huy hiệu Cấp độ của Viewer */}
               <span
+                className={styles.viewerLevelBadge}
                 style={{
                   backgroundColor: viewerLevel.color,
-                  color: "#fff",
-                  padding: "4px 8px",
-                  borderRadius: "6px",
-                  fontSize: "0.75rem",
-                  fontWeight: "bold",
-                  textShadow: "0 1px 2px rgba(0,0,0,0.4)",
                   boxShadow: `0 0 8px ${viewerLevel.color}33`
                 }}
                 title={viewerLevel.title}
@@ -712,25 +998,109 @@ export default function ViewerPage() {
               <button className={styles.rechargeBtn} onClick={handleRecharge}>
                 + Nạp Sao
               </button>
-
+              
               {/* Nút mở Vòng quay may mắn */}
               <button className={styles.luckyWheelBtn} onClick={() => setShowWheel(true)}>
                 🎰 Minigame
+              </button>
+
+              {/* Nút thả rương quà */}
+              <button
+                onClick={handleDropChest}
+                className={styles.dropChestBtn}
+              >
+                🎁 Thả Rương
               </button>
             </div>
           )}
         </div>
 
+        {/* Thanh mục tiêu nhóm phòng live */}
+        {stream && stream.goalTarget > 0 && (
+          <div className={styles.goalContainer}>
+            <div className={styles.goalHeader}>
+              <span className={styles.goalTitle}>🎯 Mục tiêu phòng: {stream.goalTitle || "Mục tiêu chung"}</span>
+              <span className={styles.goalProgress}>
+                {stream.goalCurrent} / {stream.goalTarget} sao {goalAchieved ? "🎉 ĐÃ ĐẠT MỐC!" : ""}
+              </span>
+            </div>
+            <div className={styles.goalProgressBar}>
+              <div
+                className={`${styles.goalProgressFill} ${goalAchieved ? styles.goalProgressFillAchieved : ""}`}
+                style={{ width: `${Math.min(100, (stream.goalCurrent / stream.goalTarget) * 100)}%` }}
+              />
+            </div>
+          </div>
+        )}
+
         {/* Màn hình phát video và canvas hiệu ứng bay sao */}
-        <div className={styles.videoSection}>
+        <div className={styles.videoSection} style={{ display: "flex", flexDirection: "row", overflow: "hidden", position: "relative" }}>
           {/* Component Canvas hoạt họa bay sao độc lập */}
           <GiftAnimationCanvas giftEvent={lastGiftEvent} styles={styles} />
 
-          {/* Player hiển thị webcam WebRTC */}
-          <video ref={videoRef} autoPlay playsInline className={styles.videoFeed} style={{ display: videoRef.current?.srcObject ? "block" : "none" }} />
-          
-          {/* Canvas vẽ visualizer dự phòng */}
-          <canvas ref={canvasRef} className={styles.virtualCanvas} style={{ display: videoRef.current?.srcObject ? "none" : "block" }} />
+          {/* Left panel: Streamer chính */}
+          <div style={{ flex: 1, position: "relative", height: "100%" }}>
+            {/* Player hiển thị webcam WebRTC */}
+            <video ref={videoRef} autoPlay playsInline className={styles.videoFeed} style={{ display: videoRef.current?.srcObject ? "block" : "none", width: "100%", height: "100%", objectFit: "cover" }} />
+            
+            {/* Canvas vẽ visualizer dự phòng */}
+            <canvas ref={canvasRef} className={styles.virtualCanvas} style={{ display: videoRef.current?.srcObject ? "none" : "block", width: "100%", height: "100%" }} />
+            
+            {pkBattle && pkBattle.status === "LIVE" && (
+              <span style={{ position: "absolute", bottom: "10px", left: "10px", background: "rgba(0,0,0,0.6)", padding: "4px 8px", borderRadius: "6px", fontSize: "0.8rem", fontWeight: "bold", zIndex: 10 }}>
+                {stream?.streamer?.displayName} (Phe Ta)
+              </span>
+            )}
+          </div>
+
+          {/* Right panel: Streamer đối thủ (chỉ hiển thị khi PK LIVE) */}
+          {pkBattle && pkBattle.status === "LIVE" && (
+            <div className={styles.opponentPanel}>
+              {/* Giả lập video đối thủ bằng ảnh avatar hoạt họa */}
+              <img src={pkBattle.opponent?.avatarUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150"} alt={pkBattle.opponent?.displayName} className={styles.opponentAvatar} />
+              <span style={{ marginTop: "12px", fontSize: "0.95rem", fontWeight: "700", color: "var(--color-secondary)" }}>{pkBattle.opponent?.displayName}</span>
+              <span className={`live-badge ${styles.opponentBadge}`}>ĐỐI THỦ PK</span>
+              
+              <span className={styles.opponentLabel}>
+                {pkBattle.opponent?.displayName} (Phe Bạn)
+              </span>
+            </div>
+          )}
+
+          {/* PK Battle Score Bar */}
+          {pkBattle && pkBattle.status === "LIVE" && (() => {
+            // Tính đúng "Phe Ta" = streamer đang xem (theo streamId), "Phe Địch" = đối thủ
+            const isStream1 = pkBattle.streamId1 === streamId;
+            const myScore = isStream1 ? pkBattle.score1 : pkBattle.score2;
+            const opScore = isStream1 ? pkBattle.score2 : pkBattle.score1;
+            const total = myScore + opScore;
+            const myPct = total > 0 ? (myScore / total) * 100 : 50;
+            return (
+              <div className={styles.pkContainer}>
+                <div className={styles.pkHeader}>
+                  <span style={{ color: "var(--color-primary)" }}>⭐ {stream?.streamer?.displayName || "Phe Ta"}: {myScore} sao</span>
+                  <span className={styles.pkTitle}>⚔️ PK SONG ĐẤU ⚔️</span>
+                  <span style={{ color: "var(--color-secondary)" }}>{pkBattle.opponent?.displayName || "Phe Địch"}: {opScore} sao ⭐</span>
+                </div>
+                <div className={styles.pkScoreBar}>
+                  <div className={styles.pkScoreFillLeft} style={{ width: `${myPct}%`, transition: "width 0.5s ease" }} />
+                  <div className={styles.pkScoreFillRight} />
+                </div>
+                {/* Nhãn % phần trăm ưu thế */}
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "var(--text-secondary)", marginTop: "2px" }}>
+                  <span style={{ color: myScore > opScore ? "var(--color-primary)" : "var(--text-secondary)" }}>
+                    {myPct.toFixed(0)}% {myScore > opScore ? "🔥 Dẫn trước!" : ""}
+                  </span>
+                  {pkTimeLeft !== null && (
+                    <span>⏱ {Math.floor(pkTimeLeft / 60)}:{(pkTimeLeft % 60).toString().padStart(2, "0")}</span>
+                  )}
+                  <span style={{ color: opScore > myScore ? "var(--color-secondary)" : "var(--text-secondary)" }}>
+                    {opScore > myScore ? "🔥 Dẫn trước!" : ""} {(100 - myPct).toFixed(0)}%
+                  </span>
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Lớp thông số phủ lên video */}
           <div className={styles.overlayTop}>
@@ -740,6 +1110,35 @@ export default function ViewerPage() {
               <span className={`${styles.statBadge} ${styles.starBadge}`}>🪙 {totalStars} sao nhận được</span>
             </div>
           </div>
+
+          {/* Nút Rương kho báu nổi (Floating Treasure Chest) */}
+          {activeChest && (
+            <div
+              onClick={() => setShowChestModal(true)}
+              style={{
+                position: "absolute",
+                bottom: "20px",
+                right: "20px",
+                width: "60px",
+                height: "60px",
+                background: "rgba(20,20,28,0.85)",
+                borderRadius: "50%",
+                border: "2px solid var(--color-accent)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                boxShadow: "0 0 15px var(--color-accent)",
+                zIndex: 12,
+              }}
+            >
+              <span style={{ fontSize: "1.5rem" }}>🎁</span>
+              <span style={{ fontSize: "0.65rem", fontWeight: "bold", color: "#fff" }}>
+                {chestTimeLeft !== null && chestTimeLeft > 0 ? `${chestTimeLeft}s` : "MỞ!"}
+              </span>
+            </div>
+          )}
 
           {/* Hiệu ứng Toast tặng quà của bản thân hoặc người khác */}
           <div className={styles.overlayGift}>
@@ -759,6 +1158,45 @@ export default function ViewerPage() {
             )}
           </div>
         </div>
+
+        {/* BIG GIFT OVERLAY - toàn màn hình khi viewer tặng quà lớn >=100 sao */}
+        {bigGiftEffect && (
+          <div style={{
+            position: "fixed", top: 0, left: 0, right: 0, bottom: 0,
+            display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center",
+            zIndex: 999, pointerEvents: "none",
+            background: "radial-gradient(ellipse at center, rgba(255, 200, 0, 0.18) 0%, transparent 70%)",
+            animation: "fadeInOut 3s ease forwards"
+          }}>
+            <div style={{
+              position: "absolute", width: "340px", height: "340px", borderRadius: "50%",
+              border: "4px solid rgba(255, 200, 0, 0.5)",
+              boxShadow: "0 0 60px rgba(255, 200, 0, 0.4), 0 0 120px rgba(255, 100, 0, 0.2)",
+              animation: "pulseRing 1s ease-in-out infinite"
+            }} />
+            <img src={bigGiftEffect.avatarUrl} alt={bigGiftEffect.senderName}
+              style={{ width: "100px", height: "100px", borderRadius: "50%", border: "4px solid #ffd700", boxShadow: "0 0 30px #ffd700", zIndex: 1 }} />
+            <div style={{ marginTop: "16px", textAlign: "center", zIndex: 1 }}>
+              <div style={{ fontSize: "1.5rem", fontWeight: "900", color: "#ffd700", textShadow: "0 0 20px #ff8800", letterSpacing: "1px" }}>
+                {bigGiftEffect.senderName}
+              </div>
+              <div style={{ fontSize: "2.5rem", fontWeight: "900", color: "#fff", textShadow: "0 0 30px #ffd700", margin: "8px 0" }}>
+                +{bigGiftEffect.starAmount} ⭐
+              </div>
+              <div style={{ fontSize: "1rem", color: "rgba(255,255,255,0.8)" }}>đã tặng sao cho {bigGiftEffect.streamName || "phòng này"}!</div>
+            </div>
+            {[...Array(8)].map((_, i) => (
+              <div key={i} style={{
+                position: "absolute", fontSize: "1.5rem",
+                top: `${20 + Math.random() * 60}%`,
+                left: `${10 + Math.random() * 80}%`,
+                opacity: 0.8,
+                animation: `floatStar ${1 + Math.random()}s ease-out forwards`,
+                animationDelay: `${Math.random() * 0.5}s`
+              }}>⭐</div>
+            ))}
+          </div>
+        )}
 
         {/* Component bảng chọn quà tặng chia tách */}
         <GiftSelector
@@ -903,6 +1341,66 @@ export default function ViewerPage() {
               className="glow-btn-secondary"
               onClick={() => setShowWheel(false)}
               disabled={isWheelSpinning}
+              style={{ width: "100%", padding: "10px", marginTop: "10px", fontSize: "0.85rem" }}
+            >
+              Đóng
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL MỞ RƯƠNG QUÀ MAY MẮN (TREASURE CHEST MODAL) */}
+      {showChestModal && activeChest && (
+        <div className={styles.wheelModalOverlay} onClick={() => setShowChestModal(false)}>
+          <div className={styles.wheelModalContent} onClick={(e) => e.stopPropagation()} style={{ padding: "30px 20px" }}>
+            <h3 style={{ fontSize: "1.4rem", fontWeight: "800", color: "var(--color-accent)", display: "flex", alignItems: "center", gap: "8px", justifyContent: "center" }}>
+              <span>🎁</span> Rương Quà May Mắn
+            </h3>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary)", textAlign: "center", margin: "10px 0" }}>
+              Chiếc rương chứa đựng <strong style={{ color: "var(--color-accent)" }}>{activeChest.totalStars} sao</strong>.
+              <br />
+              Còn lại <strong style={{ color: "#fff" }}>{activeChest.remainingSlots} lượt mở</strong> ({activeChest.remainingStars} sao).
+            </p>
+
+            {chestTimeLeft !== null && chestTimeLeft > 0 ? (
+              <div style={{ textAlign: "center", margin: "20px 0" }}>
+                <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Đồng hồ đếm ngược mở rương:</span>
+                <div style={{ fontSize: "2rem", fontWeight: "bold", color: "var(--color-accent)" }}>{chestTimeLeft} giây</div>
+              </div>
+            ) : (
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", margin: "20px 0" }}>
+                {claimAmount === null ? (
+                  <button
+                    onClick={handleClaimChest}
+                    disabled={claiming}
+                    style={{
+                      background: "linear-gradient(135deg, var(--color-accent), #f39c12)",
+                      border: "none",
+                      color: "#fff",
+                      fontSize: "1.2rem",
+                      fontWeight: "bold",
+                      padding: "15px 30px",
+                      borderRadius: "10px",
+                      cursor: "pointer",
+                      boxShadow: "0 0 15px var(--color-accent)",
+                      width: "100%",
+                      animation: claiming ? "none" : "pulse 1.5s infinite"
+                    }}
+                  >
+                    {claiming ? "Đang mở rương..." : "MỞ RƯƠNG NGAY! 🪙"}
+                  </button>
+                ) : (
+                  <div style={{ textAlign: "center", padding: "10px", background: "rgba(0,0,0,0.6)", borderRadius: "8px", border: "1px solid var(--color-accent)", width: "100%" }}>
+                    <div style={{ fontSize: "1.8rem", fontWeight: "bold", color: "var(--color-accent)" }}>+{claimAmount} Sao! 🎉</div>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "4px" }}>Số sao đã được chuyển vào số dư của bạn.</p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <button
+              className="glow-btn-secondary"
+              onClick={() => setShowChestModal(false)}
               style={{ width: "100%", padding: "10px", marginTop: "10px", fontSize: "0.85rem" }}
             >
               Đóng

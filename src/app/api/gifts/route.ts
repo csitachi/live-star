@@ -107,7 +107,7 @@ export async function POST(request: Request) {
         },
       });
 
-      // Bước E: Cập nhật tổng số sao nhận được trong phiên stream
+      // Bước E: Cập nhật tổng số sao nhận được
       const updatedStream = await tx.stream.update({
         where: { id: streamId },
         data: {
@@ -116,6 +116,58 @@ export async function POST(request: Request) {
           },
         },
       });
+
+      // Cập nhật mục tiêu nhóm hoạt động (ACTIVE) nếu có
+      let currentActiveGoal = await tx.streamGoal.findFirst({
+        where: {
+          streamId,
+          status: "ACTIVE",
+        },
+      });
+
+      if (currentActiveGoal) {
+        currentActiveGoal = await tx.streamGoal.update({
+          where: { id: currentActiveGoal.id },
+          data: {
+            currentStars: {
+              increment: starAmount,
+            },
+          },
+        });
+        
+        // Nếu đạt mục tiêu, tự động đổi status thành ACHIEVED
+        if (currentActiveGoal.currentStars >= currentActiveGoal.targetStars) {
+          currentActiveGoal = await tx.streamGoal.update({
+            where: { id: currentActiveGoal.id },
+            data: { status: "ACHIEVED" },
+          });
+        }
+      }
+
+      // Bước E.2: Cập nhật điểm PK Battle nếu có trận chiến đang diễn ra
+      const activeBattle = await tx.pKBattle.findFirst({
+        where: {
+          status: "LIVE",
+          OR: [
+            { streamId1: streamId },
+            { streamId2: streamId },
+          ],
+        },
+      });
+
+      if (activeBattle) {
+        if (activeBattle.streamId1 === streamId) {
+          await tx.pKBattle.update({
+            where: { id: activeBattle.id },
+            data: { score1: { increment: starAmount } },
+          });
+        } else {
+          await tx.pKBattle.update({
+            where: { id: activeBattle.id },
+            data: { score2: { increment: starAmount } },
+          });
+        }
+      }
 
       // Bước F: Ghi nhận lịch sử giao dịch tặng quà
       const transaction = await tx.giftTransaction.create({
@@ -141,11 +193,17 @@ export async function POST(request: Request) {
       });
 
       // Trả về kết quả giao dịch sau khi chạy transaction thành công
+      const finalBattle = activeBattle
+        ? await tx.pKBattle.findUnique({ where: { id: activeBattle.id } })
+        : null;
+
       return {
         updatedSenderBalance: updatedSender.starBalance,
         totalStars: updatedStream.totalStars,
+        goalCurrent: currentActiveGoal ? currentActiveGoal.currentStars : 0,
         transactionId: transaction.id,
         comment,
+        pkBattle: finalBattle,
       };
     });
 

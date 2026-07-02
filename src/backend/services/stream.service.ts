@@ -20,10 +20,23 @@ export class StreamService {
             starsEarned: true,
           },
         },
+        goals: {
+          where: { status: 'ACTIVE' },
+        },
       },
     });
 
-    return streams.sort((a, b) => {
+    const mappedStreams = streams.map((s) => {
+      const activeGoal = s.goals?.[0];
+      return {
+        ...s,
+        goalTitle: activeGoal ? activeGoal.title : null,
+        goalTarget: activeGoal ? activeGoal.targetStars : 0,
+        goalCurrent: activeGoal ? activeGoal.currentStars : 0,
+      };
+    });
+
+    return mappedStreams.sort((a, b) => {
       if (a.status === 'LIVE' && b.status !== 'LIVE') return -1;
       if (a.status !== 'LIVE' && b.status === 'LIVE') return 1;
       return b.createdAt.getTime() - a.createdAt.getTime();

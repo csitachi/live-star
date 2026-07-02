@@ -13,6 +13,34 @@
   .container {
     grid-template-columns: 1fr;
     height: auto;
+    padding: 16px;
+    gap: 16px;
+  }
+  .sidebar {
+    height: 500px;
+    margin-top: 10px;
+  }
+  .videoSection {
+    aspect-ratio: 16 / 9;
+    flex: none;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .controlBar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 16px;
+    gap: 12px;
+  }
+  .controlLeft {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .simulatorLabel {
+    justify-content: flex-start;
+    padding: 6px 0;
   }
 }
 

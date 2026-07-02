@@ -1,7 +1,7 @@
 // Tệp quản lý kết nối cơ sở dữ liệu Prisma Client.
 // Áp dụng mô hình Singleton để tránh cạn kiệt tài nguyên kết nối (Connection Pooling).
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../generated/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
@@ -32,12 +32,10 @@ if (process.env.NODE_ENV === "production") {
   const adapter = new PrismaPg(pool);
   prisma = new PrismaClient({ adapter });
 } else {
-  // Trên local development, tái sử dụng client cũ trong biến global.
-  if (!globalForPrisma.prisma) {
-    const pool = new Pool({ connectionString });
-    const adapter = new PrismaPg(pool);
-    globalForPrisma.prisma = new PrismaClient({ adapter });
-  }
+  // Trên local development, buộc tạo mới client để nhận diện schema mới của Prisma
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
+  globalForPrisma.prisma = new PrismaClient({ adapter });
   prisma = globalForPrisma.prisma;
 }
 

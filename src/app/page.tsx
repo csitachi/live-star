@@ -68,6 +68,7 @@ export default function HomePage() {
   const [newStreamDesc, setNewStreamDesc] = useState("");
   const [newStreamCategory, setNewStreamCategory] = useState("Talkshow");
   const [submitting, setSubmitting] = useState(false);
+  const [sandboxUser, setSandboxUser] = useState("bob");
 
   // 1. Tải thông tin người dùng bằng Cookie và tải danh sách phòng
   useEffect(() => {
@@ -169,6 +170,30 @@ export default function HomePage() {
     }
   };
 
+  // Đăng nhập Sandbox với Username tùy chọn
+  const handleSandboxLoginWithUsername = async () => {
+    try {
+      const res = await fetch("/api/auth", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: sandboxUser })
+      });
+      if (res.ok) {
+        const user = await res.json();
+        setCurrentUser(user);
+        alert(`🚀 Đăng nhập Sandbox thành công! Chào mừng ${user.displayName}`);
+        fetchStreams(selectedCategory);
+        fetchTopKOLs();
+      } else {
+        const err = await res.json();
+        alert(err.error || "Đăng nhập Sandbox thất bại!");
+      }
+    } catch (e) {
+      console.error("Lỗi đăng nhập sandbox:", e);
+      alert("Đã xảy ra lỗi hệ thống!");
+    }
+  };
+
   // Khởi động nút Google Sign-In SDK
   useEffect(() => {
     if (currentUser) return; // Nếu đã có session thì không render nút
@@ -257,7 +282,7 @@ export default function HomePage() {
         const newStream = await res.json();
         setShowCreateModal(false);
         setNewStreamTitle("");
-        router.push(`/streamer?id=${newStream.id}`);
+        router.push(`/streamer/live/${newStream.id}`);
       } else {
         const err = await res.json();
         alert(err.error || "Không thể tạo phòng stream!");
@@ -335,7 +360,7 @@ export default function HomePage() {
               if (!currentUser) {
                 alert("Vui lòng đăng nhập trước khi truy cập Kênh của tôi!");
               } else {
-                router.push(`/streamer`);
+                router.push(`/streamer/setup`);
               }
             }} type="button">
               <span className={styles.menuIcon}>👤</span>
@@ -376,10 +401,26 @@ export default function HomePage() {
                     {/* Nút Google thật */}
                     <div id="google-signin-btn"></div>
                     
-                    {/* Nút Sandbox */}
-                    <button className="glow-btn-primary" onClick={handleGoogleSandboxLogin} style={{ background: "linear-gradient(135deg, #4285F4, #ff007f)" }}>
-                      🚀 Đăng nhập Sandbox (Bob/Charlie/Dave)
-                    </button>
+                    {/* Chọn User Sandbox */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255, 255, 255, 0.05)", padding: "8px 16px", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                      <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: "bold" }}>Chọn User Sandbox:</span>
+                      <select 
+                        value={sandboxUser} 
+                        onChange={(e) => setSandboxUser(e.target.value)}
+                        style={{ padding: "8px 12px", background: "#111", border: "1px solid rgba(255, 255, 255, 0.2)", borderRadius: "8px", color: "#fff", cursor: "pointer", fontSize: "0.85rem" }}
+                      >
+                        <option value="bob">Bob (Viewer/Streamer)</option>
+                        <option value="charlie">Charlie (Viewer/Streamer)</option>
+                        <option value="dave">Dave (Viewer/Streamer)</option>
+                      </select>
+                      <button 
+                        className="glow-btn-primary" 
+                        onClick={handleSandboxLoginWithUsername}
+                        style={{ padding: "8px 16px", background: "linear-gradient(135deg, #4285F4, #ff007f)", fontSize: "0.85rem", margin: 0 }}
+                      >
+                        🚀 Đăng nhập
+                      </button>
+                    </div>
                   </div>
                 </>
               ) : (
@@ -395,7 +436,7 @@ export default function HomePage() {
                   alert("Vui lòng đăng nhập trước khi bắt đầu livestream!");
                   return;
                 }
-                setShowCreateModal(true);
+                router.push("/streamer/setup");
               }}>
                 🎥 Bắt đầu phòng Live mới của bạn
               </button>
@@ -655,7 +696,7 @@ export default function HomePage() {
           if (!currentUser) {
             alert("Vui lòng đăng nhập trước khi truy cập Kênh của tôi!");
           } else {
-            router.push(`/streamer`);
+            router.push(`/streamer/setup`);
           }
         }} type="button">
           <span className={styles.bottomNavIcon}>👤</span>

@@ -65,6 +65,38 @@ wss.on("connection", (ws) => {
           handleEndStream(ws);
           break;
 
+        case "goal-updated":
+          handleGoalUpdated(ws, payload);
+          break;
+
+        case "chest-spawned":
+          handleChestSpawned(ws, payload);
+          break;
+
+        case "chest-claimed":
+          handleChestClaimed(ws, payload);
+          break;
+
+        case "pk-invite":
+          handlePKInvite(ws, payload);
+          break;
+
+        case "pk-accept":
+          handlePKAccept(ws, payload);
+          break;
+
+        case "pk-score-update":
+          handlePKScoreUpdate(ws, payload);
+          break;
+
+        case "pk-forfeit":
+          handlePKForfeit(ws, payload);
+          break;
+
+        case "pk-big-gift":
+          handlePKBigGift(ws, payload);
+          break;
+
         default:
           console.warn(`⚠️ Loại tin nhắn không được hỗ trợ: ${type}`);
       }
@@ -90,6 +122,8 @@ function handleJoinRoom(ws, payload) {
   ws.room = streamId;
   ws.isStreamer = isStreamer;
   ws.user = user; // Lưu thông tin người dùng (id, username, displayName) vào socket
+  ws.pkBattleId = null;       // ID trận PK đang diễn ra (nếu có)
+  ws.pkOpponentStreamId = null; // Stream ID của đối thủ PK (nếu có)
 
   if (!rooms.has(streamId)) {
     rooms.set(streamId, {
@@ -246,6 +280,24 @@ function handleDisconnect(ws) {
 
   if (ws.isStreamer) {
     console.log(`⚠️ Streamer ngắt kết nối khỏi phòng: ${streamId}`);
+    
+    // Nếu Streamer đang trong trận PK, broadcast forfeit sang phòng đối thủ
+    if (ws.pkBattleId && ws.pkOpponentStreamId) {
+      console.log(`⚠️ Streamer rời khỏi giữa trận PK (battleId: ${ws.pkBattleId}). Phát tín hiệu forfeit...`);
+      const forfeitMsg = JSON.stringify({
+        type: "pk-forfeit-broadcast",
+        payload: {
+          battleId: ws.pkBattleId,
+          forfeitedByStreamId: streamId,
+          forfeitedByUser: ws.user,
+          reason: "DISCONNECT"
+        }
+      });
+      // Broadcast cho cả phòng của streamer này và phòng đối thủ
+      broadcastToRoom(streamId, JSON.parse(forfeitMsg));
+      broadcastToRoom(ws.pkOpponentStreamId, JSON.parse(forfeitMsg));
+    }
+
     // Thông báo cho viewer biết stream tạm ngắt hoặc kết thúc
     broadcastToRoom(streamId, {
       type: "stream-disconnected",
@@ -303,5 +355,154 @@ function broadcastToRoom(streamId, messageObj) {
     if (viewerSocket.readyState === WebSocket.OPEN) {
       viewerSocket.send(messageStr);
     }
+  }
+}
+
+function handleGoalUpdated(ws, payload) {
+  const streamId = ws.room;
+  if (!streamId) return;
+  broadcastToRoom(streamId, {
+    type: "goal-broadcast",
+    payload: payload
+  });
+}
+
+function handleChestSpawned(ws, payload) {
+  const streamId = ws.room;
+  if (!streamId) return;
+  broadcastToRoom(streamId, {
+    type: "chest-broadcast",
+    payload: payload
+  });
+}
+
+function handleChestClaimed(ws, payload) {
+  const streamId = ws.room;
+  if (!streamId) return;
+  broadcastToRoom(streamId, {
+    type: "chest-claim-broadcast",
+    payload: payload
+  });
+}
+
+function handlePKInvite(ws, payload) {
+  const { targetStreamerId, battle } = payload;
+  console.log(`[PK Invite] Streamer ${ws.user?.displayName} (Room: ${ws.room}) is inviting targetStreamerId: ${targetStreamerId}`);
+
+  let found = false;
+  for (const [streamId, room] of rooms.entries()) {
+    const roomStreamerId = room.streamer?.user?.id;
+    console.log(` - Checking room ${streamId}: streamerId = ${roomStreamerId}, hasStreamerSocket = ${!!room.streamer}`);
+
+    if (roomStreamerId === targetStreamerId) {
+      room.streamer.send(JSON.stringify({
+        type: "pk-invited",
+        payload: {
+          battle,
+          senderStreamer: ws.user,
+          senderStreamId: ws.room
+        }
+      }));
+      console.log(` -> Found target streamer! Invite sent successfully.`);
+      found = true;
+      break;
+    }
+  }
+  if (!found) {
+    console.log(` -> Opponent streamer NOT found in any active room!`);
+    ws.send(JSON.stringify({
+      type: "pk-invite-error",
+      payload: {
+        error: "Idol đối thủ hiện đang không online hoặc đã ngắt kết nối WebSocket!"
+      }
+    }));
+  }
+}
+
+function handlePKAccept(ws, payload) {
+  const { battle, opponentStreamId } = payload;
+  
+  // Đăng ký trạng thái PK vào cả 2 socket streamer để detect khi disconnect
+  ws.pkBattleId = battle.id;
+  ws.pkOpponentStreamId = opponentStreamId;
+  
+  const opponentRoom = rooms.get(opponentStreamId);
+  if (opponentRoom && opponentRoom.streamer) {
+    opponentRoom.streamer.pkBattleId = battle.id;
+    opponentRoom.streamer.pkOpponentStreamId = ws.room;
+  }
+
+  broadcastToRoom(ws.room, {
+    type: "pk-start-broadcast",
+    payload: { battle, opponentStreamId }
+  });
+  broadcastToRoom(opponentStreamId, {
+    type: "pk-start-broadcast",
+    payload: { battle, opponentStreamId: ws.room }
+  });
+}
+
+function handlePKForfeit(ws, payload) {
+  const { battleId } = payload;
+  const streamId = ws.room;
+  if (!streamId) return;
+
+  const opponentStreamId = ws.pkOpponentStreamId;
+  console.log(`🏳️ Streamer ${ws.user?.displayName} tự ý bỏ cuộc trận PK (battleId: ${battleId})`);
+
+  const forfeitMsg = {
+    type: "pk-forfeit-broadcast",
+    payload: {
+      battleId,
+      forfeitedByStreamId: streamId,
+      forfeitedByUser: ws.user,
+      reason: "SURRENDER"
+    }
+  };
+
+  // Broadcast cho cả 2 phòng
+  broadcastToRoom(streamId, forfeitMsg);
+  if (opponentStreamId) {
+    broadcastToRoom(opponentStreamId, forfeitMsg);
+  }
+
+  // Xóa trạng thái PK khỏi cả 2 socket
+  ws.pkBattleId = null;
+  ws.pkOpponentStreamId = null;
+  const opponentRoom = rooms.get(opponentStreamId);
+  if (opponentRoom && opponentRoom.streamer) {
+    opponentRoom.streamer.pkBattleId = null;
+    opponentRoom.streamer.pkOpponentStreamId = null;
+  }
+}
+
+function handlePKBigGift(ws, payload) {
+  const streamId = ws.room;
+  if (!streamId) return;
+
+  const opponentStreamId = ws.pkOpponentStreamId;
+
+  // Broadcast big gift effect cho cả phòng của streamer hiện tại và phòng đối thủ (nếu đang PK)
+  broadcastToRoom(streamId, {
+    type: "pk-big-gift-broadcast",
+    payload
+  });
+  if (opponentStreamId) {
+    broadcastToRoom(opponentStreamId, {
+      type: "pk-big-gift-broadcast",
+      payload
+    });
+  }
+}
+
+function handlePKScoreUpdate(ws, payload) {
+  const { battleId, score1, score2, opponentStreamId } = payload;
+  const msg = {
+    type: "pk-score-broadcast",
+    payload: { battleId, score1, score2 }
+  };
+  broadcastToRoom(ws.room, msg);
+  if (opponentStreamId) {
+    broadcastToRoom(opponentStreamId, msg);
   }
 }

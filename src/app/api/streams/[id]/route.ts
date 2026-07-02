@@ -19,7 +19,7 @@ export async function GET(
       );
     }
 
-    // 1. Lấy thông tin phòng stream kèm theo thông tin Streamer
+    // 1. Lấy thông tin phòng stream kèm theo thông tin Streamer và Goals
     const stream = await prisma.stream.findUnique({
       where: { id: streamId },
       include: {
@@ -33,6 +33,9 @@ export async function GET(
             starsEarned: true,
           },
         },
+        goals: {
+          where: { status: "ACTIVE" }
+        }
       },
     });
 
@@ -42,6 +45,15 @@ export async function GET(
         { status: 404 }
       );
     }
+
+    // Ghép thuộc tính goal tương thích ngược
+    const activeGoal = stream.goals?.[0];
+    const streamCompatible = {
+      ...stream,
+      goalTitle: activeGoal ? activeGoal.title : null,
+      goalTarget: activeGoal ? activeGoal.targetStars : 0,
+      goalCurrent: activeGoal ? activeGoal.currentStars : 0,
+    };
 
     // 2. Lấy danh sách bình luận trong phòng (Sắp xếp theo thứ tự thời gian tăng dần để cuộn chat từ dưới lên)
     const comments = await prisma.comment.findMany({
@@ -103,7 +115,7 @@ export async function GET(
 
     // Trả về gói dữ liệu tổng hợp
     return NextResponse.json({
-      stream,
+      stream: streamCompatible,
       comments,
       leaderboard,
     });

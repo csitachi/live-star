@@ -1,0 +1,188 @@
+// Tệp cấu hình Prisma Schema định nghĩa mô hình cơ sở dữ liệu (Database Schema).
+// Xem thêm tài liệu tại: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// ==========================================
+/// KIẾN THỨC BACKEND & BẢO MẬT VỀ DATABASE:
+/// 1. SQL Injection: Prisma sử dụng "Parameterized Queries" (truy vấn tham số hóa) cho tất cả các
+///    truy vấn SQL thông thường. Điều này có nghĩa là dữ liệu từ người dùng nhập vào sẽ không bao giờ
+///    được nối chuỗi trực tiếp vào câu lệnh SQL, giúp ngăn chặn 100% các cuộc tấn công SQL Injection.
+/// 2. UUID vs Auto-increment ID: Chúng ta sử dụng UUID (Universally Unique Identifier) thay vì ID
+///    tăng dần (1, 2, 3...). Bảo mật: ID tăng dần dễ bị kẻ tấn công dự đoán và quét (ID Enumeration Attack).
+///    Với UUID (ví dụ: "3f8e9a1b-c7d6..."), kẻ tấn công không thể mò ra ID của các luồng stream hay user khác.
+/// 3. Referential Integrity (Ràng buộc toàn vẹn): Khóa ngoại (foreign keys) giúp đảm bảo dữ liệu không bị mồ côi.
+///    Ví dụ: Không thể tạo một comment trỏ tới một stream không tồn tại.
+/// ==========================================
+
+enum UserRole {
+  VIEWER
+  STREAMER
+  ADMIN
+}
+
+model User {
+  id          String   @id @default(uuid())
+  username    String   @unique // Đảm bảo không trùng tên đăng nhập
+  displayName String // Tên hiển thị công khai
+  avatarUrl   String // Đường dẫn ảnh đại diện
+  email       String?  @unique // Email liên kết với tài khoản Google
+  googleId    String?  @unique // ID duy nhất từ Google User Info
+  role        UserRole @default(VIEWER) // Phân quyền người dùng
+  starBalance Int      @default(1000) // Số dư sao ban đầu để trải nghiệm
+  starsGifted Int      @default(0) // Tổng số sao đã tặng
+  starsEarned Int      @default(0) // Tổng số sao đã nhận
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Mối quan hệ (Relations)
+  streams       Stream[]          @relation("StreamerRelation")
+  sentGifts     GiftTransaction[] @relation("SenderRelation")
+  receivedGifts GiftTransaction[] @relation("ReceiverRelation")
+  comments      Comment[]         @relation("UserComments")
+  sessions      Session[]
+}
+
+model Stream {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  category    String  @default("Talkshow") // Danh mục: "Talkshow", "Music", "Gaming", "Comedy"
+  status      String  @default("LIVE") // Trạng thái: "LIVE" (đang trực tiếp) hoặc "ENDED" (đã kết thúc)
+  viewerCount Int     @default(0) // Số lượng người xem hiện tại (đồng bộ thời gian thực)
+  totalStars  Int     @default(0) // Tổng số sao nhận được trong phiên live này (cache để query nhanh)
+
+  streamerId String
+  streamer   User   @relation("StreamerRelation", fields: [streamerId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime  @default(now())
+  endedAt   DateTime?
+
+  // Mối quan hệ (Relations)
+  goals      StreamGoal[]
+  pkBattles1 PKBattle[]        @relation("PKStream1")
+  pkBattles2 PKBattle[]        @relation("PKStream2")
+  chests     TreasureChest[]
+  comments   Comment[]
+  gifts      GiftTransaction[]
+}
+
+model GiftTransaction {
+  id String @id @default(uuid())
+
+  streamId String
+  stream   Stream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation("SenderRelation", fields: [senderId], references: [id], onDelete: Cascade)
+
+  receiverId String
+  receiver   User   @relation("ReceiverRelation", fields: [receiverId], references: [id], onDelete: Cascade)
+
+  starAmount Int // Số lượng sao được tặng (ví dụ: 10, 100, 1000)
+  message    String? // Lời nhắn đi kèm
+  createdAt  DateTime @default(now())
+
+  @@index([streamId])
+  @@index([senderId])
+  @@index([receiverId])
+}
+
+model Comment {
+  id String @id @default(uuid())
+
+  streamId String
+  stream   Stream @relation(fields: [streamId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation("UserComments", fields: [senderId], references: [id], onDelete: Cascade)
+
+  text String // Nội dung bình luận
+
+  // Hỗ trợ đánh dấu nếu comment này được tự động tạo từ một sự kiện tặng sao
+  isGift    Boolean @default(false)
+  giftStars Int? // Số lượng sao nếu là comment tặng sao
+
+  createdAt DateTime @default(now())
+
+  @@index([streamId])
+  @@index([senderId])
+}
+
+// Bảng lưu phiên đăng nhập (Session) để quản lý xác thực bằng Cookie
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model StreamGoal {
+  id           String   @id @default(uuid())
+  streamId     String
+  stream       Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  title        String
+  targetStars  Int
+  currentStars Int      @default(0)
+  status       String   @default("ACTIVE") // "ACTIVE", "ACHIEVED", "CANCELLED"
+  createdAt    DateTime @default(now())
+
+  @@index([streamId])
+}
+
+model PKBattle {
+  id        String    @id @default(uuid())
+  status    String    @default("INVITING") // "INVITING", "LIVE", "ENDED"
+  streamId1 String
+  stream1   Stream    @relation("PKStream1", fields: [streamId1], references: [id], onDelete: Cascade)
+  streamId2 String
+  stream2   Stream    @relation("PKStream2", fields: [streamId2], references: [id], onDelete: Cascade)
+  score1    Int       @default(0)
+  score2    Int       @default(0)
+  startTime DateTime?
+  endTime   DateTime?
+  winnerId  String?
+  createdAt DateTime  @default(now())
+
+  @@index([streamId1])
+  @@index([streamId2])
+}
+
+model TreasureChest {
+  id             String          @id @default(uuid())
+  streamId       String
+  stream         Stream          @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  creatorId      String
+  totalStars     Int // Tổng số sao bỏ vào rương (ví dụ: 1000)
+  remainingStars Int // Số sao còn lại chưa bị giật
+  totalSlots     Int // Tổng số lượt nhận (ví dụ: 50 người nhanh nhất)
+  remainingSlots Int // Số lượt nhận còn lại
+  expiresAt      DateTime
+  createdAt      DateTime        @default(now())
+  claims         TreasureClaim[]
+
+  @@index([streamId])
+  @@index([creatorId])
+}
+
+model TreasureClaim {
+  id        String        @id @default(uuid())
+  chestId   String
+  chest     TreasureChest @relation(fields: [chestId], references: [id], onDelete: Cascade)
+  userId    String
+  amount    Int // Số sao giật được (ngẫu nhiên)
+  createdAt DateTime      @default(now())
+
+  @@index([chestId])
+  @@index([userId])
+}
