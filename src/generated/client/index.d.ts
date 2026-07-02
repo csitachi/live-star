@@ -73,6 +73,16 @@ export type PostLike = $Result.DefaultSelection<Prisma.$PostLikePayload>
  * 
  */
 export type PostComment = $Result.DefaultSelection<Prisma.$PostCommentPayload>
+/**
+ * Model Prediction
+ * 
+ */
+export type Prediction = $Result.DefaultSelection<Prisma.$PredictionPayload>
+/**
+ * Model PredictionBet
+ * 
+ */
+export type PredictionBet = $Result.DefaultSelection<Prisma.$PredictionBetPayload>
 
 /**
  * Enums
@@ -345,6 +355,26 @@ export class PrismaClient<
     * ```
     */
   get postComment(): Prisma.PostCommentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.prediction`: Exposes CRUD operations for the **Prediction** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Predictions
+    * const predictions = await prisma.prediction.findMany()
+    * ```
+    */
+  get prediction(): Prisma.PredictionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.predictionBet`: Exposes CRUD operations for the **PredictionBet** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PredictionBets
+    * const predictionBets = await prisma.predictionBet.findMany()
+    * ```
+    */
+  get predictionBet(): Prisma.PredictionBetDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -790,7 +820,9 @@ export namespace Prisma {
     TreasureClaim: 'TreasureClaim',
     Post: 'Post',
     PostLike: 'PostLike',
-    PostComment: 'PostComment'
+    PostComment: 'PostComment',
+    Prediction: 'Prediction',
+    PredictionBet: 'PredictionBet'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -806,7 +838,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment"
+      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment" | "prediction" | "predictionBet"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1698,6 +1730,154 @@ export namespace Prisma {
           }
         }
       }
+      Prediction: {
+        payload: Prisma.$PredictionPayload<ExtArgs>
+        fields: Prisma.PredictionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PredictionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PredictionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          findFirst: {
+            args: Prisma.PredictionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PredictionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          findMany: {
+            args: Prisma.PredictionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>[]
+          }
+          create: {
+            args: Prisma.PredictionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          createMany: {
+            args: Prisma.PredictionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PredictionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>[]
+          }
+          delete: {
+            args: Prisma.PredictionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          update: {
+            args: Prisma.PredictionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          deleteMany: {
+            args: Prisma.PredictionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PredictionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PredictionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>[]
+          }
+          upsert: {
+            args: Prisma.PredictionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionPayload>
+          }
+          aggregate: {
+            args: Prisma.PredictionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePrediction>
+          }
+          groupBy: {
+            args: Prisma.PredictionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PredictionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PredictionCountArgs<ExtArgs>
+            result: $Utils.Optional<PredictionCountAggregateOutputType> | number
+          }
+        }
+      }
+      PredictionBet: {
+        payload: Prisma.$PredictionBetPayload<ExtArgs>
+        fields: Prisma.PredictionBetFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PredictionBetFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PredictionBetFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          findFirst: {
+            args: Prisma.PredictionBetFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PredictionBetFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          findMany: {
+            args: Prisma.PredictionBetFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>[]
+          }
+          create: {
+            args: Prisma.PredictionBetCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          createMany: {
+            args: Prisma.PredictionBetCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PredictionBetCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>[]
+          }
+          delete: {
+            args: Prisma.PredictionBetDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          update: {
+            args: Prisma.PredictionBetUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          deleteMany: {
+            args: Prisma.PredictionBetDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PredictionBetUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PredictionBetUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>[]
+          }
+          upsert: {
+            args: Prisma.PredictionBetUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PredictionBetPayload>
+          }
+          aggregate: {
+            args: Prisma.PredictionBetAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePredictionBet>
+          }
+          groupBy: {
+            args: Prisma.PredictionBetGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PredictionBetGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PredictionBetCountArgs<ExtArgs>
+            result: $Utils.Optional<PredictionBetCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1818,6 +1998,8 @@ export namespace Prisma {
     post?: PostOmit
     postLike?: PostLikeOmit
     postComment?: PostCommentOmit
+    prediction?: PredictionOmit
+    predictionBet?: PredictionBetOmit
   }
 
   /* Types for Logging */
@@ -1906,6 +2088,7 @@ export namespace Prisma {
     posts: number
     postLikes: number
     postComments: number
+    predictionBets: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1917,6 +2100,7 @@ export namespace Prisma {
     posts?: boolean | UserCountOutputTypeCountPostsArgs
     postLikes?: boolean | UserCountOutputTypeCountPostLikesArgs
     postComments?: boolean | UserCountOutputTypeCountPostCommentsArgs
+    predictionBets?: boolean | UserCountOutputTypeCountPredictionBetsArgs
   }
 
   // Custom InputTypes
@@ -1986,6 +2170,13 @@ export namespace Prisma {
     where?: PostCommentWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPredictionBetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PredictionBetWhereInput
+  }
+
 
   /**
    * Count Type StreamCountOutputType
@@ -1998,6 +2189,7 @@ export namespace Prisma {
     chests: number
     comments: number
     gifts: number
+    predictions: number
   }
 
   export type StreamCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2007,6 +2199,7 @@ export namespace Prisma {
     chests?: boolean | StreamCountOutputTypeCountChestsArgs
     comments?: boolean | StreamCountOutputTypeCountCommentsArgs
     gifts?: boolean | StreamCountOutputTypeCountGiftsArgs
+    predictions?: boolean | StreamCountOutputTypeCountPredictionsArgs
   }
 
   // Custom InputTypes
@@ -2060,6 +2253,13 @@ export namespace Prisma {
    */
   export type StreamCountOutputTypeCountGiftsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: GiftTransactionWhereInput
+  }
+
+  /**
+   * StreamCountOutputType without action
+   */
+  export type StreamCountOutputTypeCountPredictionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PredictionWhereInput
   }
 
 
@@ -2135,6 +2335,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type PredictionCountOutputType
+   */
+
+  export type PredictionCountOutputType = {
+    bets: number
+  }
+
+  export type PredictionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    bets?: boolean | PredictionCountOutputTypeCountBetsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PredictionCountOutputType without action
+   */
+  export type PredictionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionCountOutputType
+     */
+    select?: PredictionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PredictionCountOutputType without action
+   */
+  export type PredictionCountOutputTypeCountBetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PredictionBetWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -2165,6 +2396,7 @@ export namespace Prisma {
   export type UserMinAggregateOutputType = {
     id: string | null
     username: string | null
+    passwordHash: string | null
     displayName: string | null
     avatarUrl: string | null
     email: string | null
@@ -2180,6 +2412,7 @@ export namespace Prisma {
   export type UserMaxAggregateOutputType = {
     id: string | null
     username: string | null
+    passwordHash: string | null
     displayName: string | null
     avatarUrl: string | null
     email: string | null
@@ -2195,6 +2428,7 @@ export namespace Prisma {
   export type UserCountAggregateOutputType = {
     id: number
     username: number
+    passwordHash: number
     displayName: number
     avatarUrl: number
     email: number
@@ -2224,6 +2458,7 @@ export namespace Prisma {
   export type UserMinAggregateInputType = {
     id?: true
     username?: true
+    passwordHash?: true
     displayName?: true
     avatarUrl?: true
     email?: true
@@ -2239,6 +2474,7 @@ export namespace Prisma {
   export type UserMaxAggregateInputType = {
     id?: true
     username?: true
+    passwordHash?: true
     displayName?: true
     avatarUrl?: true
     email?: true
@@ -2254,6 +2490,7 @@ export namespace Prisma {
   export type UserCountAggregateInputType = {
     id?: true
     username?: true
+    passwordHash?: true
     displayName?: true
     avatarUrl?: true
     email?: true
@@ -2356,6 +2593,7 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: string
     username: string
+    passwordHash: string | null
     displayName: string
     avatarUrl: string
     email: string | null
@@ -2390,6 +2628,7 @@ export namespace Prisma {
   export type UserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
+    passwordHash?: boolean
     displayName?: boolean
     avatarUrl?: boolean
     email?: boolean
@@ -2408,12 +2647,14 @@ export namespace Prisma {
     posts?: boolean | User$postsArgs<ExtArgs>
     postLikes?: boolean | User$postLikesArgs<ExtArgs>
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
+    predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
+    passwordHash?: boolean
     displayName?: boolean
     avatarUrl?: boolean
     email?: boolean
@@ -2429,6 +2670,7 @@ export namespace Prisma {
   export type UserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     username?: boolean
+    passwordHash?: boolean
     displayName?: boolean
     avatarUrl?: boolean
     email?: boolean
@@ -2444,6 +2686,7 @@ export namespace Prisma {
   export type UserSelectScalar = {
     id?: boolean
     username?: boolean
+    passwordHash?: boolean
     displayName?: boolean
     avatarUrl?: boolean
     email?: boolean
@@ -2456,7 +2699,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "displayName" | "avatarUrl" | "email" | "googleId" | "role" | "starBalance" | "starsGifted" | "starsEarned" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "username" | "passwordHash" | "displayName" | "avatarUrl" | "email" | "googleId" | "role" | "starBalance" | "starsGifted" | "starsEarned" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     streams?: boolean | User$streamsArgs<ExtArgs>
     sentGifts?: boolean | User$sentGiftsArgs<ExtArgs>
@@ -2466,6 +2709,7 @@ export namespace Prisma {
     posts?: boolean | User$postsArgs<ExtArgs>
     postLikes?: boolean | User$postLikesArgs<ExtArgs>
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
+    predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2482,10 +2726,12 @@ export namespace Prisma {
       posts: Prisma.$PostPayload<ExtArgs>[]
       postLikes: Prisma.$PostLikePayload<ExtArgs>[]
       postComments: Prisma.$PostCommentPayload<ExtArgs>[]
+      predictionBets: Prisma.$PredictionBetPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       username: string
+      passwordHash: string | null
       displayName: string
       avatarUrl: string
       email: string | null
@@ -2898,6 +3144,7 @@ export namespace Prisma {
     posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postLikes<T extends User$postLikesArgs<ExtArgs> = {}>(args?: Subset<T, User$postLikesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postComments<T extends User$postCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$postCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    predictionBets<T extends User$predictionBetsArgs<ExtArgs> = {}>(args?: Subset<T, User$predictionBetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2929,6 +3176,7 @@ export namespace Prisma {
   interface UserFieldRefs {
     readonly id: FieldRef<"User", 'String'>
     readonly username: FieldRef<"User", 'String'>
+    readonly passwordHash: FieldRef<"User", 'String'>
     readonly displayName: FieldRef<"User", 'String'>
     readonly avatarUrl: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
@@ -3524,6 +3772,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.predictionBets
+   */
+  export type User$predictionBetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    where?: PredictionBetWhereInput
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    cursor?: PredictionBetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3791,6 +4063,7 @@ export namespace Prisma {
     chests?: boolean | Stream$chestsArgs<ExtArgs>
     comments?: boolean | Stream$commentsArgs<ExtArgs>
     gifts?: boolean | Stream$giftsArgs<ExtArgs>
+    predictions?: boolean | Stream$predictionsArgs<ExtArgs>
     _count?: boolean | StreamCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["stream"]>
 
@@ -3844,6 +4117,7 @@ export namespace Prisma {
     chests?: boolean | Stream$chestsArgs<ExtArgs>
     comments?: boolean | Stream$commentsArgs<ExtArgs>
     gifts?: boolean | Stream$giftsArgs<ExtArgs>
+    predictions?: boolean | Stream$predictionsArgs<ExtArgs>
     _count?: boolean | StreamCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type StreamIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3863,6 +4137,7 @@ export namespace Prisma {
       chests: Prisma.$TreasureChestPayload<ExtArgs>[]
       comments: Prisma.$CommentPayload<ExtArgs>[]
       gifts: Prisma.$GiftTransactionPayload<ExtArgs>[]
+      predictions: Prisma.$PredictionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4276,6 +4551,7 @@ export namespace Prisma {
     chests<T extends Stream$chestsArgs<ExtArgs> = {}>(args?: Subset<T, Stream$chestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TreasureChestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     comments<T extends Stream$commentsArgs<ExtArgs> = {}>(args?: Subset<T, Stream$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     gifts<T extends Stream$giftsArgs<ExtArgs> = {}>(args?: Subset<T, Stream$giftsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GiftTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    predictions<T extends Stream$predictionsArgs<ExtArgs> = {}>(args?: Subset<T, Stream$predictionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4857,6 +5133,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: GiftTransactionScalarFieldEnum | GiftTransactionScalarFieldEnum[]
+  }
+
+  /**
+   * Stream.predictions
+   */
+  export type Stream$predictionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    where?: PredictionWhereInput
+    orderBy?: PredictionOrderByWithRelationInput | PredictionOrderByWithRelationInput[]
+    cursor?: PredictionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PredictionScalarFieldEnum | PredictionScalarFieldEnum[]
   }
 
   /**
@@ -16141,6 +16441,2346 @@ export namespace Prisma {
 
 
   /**
+   * Model Prediction
+   */
+
+  export type AggregatePrediction = {
+    _count: PredictionCountAggregateOutputType | null
+    _avg: PredictionAvgAggregateOutputType | null
+    _sum: PredictionSumAggregateOutputType | null
+    _min: PredictionMinAggregateOutputType | null
+    _max: PredictionMaxAggregateOutputType | null
+  }
+
+  export type PredictionAvgAggregateOutputType = {
+    totalStarsA: number | null
+    totalStarsB: number | null
+  }
+
+  export type PredictionSumAggregateOutputType = {
+    totalStarsA: number | null
+    totalStarsB: number | null
+  }
+
+  export type PredictionMinAggregateOutputType = {
+    id: string | null
+    streamId: string | null
+    title: string | null
+    optionA: string | null
+    optionB: string | null
+    status: string | null
+    winOption: string | null
+    totalStarsA: number | null
+    totalStarsB: number | null
+    createdAt: Date | null
+    lockedAt: Date | null
+    endedAt: Date | null
+  }
+
+  export type PredictionMaxAggregateOutputType = {
+    id: string | null
+    streamId: string | null
+    title: string | null
+    optionA: string | null
+    optionB: string | null
+    status: string | null
+    winOption: string | null
+    totalStarsA: number | null
+    totalStarsB: number | null
+    createdAt: Date | null
+    lockedAt: Date | null
+    endedAt: Date | null
+  }
+
+  export type PredictionCountAggregateOutputType = {
+    id: number
+    streamId: number
+    title: number
+    optionA: number
+    optionB: number
+    status: number
+    winOption: number
+    totalStarsA: number
+    totalStarsB: number
+    createdAt: number
+    lockedAt: number
+    endedAt: number
+    _all: number
+  }
+
+
+  export type PredictionAvgAggregateInputType = {
+    totalStarsA?: true
+    totalStarsB?: true
+  }
+
+  export type PredictionSumAggregateInputType = {
+    totalStarsA?: true
+    totalStarsB?: true
+  }
+
+  export type PredictionMinAggregateInputType = {
+    id?: true
+    streamId?: true
+    title?: true
+    optionA?: true
+    optionB?: true
+    status?: true
+    winOption?: true
+    totalStarsA?: true
+    totalStarsB?: true
+    createdAt?: true
+    lockedAt?: true
+    endedAt?: true
+  }
+
+  export type PredictionMaxAggregateInputType = {
+    id?: true
+    streamId?: true
+    title?: true
+    optionA?: true
+    optionB?: true
+    status?: true
+    winOption?: true
+    totalStarsA?: true
+    totalStarsB?: true
+    createdAt?: true
+    lockedAt?: true
+    endedAt?: true
+  }
+
+  export type PredictionCountAggregateInputType = {
+    id?: true
+    streamId?: true
+    title?: true
+    optionA?: true
+    optionB?: true
+    status?: true
+    winOption?: true
+    totalStarsA?: true
+    totalStarsB?: true
+    createdAt?: true
+    lockedAt?: true
+    endedAt?: true
+    _all?: true
+  }
+
+  export type PredictionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Prediction to aggregate.
+     */
+    where?: PredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Predictions to fetch.
+     */
+    orderBy?: PredictionOrderByWithRelationInput | PredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Predictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Predictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Predictions
+    **/
+    _count?: true | PredictionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PredictionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PredictionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PredictionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PredictionMaxAggregateInputType
+  }
+
+  export type GetPredictionAggregateType<T extends PredictionAggregateArgs> = {
+        [P in keyof T & keyof AggregatePrediction]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePrediction[P]>
+      : GetScalarType<T[P], AggregatePrediction[P]>
+  }
+
+
+
+
+  export type PredictionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PredictionWhereInput
+    orderBy?: PredictionOrderByWithAggregationInput | PredictionOrderByWithAggregationInput[]
+    by: PredictionScalarFieldEnum[] | PredictionScalarFieldEnum
+    having?: PredictionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PredictionCountAggregateInputType | true
+    _avg?: PredictionAvgAggregateInputType
+    _sum?: PredictionSumAggregateInputType
+    _min?: PredictionMinAggregateInputType
+    _max?: PredictionMaxAggregateInputType
+  }
+
+  export type PredictionGroupByOutputType = {
+    id: string
+    streamId: string
+    title: string
+    optionA: string
+    optionB: string
+    status: string
+    winOption: string | null
+    totalStarsA: number
+    totalStarsB: number
+    createdAt: Date
+    lockedAt: Date | null
+    endedAt: Date | null
+    _count: PredictionCountAggregateOutputType | null
+    _avg: PredictionAvgAggregateOutputType | null
+    _sum: PredictionSumAggregateOutputType | null
+    _min: PredictionMinAggregateOutputType | null
+    _max: PredictionMaxAggregateOutputType | null
+  }
+
+  type GetPredictionGroupByPayload<T extends PredictionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PredictionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PredictionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PredictionGroupByOutputType[P]>
+            : GetScalarType<T[P], PredictionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PredictionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    streamId?: boolean
+    title?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    status?: boolean
+    winOption?: boolean
+    totalStarsA?: boolean
+    totalStarsB?: boolean
+    createdAt?: boolean
+    lockedAt?: boolean
+    endedAt?: boolean
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+    bets?: boolean | Prediction$betsArgs<ExtArgs>
+    _count?: boolean | PredictionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediction"]>
+
+  export type PredictionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    streamId?: boolean
+    title?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    status?: boolean
+    winOption?: boolean
+    totalStarsA?: boolean
+    totalStarsB?: boolean
+    createdAt?: boolean
+    lockedAt?: boolean
+    endedAt?: boolean
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediction"]>
+
+  export type PredictionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    streamId?: boolean
+    title?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    status?: boolean
+    winOption?: boolean
+    totalStarsA?: boolean
+    totalStarsB?: boolean
+    createdAt?: boolean
+    lockedAt?: boolean
+    endedAt?: boolean
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["prediction"]>
+
+  export type PredictionSelectScalar = {
+    id?: boolean
+    streamId?: boolean
+    title?: boolean
+    optionA?: boolean
+    optionB?: boolean
+    status?: boolean
+    winOption?: boolean
+    totalStarsA?: boolean
+    totalStarsB?: boolean
+    createdAt?: boolean
+    lockedAt?: boolean
+    endedAt?: boolean
+  }
+
+  export type PredictionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "streamId" | "title" | "optionA" | "optionB" | "status" | "winOption" | "totalStarsA" | "totalStarsB" | "createdAt" | "lockedAt" | "endedAt", ExtArgs["result"]["prediction"]>
+  export type PredictionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+    bets?: boolean | Prediction$betsArgs<ExtArgs>
+    _count?: boolean | PredictionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PredictionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+  }
+  export type PredictionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    stream?: boolean | StreamDefaultArgs<ExtArgs>
+  }
+
+  export type $PredictionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Prediction"
+    objects: {
+      stream: Prisma.$StreamPayload<ExtArgs>
+      bets: Prisma.$PredictionBetPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      streamId: string
+      title: string
+      optionA: string
+      optionB: string
+      status: string
+      winOption: string | null
+      totalStarsA: number
+      totalStarsB: number
+      createdAt: Date
+      lockedAt: Date | null
+      endedAt: Date | null
+    }, ExtArgs["result"]["prediction"]>
+    composites: {}
+  }
+
+  type PredictionGetPayload<S extends boolean | null | undefined | PredictionDefaultArgs> = $Result.GetResult<Prisma.$PredictionPayload, S>
+
+  type PredictionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PredictionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PredictionCountAggregateInputType | true
+    }
+
+  export interface PredictionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Prediction'], meta: { name: 'Prediction' } }
+    /**
+     * Find zero or one Prediction that matches the filter.
+     * @param {PredictionFindUniqueArgs} args - Arguments to find a Prediction
+     * @example
+     * // Get one Prediction
+     * const prediction = await prisma.prediction.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PredictionFindUniqueArgs>(args: SelectSubset<T, PredictionFindUniqueArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Prediction that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PredictionFindUniqueOrThrowArgs} args - Arguments to find a Prediction
+     * @example
+     * // Get one Prediction
+     * const prediction = await prisma.prediction.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PredictionFindUniqueOrThrowArgs>(args: SelectSubset<T, PredictionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prediction that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionFindFirstArgs} args - Arguments to find a Prediction
+     * @example
+     * // Get one Prediction
+     * const prediction = await prisma.prediction.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PredictionFindFirstArgs>(args?: SelectSubset<T, PredictionFindFirstArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Prediction that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionFindFirstOrThrowArgs} args - Arguments to find a Prediction
+     * @example
+     * // Get one Prediction
+     * const prediction = await prisma.prediction.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PredictionFindFirstOrThrowArgs>(args?: SelectSubset<T, PredictionFindFirstOrThrowArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Predictions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Predictions
+     * const predictions = await prisma.prediction.findMany()
+     * 
+     * // Get first 10 Predictions
+     * const predictions = await prisma.prediction.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const predictionWithIdOnly = await prisma.prediction.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PredictionFindManyArgs>(args?: SelectSubset<T, PredictionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Prediction.
+     * @param {PredictionCreateArgs} args - Arguments to create a Prediction.
+     * @example
+     * // Create one Prediction
+     * const Prediction = await prisma.prediction.create({
+     *   data: {
+     *     // ... data to create a Prediction
+     *   }
+     * })
+     * 
+     */
+    create<T extends PredictionCreateArgs>(args: SelectSubset<T, PredictionCreateArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Predictions.
+     * @param {PredictionCreateManyArgs} args - Arguments to create many Predictions.
+     * @example
+     * // Create many Predictions
+     * const prediction = await prisma.prediction.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PredictionCreateManyArgs>(args?: SelectSubset<T, PredictionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Predictions and returns the data saved in the database.
+     * @param {PredictionCreateManyAndReturnArgs} args - Arguments to create many Predictions.
+     * @example
+     * // Create many Predictions
+     * const prediction = await prisma.prediction.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Predictions and only return the `id`
+     * const predictionWithIdOnly = await prisma.prediction.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PredictionCreateManyAndReturnArgs>(args?: SelectSubset<T, PredictionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Prediction.
+     * @param {PredictionDeleteArgs} args - Arguments to delete one Prediction.
+     * @example
+     * // Delete one Prediction
+     * const Prediction = await prisma.prediction.delete({
+     *   where: {
+     *     // ... filter to delete one Prediction
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PredictionDeleteArgs>(args: SelectSubset<T, PredictionDeleteArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Prediction.
+     * @param {PredictionUpdateArgs} args - Arguments to update one Prediction.
+     * @example
+     * // Update one Prediction
+     * const prediction = await prisma.prediction.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PredictionUpdateArgs>(args: SelectSubset<T, PredictionUpdateArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Predictions.
+     * @param {PredictionDeleteManyArgs} args - Arguments to filter Predictions to delete.
+     * @example
+     * // Delete a few Predictions
+     * const { count } = await prisma.prediction.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PredictionDeleteManyArgs>(args?: SelectSubset<T, PredictionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Predictions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Predictions
+     * const prediction = await prisma.prediction.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PredictionUpdateManyArgs>(args: SelectSubset<T, PredictionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Predictions and returns the data updated in the database.
+     * @param {PredictionUpdateManyAndReturnArgs} args - Arguments to update many Predictions.
+     * @example
+     * // Update many Predictions
+     * const prediction = await prisma.prediction.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Predictions and only return the `id`
+     * const predictionWithIdOnly = await prisma.prediction.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PredictionUpdateManyAndReturnArgs>(args: SelectSubset<T, PredictionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Prediction.
+     * @param {PredictionUpsertArgs} args - Arguments to update or create a Prediction.
+     * @example
+     * // Update or create a Prediction
+     * const prediction = await prisma.prediction.upsert({
+     *   create: {
+     *     // ... data to create a Prediction
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Prediction we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PredictionUpsertArgs>(args: SelectSubset<T, PredictionUpsertArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Predictions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionCountArgs} args - Arguments to filter Predictions to count.
+     * @example
+     * // Count the number of Predictions
+     * const count = await prisma.prediction.count({
+     *   where: {
+     *     // ... the filter for the Predictions we want to count
+     *   }
+     * })
+    **/
+    count<T extends PredictionCountArgs>(
+      args?: Subset<T, PredictionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PredictionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Prediction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PredictionAggregateArgs>(args: Subset<T, PredictionAggregateArgs>): Prisma.PrismaPromise<GetPredictionAggregateType<T>>
+
+    /**
+     * Group by Prediction.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PredictionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PredictionGroupByArgs['orderBy'] }
+        : { orderBy?: PredictionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PredictionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPredictionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Prediction model
+   */
+  readonly fields: PredictionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Prediction.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PredictionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    stream<T extends StreamDefaultArgs<ExtArgs> = {}>(args?: Subset<T, StreamDefaultArgs<ExtArgs>>): Prisma__StreamClient<$Result.GetResult<Prisma.$StreamPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    bets<T extends Prediction$betsArgs<ExtArgs> = {}>(args?: Subset<T, Prediction$betsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Prediction model
+   */
+  interface PredictionFieldRefs {
+    readonly id: FieldRef<"Prediction", 'String'>
+    readonly streamId: FieldRef<"Prediction", 'String'>
+    readonly title: FieldRef<"Prediction", 'String'>
+    readonly optionA: FieldRef<"Prediction", 'String'>
+    readonly optionB: FieldRef<"Prediction", 'String'>
+    readonly status: FieldRef<"Prediction", 'String'>
+    readonly winOption: FieldRef<"Prediction", 'String'>
+    readonly totalStarsA: FieldRef<"Prediction", 'Int'>
+    readonly totalStarsB: FieldRef<"Prediction", 'Int'>
+    readonly createdAt: FieldRef<"Prediction", 'DateTime'>
+    readonly lockedAt: FieldRef<"Prediction", 'DateTime'>
+    readonly endedAt: FieldRef<"Prediction", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Prediction findUnique
+   */
+  export type PredictionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediction to fetch.
+     */
+    where: PredictionWhereUniqueInput
+  }
+
+  /**
+   * Prediction findUniqueOrThrow
+   */
+  export type PredictionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediction to fetch.
+     */
+    where: PredictionWhereUniqueInput
+  }
+
+  /**
+   * Prediction findFirst
+   */
+  export type PredictionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediction to fetch.
+     */
+    where?: PredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Predictions to fetch.
+     */
+    orderBy?: PredictionOrderByWithRelationInput | PredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Predictions.
+     */
+    cursor?: PredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Predictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Predictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Predictions.
+     */
+    distinct?: PredictionScalarFieldEnum | PredictionScalarFieldEnum[]
+  }
+
+  /**
+   * Prediction findFirstOrThrow
+   */
+  export type PredictionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter, which Prediction to fetch.
+     */
+    where?: PredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Predictions to fetch.
+     */
+    orderBy?: PredictionOrderByWithRelationInput | PredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Predictions.
+     */
+    cursor?: PredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Predictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Predictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Predictions.
+     */
+    distinct?: PredictionScalarFieldEnum | PredictionScalarFieldEnum[]
+  }
+
+  /**
+   * Prediction findMany
+   */
+  export type PredictionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter, which Predictions to fetch.
+     */
+    where?: PredictionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Predictions to fetch.
+     */
+    orderBy?: PredictionOrderByWithRelationInput | PredictionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Predictions.
+     */
+    cursor?: PredictionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Predictions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Predictions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Predictions.
+     */
+    distinct?: PredictionScalarFieldEnum | PredictionScalarFieldEnum[]
+  }
+
+  /**
+   * Prediction create
+   */
+  export type PredictionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Prediction.
+     */
+    data: XOR<PredictionCreateInput, PredictionUncheckedCreateInput>
+  }
+
+  /**
+   * Prediction createMany
+   */
+  export type PredictionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Predictions.
+     */
+    data: PredictionCreateManyInput | PredictionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Prediction createManyAndReturn
+   */
+  export type PredictionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Predictions.
+     */
+    data: PredictionCreateManyInput | PredictionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Prediction update
+   */
+  export type PredictionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Prediction.
+     */
+    data: XOR<PredictionUpdateInput, PredictionUncheckedUpdateInput>
+    /**
+     * Choose, which Prediction to update.
+     */
+    where: PredictionWhereUniqueInput
+  }
+
+  /**
+   * Prediction updateMany
+   */
+  export type PredictionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Predictions.
+     */
+    data: XOR<PredictionUpdateManyMutationInput, PredictionUncheckedUpdateManyInput>
+    /**
+     * Filter which Predictions to update
+     */
+    where?: PredictionWhereInput
+    /**
+     * Limit how many Predictions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prediction updateManyAndReturn
+   */
+  export type PredictionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * The data used to update Predictions.
+     */
+    data: XOR<PredictionUpdateManyMutationInput, PredictionUncheckedUpdateManyInput>
+    /**
+     * Filter which Predictions to update
+     */
+    where?: PredictionWhereInput
+    /**
+     * Limit how many Predictions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Prediction upsert
+   */
+  export type PredictionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Prediction to update in case it exists.
+     */
+    where: PredictionWhereUniqueInput
+    /**
+     * In case the Prediction found by the `where` argument doesn't exist, create a new Prediction with this data.
+     */
+    create: XOR<PredictionCreateInput, PredictionUncheckedCreateInput>
+    /**
+     * In case the Prediction was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PredictionUpdateInput, PredictionUncheckedUpdateInput>
+  }
+
+  /**
+   * Prediction delete
+   */
+  export type PredictionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+    /**
+     * Filter which Prediction to delete.
+     */
+    where: PredictionWhereUniqueInput
+  }
+
+  /**
+   * Prediction deleteMany
+   */
+  export type PredictionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Predictions to delete
+     */
+    where?: PredictionWhereInput
+    /**
+     * Limit how many Predictions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Prediction.bets
+   */
+  export type Prediction$betsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    where?: PredictionBetWhereInput
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    cursor?: PredictionBetWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
+   * Prediction without action
+   */
+  export type PredictionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Prediction
+     */
+    select?: PredictionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Prediction
+     */
+    omit?: PredictionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PredictionBet
+   */
+
+  export type AggregatePredictionBet = {
+    _count: PredictionBetCountAggregateOutputType | null
+    _avg: PredictionBetAvgAggregateOutputType | null
+    _sum: PredictionBetSumAggregateOutputType | null
+    _min: PredictionBetMinAggregateOutputType | null
+    _max: PredictionBetMaxAggregateOutputType | null
+  }
+
+  export type PredictionBetAvgAggregateOutputType = {
+    starAmount: number | null
+  }
+
+  export type PredictionBetSumAggregateOutputType = {
+    starAmount: number | null
+  }
+
+  export type PredictionBetMinAggregateOutputType = {
+    id: string | null
+    predictionId: string | null
+    userId: string | null
+    option: string | null
+    starAmount: number | null
+    createdAt: Date | null
+  }
+
+  export type PredictionBetMaxAggregateOutputType = {
+    id: string | null
+    predictionId: string | null
+    userId: string | null
+    option: string | null
+    starAmount: number | null
+    createdAt: Date | null
+  }
+
+  export type PredictionBetCountAggregateOutputType = {
+    id: number
+    predictionId: number
+    userId: number
+    option: number
+    starAmount: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PredictionBetAvgAggregateInputType = {
+    starAmount?: true
+  }
+
+  export type PredictionBetSumAggregateInputType = {
+    starAmount?: true
+  }
+
+  export type PredictionBetMinAggregateInputType = {
+    id?: true
+    predictionId?: true
+    userId?: true
+    option?: true
+    starAmount?: true
+    createdAt?: true
+  }
+
+  export type PredictionBetMaxAggregateInputType = {
+    id?: true
+    predictionId?: true
+    userId?: true
+    option?: true
+    starAmount?: true
+    createdAt?: true
+  }
+
+  export type PredictionBetCountAggregateInputType = {
+    id?: true
+    predictionId?: true
+    userId?: true
+    option?: true
+    starAmount?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PredictionBetAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PredictionBet to aggregate.
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PredictionBets to fetch.
+     */
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PredictionBetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PredictionBets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PredictionBets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PredictionBets
+    **/
+    _count?: true | PredictionBetCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PredictionBetAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PredictionBetSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PredictionBetMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PredictionBetMaxAggregateInputType
+  }
+
+  export type GetPredictionBetAggregateType<T extends PredictionBetAggregateArgs> = {
+        [P in keyof T & keyof AggregatePredictionBet]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePredictionBet[P]>
+      : GetScalarType<T[P], AggregatePredictionBet[P]>
+  }
+
+
+
+
+  export type PredictionBetGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PredictionBetWhereInput
+    orderBy?: PredictionBetOrderByWithAggregationInput | PredictionBetOrderByWithAggregationInput[]
+    by: PredictionBetScalarFieldEnum[] | PredictionBetScalarFieldEnum
+    having?: PredictionBetScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PredictionBetCountAggregateInputType | true
+    _avg?: PredictionBetAvgAggregateInputType
+    _sum?: PredictionBetSumAggregateInputType
+    _min?: PredictionBetMinAggregateInputType
+    _max?: PredictionBetMaxAggregateInputType
+  }
+
+  export type PredictionBetGroupByOutputType = {
+    id: string
+    predictionId: string
+    userId: string
+    option: string
+    starAmount: number
+    createdAt: Date
+    _count: PredictionBetCountAggregateOutputType | null
+    _avg: PredictionBetAvgAggregateOutputType | null
+    _sum: PredictionBetSumAggregateOutputType | null
+    _min: PredictionBetMinAggregateOutputType | null
+    _max: PredictionBetMaxAggregateOutputType | null
+  }
+
+  type GetPredictionBetGroupByPayload<T extends PredictionBetGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PredictionBetGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PredictionBetGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PredictionBetGroupByOutputType[P]>
+            : GetScalarType<T[P], PredictionBetGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PredictionBetSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    predictionId?: boolean
+    userId?: boolean
+    option?: boolean
+    starAmount?: boolean
+    createdAt?: boolean
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["predictionBet"]>
+
+  export type PredictionBetSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    predictionId?: boolean
+    userId?: boolean
+    option?: boolean
+    starAmount?: boolean
+    createdAt?: boolean
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["predictionBet"]>
+
+  export type PredictionBetSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    predictionId?: boolean
+    userId?: boolean
+    option?: boolean
+    starAmount?: boolean
+    createdAt?: boolean
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["predictionBet"]>
+
+  export type PredictionBetSelectScalar = {
+    id?: boolean
+    predictionId?: boolean
+    userId?: boolean
+    option?: boolean
+    starAmount?: boolean
+    createdAt?: boolean
+  }
+
+  export type PredictionBetOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "predictionId" | "userId" | "option" | "starAmount" | "createdAt", ExtArgs["result"]["predictionBet"]>
+  export type PredictionBetInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PredictionBetIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type PredictionBetIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prediction?: boolean | PredictionDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $PredictionBetPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PredictionBet"
+    objects: {
+      prediction: Prisma.$PredictionPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      predictionId: string
+      userId: string
+      option: string
+      starAmount: number
+      createdAt: Date
+    }, ExtArgs["result"]["predictionBet"]>
+    composites: {}
+  }
+
+  type PredictionBetGetPayload<S extends boolean | null | undefined | PredictionBetDefaultArgs> = $Result.GetResult<Prisma.$PredictionBetPayload, S>
+
+  type PredictionBetCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PredictionBetFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PredictionBetCountAggregateInputType | true
+    }
+
+  export interface PredictionBetDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PredictionBet'], meta: { name: 'PredictionBet' } }
+    /**
+     * Find zero or one PredictionBet that matches the filter.
+     * @param {PredictionBetFindUniqueArgs} args - Arguments to find a PredictionBet
+     * @example
+     * // Get one PredictionBet
+     * const predictionBet = await prisma.predictionBet.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PredictionBetFindUniqueArgs>(args: SelectSubset<T, PredictionBetFindUniqueArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PredictionBet that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PredictionBetFindUniqueOrThrowArgs} args - Arguments to find a PredictionBet
+     * @example
+     * // Get one PredictionBet
+     * const predictionBet = await prisma.predictionBet.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PredictionBetFindUniqueOrThrowArgs>(args: SelectSubset<T, PredictionBetFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PredictionBet that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetFindFirstArgs} args - Arguments to find a PredictionBet
+     * @example
+     * // Get one PredictionBet
+     * const predictionBet = await prisma.predictionBet.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PredictionBetFindFirstArgs>(args?: SelectSubset<T, PredictionBetFindFirstArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PredictionBet that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetFindFirstOrThrowArgs} args - Arguments to find a PredictionBet
+     * @example
+     * // Get one PredictionBet
+     * const predictionBet = await prisma.predictionBet.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PredictionBetFindFirstOrThrowArgs>(args?: SelectSubset<T, PredictionBetFindFirstOrThrowArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PredictionBets that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PredictionBets
+     * const predictionBets = await prisma.predictionBet.findMany()
+     * 
+     * // Get first 10 PredictionBets
+     * const predictionBets = await prisma.predictionBet.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const predictionBetWithIdOnly = await prisma.predictionBet.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PredictionBetFindManyArgs>(args?: SelectSubset<T, PredictionBetFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PredictionBet.
+     * @param {PredictionBetCreateArgs} args - Arguments to create a PredictionBet.
+     * @example
+     * // Create one PredictionBet
+     * const PredictionBet = await prisma.predictionBet.create({
+     *   data: {
+     *     // ... data to create a PredictionBet
+     *   }
+     * })
+     * 
+     */
+    create<T extends PredictionBetCreateArgs>(args: SelectSubset<T, PredictionBetCreateArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PredictionBets.
+     * @param {PredictionBetCreateManyArgs} args - Arguments to create many PredictionBets.
+     * @example
+     * // Create many PredictionBets
+     * const predictionBet = await prisma.predictionBet.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PredictionBetCreateManyArgs>(args?: SelectSubset<T, PredictionBetCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PredictionBets and returns the data saved in the database.
+     * @param {PredictionBetCreateManyAndReturnArgs} args - Arguments to create many PredictionBets.
+     * @example
+     * // Create many PredictionBets
+     * const predictionBet = await prisma.predictionBet.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PredictionBets and only return the `id`
+     * const predictionBetWithIdOnly = await prisma.predictionBet.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PredictionBetCreateManyAndReturnArgs>(args?: SelectSubset<T, PredictionBetCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PredictionBet.
+     * @param {PredictionBetDeleteArgs} args - Arguments to delete one PredictionBet.
+     * @example
+     * // Delete one PredictionBet
+     * const PredictionBet = await prisma.predictionBet.delete({
+     *   where: {
+     *     // ... filter to delete one PredictionBet
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PredictionBetDeleteArgs>(args: SelectSubset<T, PredictionBetDeleteArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PredictionBet.
+     * @param {PredictionBetUpdateArgs} args - Arguments to update one PredictionBet.
+     * @example
+     * // Update one PredictionBet
+     * const predictionBet = await prisma.predictionBet.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PredictionBetUpdateArgs>(args: SelectSubset<T, PredictionBetUpdateArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PredictionBets.
+     * @param {PredictionBetDeleteManyArgs} args - Arguments to filter PredictionBets to delete.
+     * @example
+     * // Delete a few PredictionBets
+     * const { count } = await prisma.predictionBet.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PredictionBetDeleteManyArgs>(args?: SelectSubset<T, PredictionBetDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PredictionBets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PredictionBets
+     * const predictionBet = await prisma.predictionBet.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PredictionBetUpdateManyArgs>(args: SelectSubset<T, PredictionBetUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PredictionBets and returns the data updated in the database.
+     * @param {PredictionBetUpdateManyAndReturnArgs} args - Arguments to update many PredictionBets.
+     * @example
+     * // Update many PredictionBets
+     * const predictionBet = await prisma.predictionBet.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PredictionBets and only return the `id`
+     * const predictionBetWithIdOnly = await prisma.predictionBet.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PredictionBetUpdateManyAndReturnArgs>(args: SelectSubset<T, PredictionBetUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PredictionBet.
+     * @param {PredictionBetUpsertArgs} args - Arguments to update or create a PredictionBet.
+     * @example
+     * // Update or create a PredictionBet
+     * const predictionBet = await prisma.predictionBet.upsert({
+     *   create: {
+     *     // ... data to create a PredictionBet
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PredictionBet we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PredictionBetUpsertArgs>(args: SelectSubset<T, PredictionBetUpsertArgs<ExtArgs>>): Prisma__PredictionBetClient<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PredictionBets.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetCountArgs} args - Arguments to filter PredictionBets to count.
+     * @example
+     * // Count the number of PredictionBets
+     * const count = await prisma.predictionBet.count({
+     *   where: {
+     *     // ... the filter for the PredictionBets we want to count
+     *   }
+     * })
+    **/
+    count<T extends PredictionBetCountArgs>(
+      args?: Subset<T, PredictionBetCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PredictionBetCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PredictionBet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PredictionBetAggregateArgs>(args: Subset<T, PredictionBetAggregateArgs>): Prisma.PrismaPromise<GetPredictionBetAggregateType<T>>
+
+    /**
+     * Group by PredictionBet.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PredictionBetGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PredictionBetGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PredictionBetGroupByArgs['orderBy'] }
+        : { orderBy?: PredictionBetGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PredictionBetGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPredictionBetGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PredictionBet model
+   */
+  readonly fields: PredictionBetFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PredictionBet.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PredictionBetClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    prediction<T extends PredictionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PredictionDefaultArgs<ExtArgs>>): Prisma__PredictionClient<$Result.GetResult<Prisma.$PredictionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PredictionBet model
+   */
+  interface PredictionBetFieldRefs {
+    readonly id: FieldRef<"PredictionBet", 'String'>
+    readonly predictionId: FieldRef<"PredictionBet", 'String'>
+    readonly userId: FieldRef<"PredictionBet", 'String'>
+    readonly option: FieldRef<"PredictionBet", 'String'>
+    readonly starAmount: FieldRef<"PredictionBet", 'Int'>
+    readonly createdAt: FieldRef<"PredictionBet", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PredictionBet findUnique
+   */
+  export type PredictionBetFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter, which PredictionBet to fetch.
+     */
+    where: PredictionBetWhereUniqueInput
+  }
+
+  /**
+   * PredictionBet findUniqueOrThrow
+   */
+  export type PredictionBetFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter, which PredictionBet to fetch.
+     */
+    where: PredictionBetWhereUniqueInput
+  }
+
+  /**
+   * PredictionBet findFirst
+   */
+  export type PredictionBetFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter, which PredictionBet to fetch.
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PredictionBets to fetch.
+     */
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PredictionBets.
+     */
+    cursor?: PredictionBetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PredictionBets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PredictionBets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PredictionBets.
+     */
+    distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
+   * PredictionBet findFirstOrThrow
+   */
+  export type PredictionBetFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter, which PredictionBet to fetch.
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PredictionBets to fetch.
+     */
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PredictionBets.
+     */
+    cursor?: PredictionBetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PredictionBets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PredictionBets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PredictionBets.
+     */
+    distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
+   * PredictionBet findMany
+   */
+  export type PredictionBetFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter, which PredictionBets to fetch.
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PredictionBets to fetch.
+     */
+    orderBy?: PredictionBetOrderByWithRelationInput | PredictionBetOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PredictionBets.
+     */
+    cursor?: PredictionBetWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PredictionBets from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PredictionBets.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PredictionBets.
+     */
+    distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
+   * PredictionBet create
+   */
+  export type PredictionBetCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PredictionBet.
+     */
+    data: XOR<PredictionBetCreateInput, PredictionBetUncheckedCreateInput>
+  }
+
+  /**
+   * PredictionBet createMany
+   */
+  export type PredictionBetCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PredictionBets.
+     */
+    data: PredictionBetCreateManyInput | PredictionBetCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PredictionBet createManyAndReturn
+   */
+  export type PredictionBetCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * The data used to create many PredictionBets.
+     */
+    data: PredictionBetCreateManyInput | PredictionBetCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PredictionBet update
+   */
+  export type PredictionBetUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PredictionBet.
+     */
+    data: XOR<PredictionBetUpdateInput, PredictionBetUncheckedUpdateInput>
+    /**
+     * Choose, which PredictionBet to update.
+     */
+    where: PredictionBetWhereUniqueInput
+  }
+
+  /**
+   * PredictionBet updateMany
+   */
+  export type PredictionBetUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PredictionBets.
+     */
+    data: XOR<PredictionBetUpdateManyMutationInput, PredictionBetUncheckedUpdateManyInput>
+    /**
+     * Filter which PredictionBets to update
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * Limit how many PredictionBets to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PredictionBet updateManyAndReturn
+   */
+  export type PredictionBetUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * The data used to update PredictionBets.
+     */
+    data: XOR<PredictionBetUpdateManyMutationInput, PredictionBetUncheckedUpdateManyInput>
+    /**
+     * Filter which PredictionBets to update
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * Limit how many PredictionBets to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PredictionBet upsert
+   */
+  export type PredictionBetUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PredictionBet to update in case it exists.
+     */
+    where: PredictionBetWhereUniqueInput
+    /**
+     * In case the PredictionBet found by the `where` argument doesn't exist, create a new PredictionBet with this data.
+     */
+    create: XOR<PredictionBetCreateInput, PredictionBetUncheckedCreateInput>
+    /**
+     * In case the PredictionBet was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PredictionBetUpdateInput, PredictionBetUncheckedUpdateInput>
+  }
+
+  /**
+   * PredictionBet delete
+   */
+  export type PredictionBetDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+    /**
+     * Filter which PredictionBet to delete.
+     */
+    where: PredictionBetWhereUniqueInput
+  }
+
+  /**
+   * PredictionBet deleteMany
+   */
+  export type PredictionBetDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PredictionBets to delete
+     */
+    where?: PredictionBetWhereInput
+    /**
+     * Limit how many PredictionBets to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PredictionBet without action
+   */
+  export type PredictionBetDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PredictionBet
+     */
+    select?: PredictionBetSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PredictionBet
+     */
+    omit?: PredictionBetOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PredictionBetInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16157,6 +18797,7 @@ export namespace Prisma {
   export const UserScalarFieldEnum: {
     id: 'id',
     username: 'username',
+    passwordHash: 'passwordHash',
     displayName: 'displayName',
     avatarUrl: 'avatarUrl',
     email: 'email',
@@ -16316,6 +18957,36 @@ export namespace Prisma {
   export type PostCommentScalarFieldEnum = (typeof PostCommentScalarFieldEnum)[keyof typeof PostCommentScalarFieldEnum]
 
 
+  export const PredictionScalarFieldEnum: {
+    id: 'id',
+    streamId: 'streamId',
+    title: 'title',
+    optionA: 'optionA',
+    optionB: 'optionB',
+    status: 'status',
+    winOption: 'winOption',
+    totalStarsA: 'totalStarsA',
+    totalStarsB: 'totalStarsB',
+    createdAt: 'createdAt',
+    lockedAt: 'lockedAt',
+    endedAt: 'endedAt'
+  };
+
+  export type PredictionScalarFieldEnum = (typeof PredictionScalarFieldEnum)[keyof typeof PredictionScalarFieldEnum]
+
+
+  export const PredictionBetScalarFieldEnum: {
+    id: 'id',
+    predictionId: 'predictionId',
+    userId: 'userId',
+    option: 'option',
+    starAmount: 'starAmount',
+    createdAt: 'createdAt'
+  };
+
+  export type PredictionBetScalarFieldEnum = (typeof PredictionBetScalarFieldEnum)[keyof typeof PredictionBetScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -16445,6 +19116,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: StringFilter<"User"> | string
     username?: StringFilter<"User"> | string
+    passwordHash?: StringNullableFilter<"User"> | string | null
     displayName?: StringFilter<"User"> | string
     avatarUrl?: StringFilter<"User"> | string
     email?: StringNullableFilter<"User"> | string | null
@@ -16463,11 +19135,13 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     postLikes?: PostLikeListRelationFilter
     postComments?: PostCommentListRelationFilter
+    predictionBets?: PredictionBetListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     username?: SortOrder
+    passwordHash?: SortOrderInput | SortOrder
     displayName?: SortOrder
     avatarUrl?: SortOrder
     email?: SortOrderInput | SortOrder
@@ -16486,6 +19160,7 @@ export namespace Prisma {
     posts?: PostOrderByRelationAggregateInput
     postLikes?: PostLikeOrderByRelationAggregateInput
     postComments?: PostCommentOrderByRelationAggregateInput
+    predictionBets?: PredictionBetOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -16496,6 +19171,7 @@ export namespace Prisma {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
+    passwordHash?: StringNullableFilter<"User"> | string | null
     displayName?: StringFilter<"User"> | string
     avatarUrl?: StringFilter<"User"> | string
     role?: EnumUserRoleFilter<"User"> | $Enums.UserRole
@@ -16512,11 +19188,13 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     postLikes?: PostLikeListRelationFilter
     postComments?: PostCommentListRelationFilter
+    predictionBets?: PredictionBetListRelationFilter
   }, "id" | "username" | "email" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     username?: SortOrder
+    passwordHash?: SortOrderInput | SortOrder
     displayName?: SortOrder
     avatarUrl?: SortOrder
     email?: SortOrderInput | SortOrder
@@ -16540,6 +19218,7 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"User"> | string
     username?: StringWithAggregatesFilter<"User"> | string
+    passwordHash?: StringNullableWithAggregatesFilter<"User"> | string | null
     displayName?: StringWithAggregatesFilter<"User"> | string
     avatarUrl?: StringWithAggregatesFilter<"User"> | string
     email?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -16573,6 +19252,7 @@ export namespace Prisma {
     chests?: TreasureChestListRelationFilter
     comments?: CommentListRelationFilter
     gifts?: GiftTransactionListRelationFilter
+    predictions?: PredictionListRelationFilter
   }
 
   export type StreamOrderByWithRelationInput = {
@@ -16593,6 +19273,7 @@ export namespace Prisma {
     chests?: TreasureChestOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
     gifts?: GiftTransactionOrderByRelationAggregateInput
+    predictions?: PredictionOrderByRelationAggregateInput
   }
 
   export type StreamWhereUniqueInput = Prisma.AtLeast<{
@@ -16616,6 +19297,7 @@ export namespace Prisma {
     chests?: TreasureChestListRelationFilter
     comments?: CommentListRelationFilter
     gifts?: GiftTransactionListRelationFilter
+    predictions?: PredictionListRelationFilter
   }, "id">
 
   export type StreamOrderByWithAggregationInput = {
@@ -17334,9 +20016,170 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"PostComment"> | Date | string
   }
 
+  export type PredictionWhereInput = {
+    AND?: PredictionWhereInput | PredictionWhereInput[]
+    OR?: PredictionWhereInput[]
+    NOT?: PredictionWhereInput | PredictionWhereInput[]
+    id?: StringFilter<"Prediction"> | string
+    streamId?: StringFilter<"Prediction"> | string
+    title?: StringFilter<"Prediction"> | string
+    optionA?: StringFilter<"Prediction"> | string
+    optionB?: StringFilter<"Prediction"> | string
+    status?: StringFilter<"Prediction"> | string
+    winOption?: StringNullableFilter<"Prediction"> | string | null
+    totalStarsA?: IntFilter<"Prediction"> | number
+    totalStarsB?: IntFilter<"Prediction"> | number
+    createdAt?: DateTimeFilter<"Prediction"> | Date | string
+    lockedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+    endedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+    stream?: XOR<StreamScalarRelationFilter, StreamWhereInput>
+    bets?: PredictionBetListRelationFilter
+  }
+
+  export type PredictionOrderByWithRelationInput = {
+    id?: SortOrder
+    streamId?: SortOrder
+    title?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    status?: SortOrder
+    winOption?: SortOrderInput | SortOrder
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+    createdAt?: SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    stream?: StreamOrderByWithRelationInput
+    bets?: PredictionBetOrderByRelationAggregateInput
+  }
+
+  export type PredictionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PredictionWhereInput | PredictionWhereInput[]
+    OR?: PredictionWhereInput[]
+    NOT?: PredictionWhereInput | PredictionWhereInput[]
+    streamId?: StringFilter<"Prediction"> | string
+    title?: StringFilter<"Prediction"> | string
+    optionA?: StringFilter<"Prediction"> | string
+    optionB?: StringFilter<"Prediction"> | string
+    status?: StringFilter<"Prediction"> | string
+    winOption?: StringNullableFilter<"Prediction"> | string | null
+    totalStarsA?: IntFilter<"Prediction"> | number
+    totalStarsB?: IntFilter<"Prediction"> | number
+    createdAt?: DateTimeFilter<"Prediction"> | Date | string
+    lockedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+    endedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+    stream?: XOR<StreamScalarRelationFilter, StreamWhereInput>
+    bets?: PredictionBetListRelationFilter
+  }, "id">
+
+  export type PredictionOrderByWithAggregationInput = {
+    id?: SortOrder
+    streamId?: SortOrder
+    title?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    status?: SortOrder
+    winOption?: SortOrderInput | SortOrder
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+    createdAt?: SortOrder
+    lockedAt?: SortOrderInput | SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    _count?: PredictionCountOrderByAggregateInput
+    _avg?: PredictionAvgOrderByAggregateInput
+    _max?: PredictionMaxOrderByAggregateInput
+    _min?: PredictionMinOrderByAggregateInput
+    _sum?: PredictionSumOrderByAggregateInput
+  }
+
+  export type PredictionScalarWhereWithAggregatesInput = {
+    AND?: PredictionScalarWhereWithAggregatesInput | PredictionScalarWhereWithAggregatesInput[]
+    OR?: PredictionScalarWhereWithAggregatesInput[]
+    NOT?: PredictionScalarWhereWithAggregatesInput | PredictionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Prediction"> | string
+    streamId?: StringWithAggregatesFilter<"Prediction"> | string
+    title?: StringWithAggregatesFilter<"Prediction"> | string
+    optionA?: StringWithAggregatesFilter<"Prediction"> | string
+    optionB?: StringWithAggregatesFilter<"Prediction"> | string
+    status?: StringWithAggregatesFilter<"Prediction"> | string
+    winOption?: StringNullableWithAggregatesFilter<"Prediction"> | string | null
+    totalStarsA?: IntWithAggregatesFilter<"Prediction"> | number
+    totalStarsB?: IntWithAggregatesFilter<"Prediction"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Prediction"> | Date | string
+    lockedAt?: DateTimeNullableWithAggregatesFilter<"Prediction"> | Date | string | null
+    endedAt?: DateTimeNullableWithAggregatesFilter<"Prediction"> | Date | string | null
+  }
+
+  export type PredictionBetWhereInput = {
+    AND?: PredictionBetWhereInput | PredictionBetWhereInput[]
+    OR?: PredictionBetWhereInput[]
+    NOT?: PredictionBetWhereInput | PredictionBetWhereInput[]
+    id?: StringFilter<"PredictionBet"> | string
+    predictionId?: StringFilter<"PredictionBet"> | string
+    userId?: StringFilter<"PredictionBet"> | string
+    option?: StringFilter<"PredictionBet"> | string
+    starAmount?: IntFilter<"PredictionBet"> | number
+    createdAt?: DateTimeFilter<"PredictionBet"> | Date | string
+    prediction?: XOR<PredictionScalarRelationFilter, PredictionWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type PredictionBetOrderByWithRelationInput = {
+    id?: SortOrder
+    predictionId?: SortOrder
+    userId?: SortOrder
+    option?: SortOrder
+    starAmount?: SortOrder
+    createdAt?: SortOrder
+    prediction?: PredictionOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type PredictionBetWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PredictionBetWhereInput | PredictionBetWhereInput[]
+    OR?: PredictionBetWhereInput[]
+    NOT?: PredictionBetWhereInput | PredictionBetWhereInput[]
+    predictionId?: StringFilter<"PredictionBet"> | string
+    userId?: StringFilter<"PredictionBet"> | string
+    option?: StringFilter<"PredictionBet"> | string
+    starAmount?: IntFilter<"PredictionBet"> | number
+    createdAt?: DateTimeFilter<"PredictionBet"> | Date | string
+    prediction?: XOR<PredictionScalarRelationFilter, PredictionWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type PredictionBetOrderByWithAggregationInput = {
+    id?: SortOrder
+    predictionId?: SortOrder
+    userId?: SortOrder
+    option?: SortOrder
+    starAmount?: SortOrder
+    createdAt?: SortOrder
+    _count?: PredictionBetCountOrderByAggregateInput
+    _avg?: PredictionBetAvgOrderByAggregateInput
+    _max?: PredictionBetMaxOrderByAggregateInput
+    _min?: PredictionBetMinOrderByAggregateInput
+    _sum?: PredictionBetSumOrderByAggregateInput
+  }
+
+  export type PredictionBetScalarWhereWithAggregatesInput = {
+    AND?: PredictionBetScalarWhereWithAggregatesInput | PredictionBetScalarWhereWithAggregatesInput[]
+    OR?: PredictionBetScalarWhereWithAggregatesInput[]
+    NOT?: PredictionBetScalarWhereWithAggregatesInput | PredictionBetScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PredictionBet"> | string
+    predictionId?: StringWithAggregatesFilter<"PredictionBet"> | string
+    userId?: StringWithAggregatesFilter<"PredictionBet"> | string
+    option?: StringWithAggregatesFilter<"PredictionBet"> | string
+    starAmount?: IntWithAggregatesFilter<"PredictionBet"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"PredictionBet"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -17355,11 +20198,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -17378,11 +20223,13 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17401,11 +20248,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17424,11 +20273,13 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -17444,6 +20295,7 @@ export namespace Prisma {
   export type UserUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17459,6 +20311,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -17488,6 +20341,7 @@ export namespace Prisma {
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateInput = {
@@ -17507,6 +20361,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUpdateInput = {
@@ -17526,6 +20381,7 @@ export namespace Prisma {
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateInput = {
@@ -17545,6 +20401,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamCreateManyInput = {
@@ -18267,6 +21124,175 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PredictionCreateInput = {
+    id?: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+    stream: StreamCreateNestedOneWithoutPredictionsInput
+    bets?: PredictionBetCreateNestedManyWithoutPredictionInput
+  }
+
+  export type PredictionUncheckedCreateInput = {
+    id?: string
+    streamId: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+    bets?: PredictionBetUncheckedCreateNestedManyWithoutPredictionInput
+  }
+
+  export type PredictionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stream?: StreamUpdateOneRequiredWithoutPredictionsNestedInput
+    bets?: PredictionBetUpdateManyWithoutPredictionNestedInput
+  }
+
+  export type PredictionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    streamId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bets?: PredictionBetUncheckedUpdateManyWithoutPredictionNestedInput
+  }
+
+  export type PredictionCreateManyInput = {
+    id?: string
+    streamId: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+  }
+
+  export type PredictionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PredictionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    streamId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type PredictionBetCreateInput = {
+    id?: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+    prediction: PredictionCreateNestedOneWithoutBetsInput
+    user: UserCreateNestedOneWithoutPredictionBetsInput
+  }
+
+  export type PredictionBetUncheckedCreateInput = {
+    id?: string
+    predictionId: string
+    userId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
+  export type PredictionBetUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prediction?: PredictionUpdateOneRequiredWithoutBetsNestedInput
+    user?: UserUpdateOneRequiredWithoutPredictionBetsNestedInput
+  }
+
+  export type PredictionBetUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    predictionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PredictionBetCreateManyInput = {
+    id?: string
+    predictionId: string
+    userId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
+  export type PredictionBetUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PredictionBetUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    predictionId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -18368,6 +21394,12 @@ export namespace Prisma {
     none?: PostCommentWhereInput
   }
 
+  export type PredictionBetListRelationFilter = {
+    every?: PredictionBetWhereInput
+    some?: PredictionBetWhereInput
+    none?: PredictionBetWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -18401,9 +21433,14 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type PredictionBetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
+    passwordHash?: SortOrder
     displayName?: SortOrder
     avatarUrl?: SortOrder
     email?: SortOrder
@@ -18425,6 +21462,7 @@ export namespace Prisma {
   export type UserMaxOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
+    passwordHash?: SortOrder
     displayName?: SortOrder
     avatarUrl?: SortOrder
     email?: SortOrder
@@ -18440,6 +21478,7 @@ export namespace Prisma {
   export type UserMinOrderByAggregateInput = {
     id?: SortOrder
     username?: SortOrder
+    passwordHash?: SortOrder
     displayName?: SortOrder
     avatarUrl?: SortOrder
     email?: SortOrder
@@ -18568,6 +21607,12 @@ export namespace Prisma {
     none?: TreasureChestWhereInput
   }
 
+  export type PredictionListRelationFilter = {
+    every?: PredictionWhereInput
+    some?: PredictionWhereInput
+    none?: PredictionWhereInput
+  }
+
   export type StreamGoalOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -18577,6 +21622,10 @@ export namespace Prisma {
   }
 
   export type TreasureChestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PredictionOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19092,6 +22141,101 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type PredictionCountOrderByAggregateInput = {
+    id?: SortOrder
+    streamId?: SortOrder
+    title?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    status?: SortOrder
+    winOption?: SortOrder
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+    createdAt?: SortOrder
+    lockedAt?: SortOrder
+    endedAt?: SortOrder
+  }
+
+  export type PredictionAvgOrderByAggregateInput = {
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+  }
+
+  export type PredictionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    streamId?: SortOrder
+    title?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    status?: SortOrder
+    winOption?: SortOrder
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+    createdAt?: SortOrder
+    lockedAt?: SortOrder
+    endedAt?: SortOrder
+  }
+
+  export type PredictionMinOrderByAggregateInput = {
+    id?: SortOrder
+    streamId?: SortOrder
+    title?: SortOrder
+    optionA?: SortOrder
+    optionB?: SortOrder
+    status?: SortOrder
+    winOption?: SortOrder
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+    createdAt?: SortOrder
+    lockedAt?: SortOrder
+    endedAt?: SortOrder
+  }
+
+  export type PredictionSumOrderByAggregateInput = {
+    totalStarsA?: SortOrder
+    totalStarsB?: SortOrder
+  }
+
+  export type PredictionScalarRelationFilter = {
+    is?: PredictionWhereInput
+    isNot?: PredictionWhereInput
+  }
+
+  export type PredictionBetCountOrderByAggregateInput = {
+    id?: SortOrder
+    predictionId?: SortOrder
+    userId?: SortOrder
+    option?: SortOrder
+    starAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PredictionBetAvgOrderByAggregateInput = {
+    starAmount?: SortOrder
+  }
+
+  export type PredictionBetMaxOrderByAggregateInput = {
+    id?: SortOrder
+    predictionId?: SortOrder
+    userId?: SortOrder
+    option?: SortOrder
+    starAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PredictionBetMinOrderByAggregateInput = {
+    id?: SortOrder
+    predictionId?: SortOrder
+    userId?: SortOrder
+    option?: SortOrder
+    starAmount?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PredictionBetSumOrderByAggregateInput = {
+    starAmount?: SortOrder
+  }
+
   export type StreamCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -19148,6 +22292,13 @@ export namespace Prisma {
     connect?: PostCommentWhereUniqueInput | PostCommentWhereUniqueInput[]
   }
 
+  export type PredictionBetCreateNestedManyWithoutUserInput = {
+    create?: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput> | PredictionBetCreateWithoutUserInput[] | PredictionBetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutUserInput | PredictionBetCreateOrConnectWithoutUserInput[]
+    createMany?: PredictionBetCreateManyUserInputEnvelope
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+  }
+
   export type StreamUncheckedCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -19202,6 +22353,13 @@ export namespace Prisma {
     connectOrCreate?: PostCommentCreateOrConnectWithoutAuthorInput | PostCommentCreateOrConnectWithoutAuthorInput[]
     createMany?: PostCommentCreateManyAuthorInputEnvelope
     connect?: PostCommentWhereUniqueInput | PostCommentWhereUniqueInput[]
+  }
+
+  export type PredictionBetUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput> | PredictionBetCreateWithoutUserInput[] | PredictionBetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutUserInput | PredictionBetCreateOrConnectWithoutUserInput[]
+    createMany?: PredictionBetCreateManyUserInputEnvelope
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -19340,6 +22498,20 @@ export namespace Prisma {
     deleteMany?: PostCommentScalarWhereInput | PostCommentScalarWhereInput[]
   }
 
+  export type PredictionBetUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput> | PredictionBetCreateWithoutUserInput[] | PredictionBetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutUserInput | PredictionBetCreateOrConnectWithoutUserInput[]
+    upsert?: PredictionBetUpsertWithWhereUniqueWithoutUserInput | PredictionBetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PredictionBetCreateManyUserInputEnvelope
+    set?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    disconnect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    delete?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    update?: PredictionBetUpdateWithWhereUniqueWithoutUserInput | PredictionBetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PredictionBetUpdateManyWithWhereWithoutUserInput | PredictionBetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+  }
+
   export type StreamUncheckedUpdateManyWithoutStreamerNestedInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -19452,6 +22624,20 @@ export namespace Prisma {
     deleteMany?: PostCommentScalarWhereInput | PostCommentScalarWhereInput[]
   }
 
+  export type PredictionBetUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput> | PredictionBetCreateWithoutUserInput[] | PredictionBetUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutUserInput | PredictionBetCreateOrConnectWithoutUserInput[]
+    upsert?: PredictionBetUpsertWithWhereUniqueWithoutUserInput | PredictionBetUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PredictionBetCreateManyUserInputEnvelope
+    set?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    disconnect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    delete?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    update?: PredictionBetUpdateWithWhereUniqueWithoutUserInput | PredictionBetUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PredictionBetUpdateManyWithWhereWithoutUserInput | PredictionBetUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutStreamsInput = {
     create?: XOR<UserCreateWithoutStreamsInput, UserUncheckedCreateWithoutStreamsInput>
     connectOrCreate?: UserCreateOrConnectWithoutStreamsInput
@@ -19500,6 +22686,13 @@ export namespace Prisma {
     connect?: GiftTransactionWhereUniqueInput | GiftTransactionWhereUniqueInput[]
   }
 
+  export type PredictionCreateNestedManyWithoutStreamInput = {
+    create?: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput> | PredictionCreateWithoutStreamInput[] | PredictionUncheckedCreateWithoutStreamInput[]
+    connectOrCreate?: PredictionCreateOrConnectWithoutStreamInput | PredictionCreateOrConnectWithoutStreamInput[]
+    createMany?: PredictionCreateManyStreamInputEnvelope
+    connect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+  }
+
   export type StreamGoalUncheckedCreateNestedManyWithoutStreamInput = {
     create?: XOR<StreamGoalCreateWithoutStreamInput, StreamGoalUncheckedCreateWithoutStreamInput> | StreamGoalCreateWithoutStreamInput[] | StreamGoalUncheckedCreateWithoutStreamInput[]
     connectOrCreate?: StreamGoalCreateOrConnectWithoutStreamInput | StreamGoalCreateOrConnectWithoutStreamInput[]
@@ -19540,6 +22733,13 @@ export namespace Prisma {
     connectOrCreate?: GiftTransactionCreateOrConnectWithoutStreamInput | GiftTransactionCreateOrConnectWithoutStreamInput[]
     createMany?: GiftTransactionCreateManyStreamInputEnvelope
     connect?: GiftTransactionWhereUniqueInput | GiftTransactionWhereUniqueInput[]
+  }
+
+  export type PredictionUncheckedCreateNestedManyWithoutStreamInput = {
+    create?: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput> | PredictionCreateWithoutStreamInput[] | PredictionUncheckedCreateWithoutStreamInput[]
+    connectOrCreate?: PredictionCreateOrConnectWithoutStreamInput | PredictionCreateOrConnectWithoutStreamInput[]
+    createMany?: PredictionCreateManyStreamInputEnvelope
+    connect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -19638,6 +22838,20 @@ export namespace Prisma {
     deleteMany?: GiftTransactionScalarWhereInput | GiftTransactionScalarWhereInput[]
   }
 
+  export type PredictionUpdateManyWithoutStreamNestedInput = {
+    create?: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput> | PredictionCreateWithoutStreamInput[] | PredictionUncheckedCreateWithoutStreamInput[]
+    connectOrCreate?: PredictionCreateOrConnectWithoutStreamInput | PredictionCreateOrConnectWithoutStreamInput[]
+    upsert?: PredictionUpsertWithWhereUniqueWithoutStreamInput | PredictionUpsertWithWhereUniqueWithoutStreamInput[]
+    createMany?: PredictionCreateManyStreamInputEnvelope
+    set?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    disconnect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    delete?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    connect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    update?: PredictionUpdateWithWhereUniqueWithoutStreamInput | PredictionUpdateWithWhereUniqueWithoutStreamInput[]
+    updateMany?: PredictionUpdateManyWithWhereWithoutStreamInput | PredictionUpdateManyWithWhereWithoutStreamInput[]
+    deleteMany?: PredictionScalarWhereInput | PredictionScalarWhereInput[]
+  }
+
   export type StreamGoalUncheckedUpdateManyWithoutStreamNestedInput = {
     create?: XOR<StreamGoalCreateWithoutStreamInput, StreamGoalUncheckedCreateWithoutStreamInput> | StreamGoalCreateWithoutStreamInput[] | StreamGoalUncheckedCreateWithoutStreamInput[]
     connectOrCreate?: StreamGoalCreateOrConnectWithoutStreamInput | StreamGoalCreateOrConnectWithoutStreamInput[]
@@ -19720,6 +22934,20 @@ export namespace Prisma {
     update?: GiftTransactionUpdateWithWhereUniqueWithoutStreamInput | GiftTransactionUpdateWithWhereUniqueWithoutStreamInput[]
     updateMany?: GiftTransactionUpdateManyWithWhereWithoutStreamInput | GiftTransactionUpdateManyWithWhereWithoutStreamInput[]
     deleteMany?: GiftTransactionScalarWhereInput | GiftTransactionScalarWhereInput[]
+  }
+
+  export type PredictionUncheckedUpdateManyWithoutStreamNestedInput = {
+    create?: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput> | PredictionCreateWithoutStreamInput[] | PredictionUncheckedCreateWithoutStreamInput[]
+    connectOrCreate?: PredictionCreateOrConnectWithoutStreamInput | PredictionCreateOrConnectWithoutStreamInput[]
+    upsert?: PredictionUpsertWithWhereUniqueWithoutStreamInput | PredictionUpsertWithWhereUniqueWithoutStreamInput[]
+    createMany?: PredictionCreateManyStreamInputEnvelope
+    set?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    disconnect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    delete?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    connect?: PredictionWhereUniqueInput | PredictionWhereUniqueInput[]
+    update?: PredictionUpdateWithWhereUniqueWithoutStreamInput | PredictionUpdateWithWhereUniqueWithoutStreamInput[]
+    updateMany?: PredictionUpdateManyWithWhereWithoutStreamInput | PredictionUpdateManyWithWhereWithoutStreamInput[]
+    deleteMany?: PredictionScalarWhereInput | PredictionScalarWhereInput[]
   }
 
   export type StreamCreateNestedOneWithoutGiftsInput = {
@@ -20088,6 +23316,90 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPostCommentsInput, UserUpdateWithoutPostCommentsInput>, UserUncheckedUpdateWithoutPostCommentsInput>
   }
 
+  export type StreamCreateNestedOneWithoutPredictionsInput = {
+    create?: XOR<StreamCreateWithoutPredictionsInput, StreamUncheckedCreateWithoutPredictionsInput>
+    connectOrCreate?: StreamCreateOrConnectWithoutPredictionsInput
+    connect?: StreamWhereUniqueInput
+  }
+
+  export type PredictionBetCreateNestedManyWithoutPredictionInput = {
+    create?: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput> | PredictionBetCreateWithoutPredictionInput[] | PredictionBetUncheckedCreateWithoutPredictionInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutPredictionInput | PredictionBetCreateOrConnectWithoutPredictionInput[]
+    createMany?: PredictionBetCreateManyPredictionInputEnvelope
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+  }
+
+  export type PredictionBetUncheckedCreateNestedManyWithoutPredictionInput = {
+    create?: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput> | PredictionBetCreateWithoutPredictionInput[] | PredictionBetUncheckedCreateWithoutPredictionInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutPredictionInput | PredictionBetCreateOrConnectWithoutPredictionInput[]
+    createMany?: PredictionBetCreateManyPredictionInputEnvelope
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+  }
+
+  export type StreamUpdateOneRequiredWithoutPredictionsNestedInput = {
+    create?: XOR<StreamCreateWithoutPredictionsInput, StreamUncheckedCreateWithoutPredictionsInput>
+    connectOrCreate?: StreamCreateOrConnectWithoutPredictionsInput
+    upsert?: StreamUpsertWithoutPredictionsInput
+    connect?: StreamWhereUniqueInput
+    update?: XOR<XOR<StreamUpdateToOneWithWhereWithoutPredictionsInput, StreamUpdateWithoutPredictionsInput>, StreamUncheckedUpdateWithoutPredictionsInput>
+  }
+
+  export type PredictionBetUpdateManyWithoutPredictionNestedInput = {
+    create?: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput> | PredictionBetCreateWithoutPredictionInput[] | PredictionBetUncheckedCreateWithoutPredictionInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutPredictionInput | PredictionBetCreateOrConnectWithoutPredictionInput[]
+    upsert?: PredictionBetUpsertWithWhereUniqueWithoutPredictionInput | PredictionBetUpsertWithWhereUniqueWithoutPredictionInput[]
+    createMany?: PredictionBetCreateManyPredictionInputEnvelope
+    set?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    disconnect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    delete?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    update?: PredictionBetUpdateWithWhereUniqueWithoutPredictionInput | PredictionBetUpdateWithWhereUniqueWithoutPredictionInput[]
+    updateMany?: PredictionBetUpdateManyWithWhereWithoutPredictionInput | PredictionBetUpdateManyWithWhereWithoutPredictionInput[]
+    deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+  }
+
+  export type PredictionBetUncheckedUpdateManyWithoutPredictionNestedInput = {
+    create?: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput> | PredictionBetCreateWithoutPredictionInput[] | PredictionBetUncheckedCreateWithoutPredictionInput[]
+    connectOrCreate?: PredictionBetCreateOrConnectWithoutPredictionInput | PredictionBetCreateOrConnectWithoutPredictionInput[]
+    upsert?: PredictionBetUpsertWithWhereUniqueWithoutPredictionInput | PredictionBetUpsertWithWhereUniqueWithoutPredictionInput[]
+    createMany?: PredictionBetCreateManyPredictionInputEnvelope
+    set?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    disconnect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    delete?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+    update?: PredictionBetUpdateWithWhereUniqueWithoutPredictionInput | PredictionBetUpdateWithWhereUniqueWithoutPredictionInput[]
+    updateMany?: PredictionBetUpdateManyWithWhereWithoutPredictionInput | PredictionBetUpdateManyWithWhereWithoutPredictionInput[]
+    deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+  }
+
+  export type PredictionCreateNestedOneWithoutBetsInput = {
+    create?: XOR<PredictionCreateWithoutBetsInput, PredictionUncheckedCreateWithoutBetsInput>
+    connectOrCreate?: PredictionCreateOrConnectWithoutBetsInput
+    connect?: PredictionWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutPredictionBetsInput = {
+    create?: XOR<UserCreateWithoutPredictionBetsInput, UserUncheckedCreateWithoutPredictionBetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPredictionBetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type PredictionUpdateOneRequiredWithoutBetsNestedInput = {
+    create?: XOR<PredictionCreateWithoutBetsInput, PredictionUncheckedCreateWithoutBetsInput>
+    connectOrCreate?: PredictionCreateOrConnectWithoutBetsInput
+    upsert?: PredictionUpsertWithoutBetsInput
+    connect?: PredictionWhereUniqueInput
+    update?: XOR<XOR<PredictionUpdateToOneWithWhereWithoutBetsInput, PredictionUpdateWithoutBetsInput>, PredictionUncheckedUpdateWithoutBetsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutPredictionBetsNestedInput = {
+    create?: XOR<UserCreateWithoutPredictionBetsInput, UserUncheckedCreateWithoutPredictionBetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPredictionBetsInput
+    upsert?: UserUpsertWithoutPredictionBetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPredictionBetsInput, UserUpdateWithoutPredictionBetsInput>, UserUncheckedUpdateWithoutPredictionBetsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -20339,6 +23651,7 @@ export namespace Prisma {
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutStreamerInput = {
@@ -20357,6 +23670,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutStreamerInput = {
@@ -20556,6 +23870,32 @@ export namespace Prisma {
 
   export type PostCommentCreateManyAuthorInputEnvelope = {
     data: PostCommentCreateManyAuthorInput | PostCommentCreateManyAuthorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PredictionBetCreateWithoutUserInput = {
+    id?: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+    prediction: PredictionCreateNestedOneWithoutBetsInput
+  }
+
+  export type PredictionBetUncheckedCreateWithoutUserInput = {
+    id?: string
+    predictionId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
+  export type PredictionBetCreateOrConnectWithoutUserInput = {
+    where: PredictionBetWhereUniqueInput
+    create: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput>
+  }
+
+  export type PredictionBetCreateManyUserInputEnvelope = {
+    data: PredictionBetCreateManyUserInput | PredictionBetCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -20776,9 +24116,38 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"PostComment"> | Date | string
   }
 
+  export type PredictionBetUpsertWithWhereUniqueWithoutUserInput = {
+    where: PredictionBetWhereUniqueInput
+    update: XOR<PredictionBetUpdateWithoutUserInput, PredictionBetUncheckedUpdateWithoutUserInput>
+    create: XOR<PredictionBetCreateWithoutUserInput, PredictionBetUncheckedCreateWithoutUserInput>
+  }
+
+  export type PredictionBetUpdateWithWhereUniqueWithoutUserInput = {
+    where: PredictionBetWhereUniqueInput
+    data: XOR<PredictionBetUpdateWithoutUserInput, PredictionBetUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PredictionBetUpdateManyWithWhereWithoutUserInput = {
+    where: PredictionBetScalarWhereInput
+    data: XOR<PredictionBetUpdateManyMutationInput, PredictionBetUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PredictionBetScalarWhereInput = {
+    AND?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+    OR?: PredictionBetScalarWhereInput[]
+    NOT?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+    id?: StringFilter<"PredictionBet"> | string
+    predictionId?: StringFilter<"PredictionBet"> | string
+    userId?: StringFilter<"PredictionBet"> | string
+    option?: StringFilter<"PredictionBet"> | string
+    starAmount?: IntFilter<"PredictionBet"> | number
+    createdAt?: DateTimeFilter<"PredictionBet"> | Date | string
+  }
+
   export type UserCreateWithoutStreamsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -20796,11 +24165,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStreamsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -20818,6 +24189,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStreamsInput = {
@@ -21011,6 +24383,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type PredictionCreateWithoutStreamInput = {
+    id?: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+    bets?: PredictionBetCreateNestedManyWithoutPredictionInput
+  }
+
+  export type PredictionUncheckedCreateWithoutStreamInput = {
+    id?: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+    bets?: PredictionBetUncheckedCreateNestedManyWithoutPredictionInput
+  }
+
+  export type PredictionCreateOrConnectWithoutStreamInput = {
+    where: PredictionWhereUniqueInput
+    create: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput>
+  }
+
+  export type PredictionCreateManyStreamInputEnvelope = {
+    data: PredictionCreateManyStreamInput | PredictionCreateManyStreamInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutStreamsInput = {
     update: XOR<UserUpdateWithoutStreamsInput, UserUncheckedUpdateWithoutStreamsInput>
     create: XOR<UserCreateWithoutStreamsInput, UserUncheckedCreateWithoutStreamsInput>
@@ -21025,6 +24437,7 @@ export namespace Prisma {
   export type UserUpdateWithoutStreamsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21042,11 +24455,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStreamsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21064,6 +24479,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamGoalUpsertWithWhereUniqueWithoutStreamInput = {
@@ -21206,6 +24622,40 @@ export namespace Prisma {
     data: XOR<GiftTransactionUpdateManyMutationInput, GiftTransactionUncheckedUpdateManyWithoutStreamInput>
   }
 
+  export type PredictionUpsertWithWhereUniqueWithoutStreamInput = {
+    where: PredictionWhereUniqueInput
+    update: XOR<PredictionUpdateWithoutStreamInput, PredictionUncheckedUpdateWithoutStreamInput>
+    create: XOR<PredictionCreateWithoutStreamInput, PredictionUncheckedCreateWithoutStreamInput>
+  }
+
+  export type PredictionUpdateWithWhereUniqueWithoutStreamInput = {
+    where: PredictionWhereUniqueInput
+    data: XOR<PredictionUpdateWithoutStreamInput, PredictionUncheckedUpdateWithoutStreamInput>
+  }
+
+  export type PredictionUpdateManyWithWhereWithoutStreamInput = {
+    where: PredictionScalarWhereInput
+    data: XOR<PredictionUpdateManyMutationInput, PredictionUncheckedUpdateManyWithoutStreamInput>
+  }
+
+  export type PredictionScalarWhereInput = {
+    AND?: PredictionScalarWhereInput | PredictionScalarWhereInput[]
+    OR?: PredictionScalarWhereInput[]
+    NOT?: PredictionScalarWhereInput | PredictionScalarWhereInput[]
+    id?: StringFilter<"Prediction"> | string
+    streamId?: StringFilter<"Prediction"> | string
+    title?: StringFilter<"Prediction"> | string
+    optionA?: StringFilter<"Prediction"> | string
+    optionB?: StringFilter<"Prediction"> | string
+    status?: StringFilter<"Prediction"> | string
+    winOption?: StringNullableFilter<"Prediction"> | string | null
+    totalStarsA?: IntFilter<"Prediction"> | number
+    totalStarsB?: IntFilter<"Prediction"> | number
+    createdAt?: DateTimeFilter<"Prediction"> | Date | string
+    lockedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+    endedAt?: DateTimeNullableFilter<"Prediction"> | Date | string | null
+  }
+
   export type StreamCreateWithoutGiftsInput = {
     id?: string
     title: string
@@ -21222,6 +24672,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleCreateNestedManyWithoutStream2Input
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutGiftsInput = {
@@ -21240,6 +24691,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedCreateNestedManyWithoutStream2Input
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutGiftsInput = {
@@ -21250,6 +24702,7 @@ export namespace Prisma {
   export type UserCreateWithoutSentGiftsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21267,11 +24720,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGiftsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21289,6 +24744,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGiftsInput = {
@@ -21299,6 +24755,7 @@ export namespace Prisma {
   export type UserCreateWithoutReceivedGiftsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21316,11 +24773,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedGiftsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21338,6 +24797,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedGiftsInput = {
@@ -21372,6 +24832,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUpdateManyWithoutStream2NestedInput
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutGiftsInput = {
@@ -21390,6 +24851,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedUpdateManyWithoutStream2NestedInput
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type UserUpsertWithoutSentGiftsInput = {
@@ -21406,6 +24868,7 @@ export namespace Prisma {
   export type UserUpdateWithoutSentGiftsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21423,11 +24886,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGiftsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21445,6 +24910,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedGiftsInput = {
@@ -21461,6 +24927,7 @@ export namespace Prisma {
   export type UserUpdateWithoutReceivedGiftsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21478,11 +24945,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedGiftsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21500,6 +24969,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutCommentsInput = {
@@ -21518,6 +24988,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleCreateNestedManyWithoutStream2Input
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutCommentsInput = {
@@ -21536,6 +25007,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedCreateNestedManyWithoutStream2Input
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutCommentsInput = {
@@ -21546,6 +25018,7 @@ export namespace Prisma {
   export type UserCreateWithoutCommentsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21563,11 +25036,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21585,6 +25060,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -21619,6 +25095,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUpdateManyWithoutStream2NestedInput
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutCommentsInput = {
@@ -21637,6 +25114,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedUpdateManyWithoutStream2NestedInput
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type UserUpsertWithoutCommentsInput = {
@@ -21653,6 +25131,7 @@ export namespace Prisma {
   export type UserUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21670,11 +25149,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21692,11 +25173,13 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21714,11 +25197,13 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -21736,6 +25221,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -21757,6 +25243,7 @@ export namespace Prisma {
   export type UserUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21774,11 +25261,13 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -21796,6 +25285,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutGoalsInput = {
@@ -21814,6 +25304,7 @@ export namespace Prisma {
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutGoalsInput = {
@@ -21832,6 +25323,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutGoalsInput = {
@@ -21866,6 +25358,7 @@ export namespace Prisma {
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutGoalsInput = {
@@ -21884,6 +25377,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamCreateWithoutPkBattles1Input = {
@@ -21902,6 +25396,7 @@ export namespace Prisma {
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutPkBattles1Input = {
@@ -21920,6 +25415,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutPkBattles1Input = {
@@ -21943,6 +25439,7 @@ export namespace Prisma {
     chests?: TreasureChestCreateNestedManyWithoutStreamInput
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutPkBattles2Input = {
@@ -21961,6 +25458,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutPkBattles2Input = {
@@ -21995,6 +25493,7 @@ export namespace Prisma {
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutPkBattles1Input = {
@@ -22013,6 +25512,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUpsertWithoutPkBattles2Input = {
@@ -22042,6 +25542,7 @@ export namespace Prisma {
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutPkBattles2Input = {
@@ -22060,6 +25561,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamCreateWithoutChestsInput = {
@@ -22078,6 +25580,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleCreateNestedManyWithoutStream2Input
     comments?: CommentCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+    predictions?: PredictionCreateNestedManyWithoutStreamInput
   }
 
   export type StreamUncheckedCreateWithoutChestsInput = {
@@ -22096,6 +25599,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedCreateNestedManyWithoutStream2Input
     comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
     gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+    predictions?: PredictionUncheckedCreateNestedManyWithoutStreamInput
   }
 
   export type StreamCreateOrConnectWithoutChestsInput = {
@@ -22154,6 +25658,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUpdateManyWithoutStream2NestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutChestsInput = {
@@ -22172,6 +25677,7 @@ export namespace Prisma {
     pkBattles2?: PKBattleUncheckedUpdateManyWithoutStream2NestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type TreasureClaimUpsertWithWhereUniqueWithoutChestInput = {
@@ -22268,6 +25774,7 @@ export namespace Prisma {
   export type UserCreateWithoutPostsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22285,11 +25792,13 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22307,6 +25816,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -22376,6 +25886,7 @@ export namespace Prisma {
   export type UserUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22393,11 +25904,13 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22415,6 +25928,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostLikeUpsertWithWhereUniqueWithoutPostInput = {
@@ -22483,6 +25997,7 @@ export namespace Prisma {
   export type UserCreateWithoutPostLikesInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22500,11 +26015,13 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostLikesInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22522,6 +26039,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostLikesInput = {
@@ -22580,6 +26098,7 @@ export namespace Prisma {
   export type UserUpdateWithoutPostLikesInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22597,11 +26116,13 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostLikesInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22619,6 +26140,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostCreateWithoutCommentsInput = {
@@ -22655,6 +26177,7 @@ export namespace Prisma {
   export type UserCreateWithoutPostCommentsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22672,11 +26195,13 @@ export namespace Prisma {
     sessions?: SessionCreateNestedManyWithoutUserInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostCommentsInput = {
     id?: string
     username: string
+    passwordHash?: string | null
     displayName: string
     avatarUrl: string
     email?: string | null
@@ -22694,6 +26219,7 @@ export namespace Prisma {
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostCommentsInput = {
@@ -22752,6 +26278,7 @@ export namespace Prisma {
   export type UserUpdateWithoutPostCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22769,11 +26296,13 @@ export namespace Prisma {
     sessions?: SessionUpdateManyWithoutUserNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostCommentsInput = {
     id?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
     displayName?: StringFieldUpdateOperationsInput | string
     avatarUrl?: StringFieldUpdateOperationsInput | string
     email?: NullableStringFieldUpdateOperationsInput | string | null
@@ -22791,6 +26320,329 @@ export namespace Prisma {
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type StreamCreateWithoutPredictionsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category?: string
+    status?: string
+    viewerCount?: number
+    totalStars?: number
+    createdAt?: Date | string
+    endedAt?: Date | string | null
+    streamer: UserCreateNestedOneWithoutStreamsInput
+    goals?: StreamGoalCreateNestedManyWithoutStreamInput
+    pkBattles1?: PKBattleCreateNestedManyWithoutStream1Input
+    pkBattles2?: PKBattleCreateNestedManyWithoutStream2Input
+    chests?: TreasureChestCreateNestedManyWithoutStreamInput
+    comments?: CommentCreateNestedManyWithoutStreamInput
+    gifts?: GiftTransactionCreateNestedManyWithoutStreamInput
+  }
+
+  export type StreamUncheckedCreateWithoutPredictionsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    category?: string
+    status?: string
+    viewerCount?: number
+    totalStars?: number
+    streamerId: string
+    createdAt?: Date | string
+    endedAt?: Date | string | null
+    goals?: StreamGoalUncheckedCreateNestedManyWithoutStreamInput
+    pkBattles1?: PKBattleUncheckedCreateNestedManyWithoutStream1Input
+    pkBattles2?: PKBattleUncheckedCreateNestedManyWithoutStream2Input
+    chests?: TreasureChestUncheckedCreateNestedManyWithoutStreamInput
+    comments?: CommentUncheckedCreateNestedManyWithoutStreamInput
+    gifts?: GiftTransactionUncheckedCreateNestedManyWithoutStreamInput
+  }
+
+  export type StreamCreateOrConnectWithoutPredictionsInput = {
+    where: StreamWhereUniqueInput
+    create: XOR<StreamCreateWithoutPredictionsInput, StreamUncheckedCreateWithoutPredictionsInput>
+  }
+
+  export type PredictionBetCreateWithoutPredictionInput = {
+    id?: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPredictionBetsInput
+  }
+
+  export type PredictionBetUncheckedCreateWithoutPredictionInput = {
+    id?: string
+    userId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
+  export type PredictionBetCreateOrConnectWithoutPredictionInput = {
+    where: PredictionBetWhereUniqueInput
+    create: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput>
+  }
+
+  export type PredictionBetCreateManyPredictionInputEnvelope = {
+    data: PredictionBetCreateManyPredictionInput | PredictionBetCreateManyPredictionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type StreamUpsertWithoutPredictionsInput = {
+    update: XOR<StreamUpdateWithoutPredictionsInput, StreamUncheckedUpdateWithoutPredictionsInput>
+    create: XOR<StreamCreateWithoutPredictionsInput, StreamUncheckedCreateWithoutPredictionsInput>
+    where?: StreamWhereInput
+  }
+
+  export type StreamUpdateToOneWithWhereWithoutPredictionsInput = {
+    where?: StreamWhereInput
+    data: XOR<StreamUpdateWithoutPredictionsInput, StreamUncheckedUpdateWithoutPredictionsInput>
+  }
+
+  export type StreamUpdateWithoutPredictionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    viewerCount?: IntFieldUpdateOperationsInput | number
+    totalStars?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    streamer?: UserUpdateOneRequiredWithoutStreamsNestedInput
+    goals?: StreamGoalUpdateManyWithoutStreamNestedInput
+    pkBattles1?: PKBattleUpdateManyWithoutStream1NestedInput
+    pkBattles2?: PKBattleUpdateManyWithoutStream2NestedInput
+    chests?: TreasureChestUpdateManyWithoutStreamNestedInput
+    comments?: CommentUpdateManyWithoutStreamNestedInput
+    gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+  }
+
+  export type StreamUncheckedUpdateWithoutPredictionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    category?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    viewerCount?: IntFieldUpdateOperationsInput | number
+    totalStars?: IntFieldUpdateOperationsInput | number
+    streamerId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    goals?: StreamGoalUncheckedUpdateManyWithoutStreamNestedInput
+    pkBattles1?: PKBattleUncheckedUpdateManyWithoutStream1NestedInput
+    pkBattles2?: PKBattleUncheckedUpdateManyWithoutStream2NestedInput
+    chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
+    gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+  }
+
+  export type PredictionBetUpsertWithWhereUniqueWithoutPredictionInput = {
+    where: PredictionBetWhereUniqueInput
+    update: XOR<PredictionBetUpdateWithoutPredictionInput, PredictionBetUncheckedUpdateWithoutPredictionInput>
+    create: XOR<PredictionBetCreateWithoutPredictionInput, PredictionBetUncheckedCreateWithoutPredictionInput>
+  }
+
+  export type PredictionBetUpdateWithWhereUniqueWithoutPredictionInput = {
+    where: PredictionBetWhereUniqueInput
+    data: XOR<PredictionBetUpdateWithoutPredictionInput, PredictionBetUncheckedUpdateWithoutPredictionInput>
+  }
+
+  export type PredictionBetUpdateManyWithWhereWithoutPredictionInput = {
+    where: PredictionBetScalarWhereInput
+    data: XOR<PredictionBetUpdateManyMutationInput, PredictionBetUncheckedUpdateManyWithoutPredictionInput>
+  }
+
+  export type PredictionCreateWithoutBetsInput = {
+    id?: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+    stream: StreamCreateNestedOneWithoutPredictionsInput
+  }
+
+  export type PredictionUncheckedCreateWithoutBetsInput = {
+    id?: string
+    streamId: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
+  }
+
+  export type PredictionCreateOrConnectWithoutBetsInput = {
+    where: PredictionWhereUniqueInput
+    create: XOR<PredictionCreateWithoutBetsInput, PredictionUncheckedCreateWithoutBetsInput>
+  }
+
+  export type UserCreateWithoutPredictionBetsInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionCreateNestedManyWithoutReceiverInput
+    comments?: CommentCreateNestedManyWithoutSenderInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeCreateNestedManyWithoutUserInput
+    postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserUncheckedCreateWithoutPredictionBetsInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamUncheckedCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionUncheckedCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionUncheckedCreateNestedManyWithoutReceiverInput
+    comments?: CommentUncheckedCreateNestedManyWithoutSenderInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
+    postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+  }
+
+  export type UserCreateOrConnectWithoutPredictionBetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPredictionBetsInput, UserUncheckedCreateWithoutPredictionBetsInput>
+  }
+
+  export type PredictionUpsertWithoutBetsInput = {
+    update: XOR<PredictionUpdateWithoutBetsInput, PredictionUncheckedUpdateWithoutBetsInput>
+    create: XOR<PredictionCreateWithoutBetsInput, PredictionUncheckedCreateWithoutBetsInput>
+    where?: PredictionWhereInput
+  }
+
+  export type PredictionUpdateToOneWithWhereWithoutBetsInput = {
+    where?: PredictionWhereInput
+    data: XOR<PredictionUpdateWithoutBetsInput, PredictionUncheckedUpdateWithoutBetsInput>
+  }
+
+  export type PredictionUpdateWithoutBetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    stream?: StreamUpdateOneRequiredWithoutPredictionsNestedInput
+  }
+
+  export type PredictionUncheckedUpdateWithoutBetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    streamId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type UserUpsertWithoutPredictionBetsInput = {
+    update: XOR<UserUpdateWithoutPredictionBetsInput, UserUncheckedUpdateWithoutPredictionBetsInput>
+    create: XOR<UserCreateWithoutPredictionBetsInput, UserUncheckedCreateWithoutPredictionBetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPredictionBetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPredictionBetsInput, UserUncheckedUpdateWithoutPredictionBetsInput>
+  }
+
+  export type UserUpdateWithoutPredictionBetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPredictionBetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUncheckedUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUncheckedUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
   }
 
   export type StreamCreateManyStreamerInput = {
@@ -22863,6 +26715,14 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type PredictionBetCreateManyUserInput = {
+    id?: string
+    predictionId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
   export type StreamUpdateWithoutStreamerInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
@@ -22879,6 +26739,7 @@ export namespace Prisma {
     chests?: TreasureChestUpdateManyWithoutStreamNestedInput
     comments?: CommentUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateWithoutStreamerInput = {
@@ -22897,6 +26758,7 @@ export namespace Prisma {
     chests?: TreasureChestUncheckedUpdateManyWithoutStreamNestedInput
     comments?: CommentUncheckedUpdateManyWithoutStreamNestedInput
     gifts?: GiftTransactionUncheckedUpdateManyWithoutStreamNestedInput
+    predictions?: PredictionUncheckedUpdateManyWithoutStreamNestedInput
   }
 
   export type StreamUncheckedUpdateManyWithoutStreamerInput = {
@@ -23089,6 +26951,30 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PredictionBetUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prediction?: PredictionUpdateOneRequiredWithoutBetsNestedInput
+  }
+
+  export type PredictionBetUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    predictionId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PredictionBetUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    predictionId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StreamGoalCreateManyStreamInput = {
     id?: string
     title: string
@@ -23149,6 +27035,20 @@ export namespace Prisma {
     starAmount: number
     message?: string | null
     createdAt?: Date | string
+  }
+
+  export type PredictionCreateManyStreamInput = {
+    id?: string
+    title: string
+    optionA: string
+    optionB: string
+    status?: string
+    winOption?: string | null
+    totalStarsA?: number
+    totalStarsB?: number
+    createdAt?: Date | string
+    lockedAt?: Date | string | null
+    endedAt?: Date | string | null
   }
 
   export type StreamGoalUpdateWithoutStreamInput = {
@@ -23339,6 +27239,50 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type PredictionUpdateWithoutStreamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bets?: PredictionBetUpdateManyWithoutPredictionNestedInput
+  }
+
+  export type PredictionUncheckedUpdateWithoutStreamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bets?: PredictionBetUncheckedUpdateManyWithoutPredictionNestedInput
+  }
+
+  export type PredictionUncheckedUpdateManyWithoutStreamInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    optionA?: StringFieldUpdateOperationsInput | string
+    optionB?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    winOption?: NullableStringFieldUpdateOperationsInput | string | null
+    totalStarsA?: IntFieldUpdateOperationsInput | number
+    totalStarsB?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
   export type TreasureClaimCreateManyChestInput = {
     id?: string
     userId: string
@@ -23421,6 +27365,38 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PredictionBetCreateManyPredictionInput = {
+    id?: string
+    userId: string
+    option: string
+    starAmount: number
+    createdAt?: Date | string
+  }
+
+  export type PredictionBetUpdateWithoutPredictionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPredictionBetsNestedInput
+  }
+
+  export type PredictionBetUncheckedUpdateWithoutPredictionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PredictionBetUncheckedUpdateManyWithoutPredictionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    option?: StringFieldUpdateOperationsInput | string
+    starAmount?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -31,6 +31,7 @@ enum UserRole {
 model User {
   id            String             @id @default(uuid())
   username      String             @unique // Đảm bảo không trùng tên đăng nhập
+  passwordHash  String?            // Mật khẩu đã băm (Bcrypt), null nếu đăng nhập qua Google
   displayName   String             // Tên hiển thị công khai
   avatarUrl     String             // Đường dẫn ảnh đại diện
   email         String?            @unique // Email liên kết với tài khoản Google
@@ -51,6 +52,7 @@ model User {
   posts         Post[]
   postLikes     PostLike[]
   postComments  PostComment[]
+  predictionBets PredictionBet[]
 }
 
 model Stream {
@@ -75,6 +77,7 @@ model Stream {
   chests      TreasureChest[]
   comments    Comment[]
   gifts       GiftTransaction[]
+  predictions Prediction[]
 
   @@index([status, createdAt])
 }
@@ -243,4 +246,37 @@ model PostComment {
   updatedAt DateTime @updatedAt
 
   @@index([postId, createdAt(sort: Asc)])
+}
+
+model Prediction {
+  id           String          @id @default(uuid())
+  streamId     String
+  stream       Stream          @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  title        String
+  optionA      String
+  optionB      String
+  status       String          @default("ACTIVE") // "ACTIVE", "LOCKED", "RESOLVED", "CANCELLED"
+  winOption    String?         // "A" or "B"
+  totalStarsA  Int             @default(0)
+  totalStarsB  Int             @default(0)
+  createdAt    DateTime        @default(now())
+  lockedAt     DateTime?
+  endedAt      DateTime?
+  bets         PredictionBet[]
+
+  @@index([streamId])
+}
+
+model PredictionBet {
+  id           String     @id @default(uuid())
+  predictionId String
+  prediction   Prediction @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option       String     // "A" or "B"
+  starAmount   Int
+  createdAt    DateTime   @default(now())
+
+  @@index([predictionId])
+  @@index([userId])
 }

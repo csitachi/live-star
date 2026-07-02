@@ -29,28 +29,30 @@ enum UserRole {
 }
 
 model User {
-  id          String   @id @default(uuid())
-  username    String   @unique // Đảm bảo không trùng tên đăng nhập
-  displayName String // Tên hiển thị công khai
-  avatarUrl   String // Đường dẫn ảnh đại diện
-  email       String?  @unique // Email liên kết với tài khoản Google
-  googleId    String?  @unique // ID duy nhất từ Google User Info
-  role        UserRole @default(VIEWER) // Phân quyền người dùng
-  starBalance Int      @default(1000) // Số dư sao ban đầu để trải nghiệm
-  starsGifted Int      @default(0) // Tổng số sao đã tặng
-  starsEarned Int      @default(0) // Tổng số sao đã nhận
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(uuid())
+  username     String   @unique // Đảm bảo không trùng tên đăng nhập
+  passwordHash String? // Mật khẩu đã băm (Bcrypt), null nếu đăng nhập qua Google
+  displayName  String // Tên hiển thị công khai
+  avatarUrl    String // Đường dẫn ảnh đại diện
+  email        String?  @unique // Email liên kết với tài khoản Google
+  googleId     String?  @unique // ID duy nhất từ Google User Info
+  role         UserRole @default(VIEWER) // Phân quyền người dùng
+  starBalance  Int      @default(1000) // Số dư sao ban đầu để trải nghiệm
+  starsGifted  Int      @default(0) // Tổng số sao đã tặng
+  starsEarned  Int      @default(0) // Tổng số sao đã nhận
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   // Mối quan hệ (Relations)
-  streams       Stream[]          @relation("StreamerRelation")
-  sentGifts     GiftTransaction[] @relation("SenderRelation")
-  receivedGifts GiftTransaction[] @relation("ReceiverRelation")
-  comments      Comment[]         @relation("UserComments")
-  sessions      Session[]
-  posts         Post[]
-  postLikes     PostLike[]
-  postComments  PostComment[]
+  streams        Stream[]          @relation("StreamerRelation")
+  sentGifts      GiftTransaction[] @relation("SenderRelation")
+  receivedGifts  GiftTransaction[] @relation("ReceiverRelation")
+  comments       Comment[]         @relation("UserComments")
+  sessions       Session[]
+  posts          Post[]
+  postLikes      PostLike[]
+  postComments   PostComment[]
+  predictionBets PredictionBet[]
 }
 
 model Stream {
@@ -69,12 +71,13 @@ model Stream {
   endedAt   DateTime?
 
   // Mối quan hệ (Relations)
-  goals      StreamGoal[]
-  pkBattles1 PKBattle[]        @relation("PKStream1")
-  pkBattles2 PKBattle[]        @relation("PKStream2")
-  chests     TreasureChest[]
-  comments   Comment[]
-  gifts      GiftTransaction[]
+  goals       StreamGoal[]
+  pkBattles1  PKBattle[]        @relation("PKStream1")
+  pkBattles2  PKBattle[]        @relation("PKStream2")
+  chests      TreasureChest[]
+  comments    Comment[]
+  gifts       GiftTransaction[]
+  predictions Prediction[]
 
   @@index([status, createdAt])
 }
@@ -243,4 +246,37 @@ model PostComment {
   updatedAt DateTime @updatedAt
 
   @@index([postId, createdAt(sort: Asc)])
+}
+
+model Prediction {
+  id          String          @id @default(uuid())
+  streamId    String
+  stream      Stream          @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  title       String
+  optionA     String
+  optionB     String
+  status      String          @default("ACTIVE") // "ACTIVE", "LOCKED", "RESOLVED", "CANCELLED"
+  winOption   String? // "A" or "B"
+  totalStarsA Int             @default(0)
+  totalStarsB Int             @default(0)
+  createdAt   DateTime        @default(now())
+  lockedAt    DateTime?
+  endedAt     DateTime?
+  bets        PredictionBet[]
+
+  @@index([streamId])
+}
+
+model PredictionBet {
+  id           String     @id @default(uuid())
+  predictionId String
+  prediction   Prediction @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option       String // "A" or "B"
+  starAmount   Int
+  createdAt    DateTime   @default(now())
+
+  @@index([predictionId])
+  @@index([userId])
 }

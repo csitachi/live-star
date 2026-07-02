@@ -72,6 +72,18 @@ export default function HomePage() {
   const [sandboxUser, setSandboxUser] = useState("bob");
   const [activeTab, setActiveTab] = useState<"feed" | "live">("feed");
 
+  // Trạng thái Modal Đăng nhập / Đăng ký bằng Username & Password
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authTab, setAuthTab] = useState<"login" | "register">("login");
+  const [authUsername, setAuthUsername] = useState("");
+  const [authPassword, setAuthPassword] = useState("");
+  const [authDisplayName, setAuthDisplayName] = useState("");
+  const [authError, setAuthError] = useState("");
+  const [authLoading, setAuthLoading] = useState(false);
+
+  // Trạng thái tìm kiếm phòng live, streamer
+  const [searchQuery, setSearchQuery] = useState("");
+
   // 1. Tải thông tin người dùng bằng Cookie và tải danh sách phòng
   useEffect(() => {
     fetchStreams(selectedCategory);
@@ -196,6 +208,47 @@ export default function HomePage() {
     }
   };
 
+  // Đăng nhập/Đăng ký bằng Username & Password
+  const handleAuthSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError("");
+    setAuthLoading(true);
+
+    try {
+      const endpoint = authTab === "login" ? "/api/auth/login" : "/api/auth/register";
+      const payload = authTab === "login" 
+        ? { username: authUsername, password: authPassword }
+        : { username: authUsername, password: authPassword, displayName: authDisplayName };
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        setCurrentUser(data.user);
+        alert(`🎉 ${authTab === "login" ? "Đăng nhập" : "Đăng ký"} thành công! Chào mừng ${data.user.displayName}`);
+        setShowAuthModal(false);
+        // Reset form
+        setAuthUsername("");
+        setAuthPassword("");
+        setAuthDisplayName("");
+        fetchStreams(selectedCategory);
+        fetchTopKOLs();
+      } else {
+        setAuthError(data.error || "Có lỗi xảy ra!");
+      }
+    } catch (err) {
+      console.error("Lỗi xác thực:", err);
+      setAuthError("Lỗi kết nối máy chủ!");
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
   // Khởi động nút Google Sign-In SDK
   useEffect(() => {
     if (currentUser) return; // Nếu đã có session thì không render nút
@@ -306,14 +359,15 @@ export default function HomePage() {
           <span>LiveStar</span>
         </div>
 
-        {/* Search bar placeholder */}
+        {/* Ô Tìm kiếm Hoạt động Thực tế */}
         <div className={styles.searchBar}>
           <span className={styles.searchIcon}>🔍</span>
           <input 
             type="text" 
-            placeholder="Tìm kiếm phòng live, idol..." 
+            placeholder="Tìm phòng live, tên idol..." 
             className={styles.searchInput}
-            disabled
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
@@ -344,7 +398,22 @@ export default function HomePage() {
             </button>
           </div>
         ) : (
-          <div style={{ width: 220 }} />
+          <button 
+            className="glow-btn-primary" 
+            onClick={() => {
+              setAuthTab("login");
+              setAuthError("");
+              setShowAuthModal(true);
+            }}
+            style={{ 
+              padding: "10px 20px", 
+              fontSize: "0.85rem", 
+              margin: 0,
+              background: "linear-gradient(135deg, var(--color-primary), var(--color-secondary))"
+            }}
+          >
+            🔑 Đăng nhập / Đăng ký
+          </button>
         )}
       </header>
 
@@ -402,67 +471,124 @@ export default function HomePage() {
         {/* Main Content Area */}
         <main className={styles.mainContentContent}>
           {/* Hero section: Glassmorphism Entertainment Spotlight */}
-          <section className={styles.hero} style={{ background: "linear-gradient(135deg, rgba(157, 78, 221, 0.15) 0%, rgba(255, 0, 127, 0.08) 50%, transparent 100%)" }}>
-            <div style={{ display: "inline-block", background: "rgba(255, 0, 127, 0.1)", border: "1px solid rgba(255, 0, 127, 0.2)", color: "var(--color-secondary)", padding: "6px 14px", borderRadius: "20px", fontSize: "0.85rem", fontWeight: "700", textTransform: "uppercase", letterSpacing: "1.5px", marginBottom: "8px" }}>
-              🎭 Cổng Giải Trí KOLs & LiveStream Stars
-            </div>
-            <h1 className={styles.heroTitle} style={{ background: "linear-gradient(135deg, #fff, #9d4edd, #ff007f)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              KOL Livestream & Nhận Sao Độc Quyền
-            </h1>
-            <p className={styles.heroSubtitle}>
-              Nơi tụ hội của những tài năng âm nhạc, trò chơi và diễn thuyết hàng đầu. Theo dõi thần tượng yêu thích, trò chuyện tương tác trực tuyến và tặng quà kèm hiệu ứng bay sao cực đỉnh!
-            </p>
+          <section className={styles.hero} style={{ background: "linear-gradient(135deg, rgba(157, 78, 221, 0.2) 0%, rgba(255, 0, 127, 0.1) 50%, rgba(11, 11, 15, 0.5) 100%)", padding: "48px 40px", width: "100%", border: "1px solid rgba(255, 255, 255, 0.08)", boxShadow: "0 20px 40px rgba(0, 0, 0, 0.4)", borderRadius: "24px", display: "flex", flexDirection: "column", gap: "20px", alignItems: "center" }}>
+            <div className={styles.heroGrid}>
+              
+              {/* Cột Trái: Thông tin & CTA */}
+              <div className={styles.heroContent}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(255, 0, 127, 0.12)", border: "1px solid rgba(255, 0, 127, 0.25)", color: "var(--color-secondary)", padding: "6px 14px", borderRadius: "20px", fontSize: "0.8rem", fontWeight: "800", textTransform: "uppercase", letterSpacing: "1.5px" }}>
+                  <span className="live-dot" style={{ display: 'inline-block', width: '6px', height: '6px', background: 'var(--color-secondary)', borderRadius: '50%', animation: 'pulse 1.5s infinite' }}></span>
+                  🔥 LIVE ARENA | Nền tảng LiveStream thế hệ mới
+                </div>
+                <h1 className={styles.heroTitle} style={{ margin: 0, textAlign: "left", lineHeight: "1.25", background: "linear-gradient(135deg, #fff 30%, #d8b4fe 70%, #ff007f 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  KOL Livestream & <br />Nhận Sao Độc Quyền
+                </h1>
+                <p className={styles.heroSubtitle} style={{ margin: 0, textAlign: "left", fontSize: "1rem", color: "var(--text-secondary)", maxWidth: "100%" }}>
+                  Nơi tụ hội của những tài năng âm nhạc, trò chơi và diễn thuyết hàng đầu. Theo dõi thần tượng yêu thích, tương tác thời gian thực và tặng sao nhận quà cực độc!
+                </p>
 
-            {/* Cấu phần Google Sign-In & Sandbox */}
-            <div style={{ marginTop: "10px", display: "flex", flexDirection: "column", alignItems: "center", gap: "12px" }}>
-              {!currentUser ? (
-                <>
-                  <p style={{ fontSize: "0.95rem", color: "var(--text-secondary)" }}>
-                    🔑 Đăng nhập để phát live làm Idol hoặc tặng quà làm Viewer VIP:
-                  </p>
-                  <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", justifyContent: "center", alignItems: "center" }}>
-                    {/* Nút Google thật */}
-                    <div id="google-signin-btn"></div>
-                    
-                    {/* Chọn User Sandbox */}
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255, 255, 255, 0.05)", padding: "8px 16px", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
-                      <span style={{ fontSize: "0.85rem", color: "var(--text-secondary)", fontWeight: "bold" }}>Chọn User Sandbox:</span>
-                      <select 
-                        value={sandboxUser} 
-                        onChange={(e) => setSandboxUser(e.target.value)}
-                        style={{ padding: "8px 12px", background: "#111", border: "1px solid rgba(255, 255, 255, 0.2)", borderRadius: "8px", color: "#fff", cursor: "pointer", fontSize: "0.85rem" }}
-                      >
-                        <option value="bob">Bob (Viewer/Streamer)</option>
-                        <option value="charlie">Charlie (Viewer/Streamer)</option>
-                        <option value="dave">Dave (Viewer/Streamer)</option>
-                      </select>
-                      <button 
-                        className="glow-btn-primary" 
-                        onClick={handleSandboxLoginWithUsername}
-                        style={{ padding: "8px 16px", background: "linear-gradient(135deg, #4285F4, #ff007f)", fontSize: "0.85rem", margin: 0 }}
-                      >
-                        🚀 Đăng nhập
-                      </button>
+                {/* Các Phương Thức Đăng Nhập / Trạng Thế User */}
+                <div style={{ width: "100%", marginTop: "5px" }}>
+                  {!currentUser ? (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px", width: "100%" }}>
+                      <p style={{ fontSize: "0.9rem", color: "var(--text-secondary)", margin: 0, fontWeight: "600" }}>
+                        🔑 Đăng nhập để nhận ngay 1,000 sao trải nghiệm:
+                      </p>
+                      <div style={{ display: "flex", gap: "12px", flexWrap: "wrap", width: "100%", alignItems: "center" }}>
+                        {/* Nút Google thật */}
+                        <div id="google-signin-btn"></div>
+
+                        {/* Nút Đăng nhập/Đăng ký Username/Password */}
+                        <button 
+                          className="glow-btn-secondary" 
+                          onClick={() => {
+                            setAuthTab("login");
+                            setAuthError("");
+                            setShowAuthModal(true);
+                          }}
+                          style={{ 
+                            padding: "10px 20px", 
+                            fontSize: "0.85rem", 
+                            margin: 0, 
+                            border: "1px solid rgba(255, 255, 255, 0.12)",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            background: "rgba(255, 255, 255, 0.05)",
+                            borderRadius: "12px"
+                          }}
+                        >
+                          🔑 Đăng nhập bằng tài khoản
+                        </button>
+                        
+                        {/* Chọn User Sandbox */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "rgba(255, 255, 255, 0.04)", padding: "6px 14px", borderRadius: "12px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+                          <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontWeight: "bold" }}>Sandbox:</span>
+                          <select 
+                            value={sandboxUser} 
+                            onChange={(e) => setSandboxUser(e.target.value)}
+                            style={{ padding: "6px 10px", background: "#111", border: "1px solid rgba(255, 255, 255, 0.15)", borderRadius: "8px", color: "#fff", cursor: "pointer", fontSize: "0.8rem" }}
+                          >
+                            <option value="bob">Bob (Viewer)</option>
+                            <option value="charlie">Charlie (Fan Cứng)</option>
+                            <option value="dave">Dave (Newbie)</option>
+                          </select>
+                          <button 
+                            className="glow-btn-primary" 
+                            onClick={handleSandboxLoginWithUsername}
+                            style={{ padding: "6px 12px", background: "linear-gradient(135deg, #4285F4, #ff007f)", fontSize: "0.8rem", margin: 0, borderRadius: "8px" }}
+                          >
+                            🚀 Vào
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                      <p style={{ fontSize: "0.95rem", color: "var(--success)", display: "flex", alignItems: "center", gap: "6px", margin: 0 }}>
+                        <span style={{ display: 'inline-block', width: '8px', height: '8px', background: 'var(--success)', borderRadius: '50%' }}></span>
+                        <span>Đã đăng nhập:</span> <strong>{currentUser.displayName}</strong>
+                      </p>
+                      <div>
+                        <button className="glow-btn-primary" onClick={() => router.push("/streamer/setup")} style={{ padding: "12px 24px", background: "linear-gradient(135deg, var(--color-primary), var(--color-secondary))", boxShadow: "0 4px 15px rgba(157, 78, 221, 0.4)", margin: 0 }}>
+                          🎥 Bắt đầu phòng phát Live của bạn
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Cột Phải: Mockup Stream Promo Card */}
+              <div className={styles.heroVisual}>
+                <div className={styles.promoCard}>
+                  {/* Thumbnail Mockup */}
+                  <div className={styles.promoThumbnail}>
+                    <div className={styles.promoWaveGlow}></div>
+                    <div className={styles.promoLiveBadge}>🔴 Live</div>
+                    <div className={styles.promoViewers}>👁️ 1.4K xem</div>
+                    <div className={styles.promoOverlayText}>
+                      <h4 className={styles.promoTitle}>PK Battle Arena: Top 1 Streamer vs Challenger ⚔️</h4>
                     </div>
                   </div>
-                </>
-              ) : (
-                <p style={{ fontSize: "0.95rem", color: "var(--success)", display: "flex", alignItems: "center", gap: "6px" }}>
-                  <span>✅ Chào mừng Idol/Viewer:</span> <strong>{currentUser.displayName}</strong>
-                </p>
-              )}
-            </div>
+                  {/* Streamer Info Footer */}
+                  <div className={styles.promoFooter}>
+                    <img 
+                      src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150" 
+                      alt="Alice Streamer" 
+                      className={styles.promoAvatar} 
+                    />
+                    <div className={styles.promoInfo}>
+                      <span className={styles.promoName}>Alice Streamer 🎥</span>
+                      <span className={styles.promoCategory}>Talkshow & Music</span>
+                    </div>
+                    <div className={styles.promoStarsGlow}>
+                      ⭐ 350 sao
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <div style={{ marginTop: "15px" }}>
-              <button className="glow-btn-primary" onClick={() => {
-                if (!currentUser) {
-                  alert("Vui lòng đăng nhập trước khi bắt đầu livestream!");
-                  return;
-                }
-                router.push("/streamer/setup");
-              }}>
-                🎥 Bắt đầu phòng Live mới của bạn
-              </button>
             </div>
           </section>
 
@@ -531,78 +657,99 @@ export default function HomePage() {
                     <div style={{ textAlign: "center", padding: "40px", color: "var(--text-secondary)" }}>
                       🔄 Đang tải các phòng stream giải trí...
                     </div>
-                  ) : streams.length === 0 ? (
-                    <div style={{ textAlign: "center", padding: "60px", background: "var(--bg-surface)", borderRadius: "16px", color: "var(--text-secondary)", border: "1px dashed var(--border-subtle)" }}>
-                      Chưa có phòng stream nào thuộc danh mục này. Hãy là người đầu tiên phát sóng!
-                    </div>
-                  ) : (
-                    <div className={styles.grid}>
-                      {streams.map((stream) => {
-                        const streamerStars = stream.streamer.starsEarned || 0;
-                        const streamerLevelInfo = getStreamerLevel(streamerStars);
-                        const categoryLabel = CATEGORIES.find(c => c.id === stream.category)?.label || stream.category;
+                  ) : (() => {
+                    const filteredStreams = streams.filter(
+                      (stream) =>
+                        stream.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        stream.streamer.displayName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        stream.streamer.username.toLowerCase().includes(searchQuery.toLowerCase())
+                    );
 
-                        return (
-                          <div
-                            key={stream.id}
-                            className={`${styles.streamCard} premium-card`}
-                            style={{
-                              borderTop: `3px solid ${stream.status === "LIVE" ? "var(--color-primary)" : "#374151"}`
-                            }}
-                            onClick={() => {
-                              if (stream.status === "LIVE") {
-                                router.push(`/viewer/${stream.id}`);
-                              } else {
-                                alert("Livestream này đã kết thúc. Bạn có thể xem bảng xếp hạng và tạo phòng phát mới.");
-                              }
-                            }}
-                          >
-                            <div className={styles.cardTop}>
-                              {stream.status === "LIVE" ? (
-                                <span className="live-badge">TRỰC TIẾP</span>
-                              ) : (
-                                <span style={{ background: "#374151", color: "#d1d5db", padding: "4px 10px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: "700" }}>
-                                  ĐÃ KẾT THÚC
-                                </span>
-                              )}
+                    if (streams.length === 0) {
+                      return (
+                        <div style={{ textAlign: "center", padding: "60px", background: "var(--bg-surface)", borderRadius: "16px", color: "var(--text-secondary)", border: "1px dashed var(--border-subtle)" }}>
+                          Chưa có phòng stream nào thuộc danh mục này. Hãy là người đầu tiên phát sóng!
+                        </div>
+                      );
+                    }
 
-                              <span style={{ background: "rgba(157, 78, 221, 0.2)", border: "1px solid var(--color-primary)", color: "var(--color-primary)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.7rem", fontWeight: "700" }}>
-                                {categoryLabel}
-                              </span>
+                    if (filteredStreams.length === 0) {
+                      return (
+                        <div style={{ textAlign: "center", padding: "60px", background: "var(--bg-surface)", borderRadius: "16px", color: "var(--text-secondary)", border: "1px dashed var(--border-subtle)" }}>
+                          🔍 Không tìm thấy phòng stream nào phù hợp với từ khóa &quot;{searchQuery}&quot;.
+                        </div>
+                      );
+                    }
 
-                              <span className={styles.statsBadge}>
+                    return (
+                      <div className={styles.grid}>
+                        {filteredStreams.map((stream) => {
+                          const streamerStars = stream.streamer.starsEarned || 0;
+                          const streamerLevelInfo = getStreamerLevel(streamerStars);
+                          const categoryLabel = CATEGORIES.find(c => c.id === stream.category)?.label || stream.category;
+
+                          return (
+                            <div
+                              key={stream.id}
+                              className={`${styles.streamCard} premium-card`}
+                              style={{
+                                borderTop: `3px solid ${stream.status === "LIVE" ? "var(--color-primary)" : "#374151"}`
+                              }}
+                              onClick={() => {
+                                if (stream.status === "LIVE") {
+                                  router.push(`/viewer/${stream.id}`);
+                                } else {
+                                  alert("Livestream này đã kết thúc. Bạn có thể xem bảng xếp hạng và tạo phòng phát mới.");
+                                }
+                              }}
+                            >
+                              <div className={styles.cardTop}>
                                 {stream.status === "LIVE" ? (
-                                  <>👤 {stream.viewerCount} xem</>
+                                  <span className="live-badge">TRỰC TIẾP</span>
                                 ) : (
-                                  <>✨ {stream.totalStars} sao</>
+                                  <span style={{ background: "#374151", color: "#d1d5db", padding: "4px 10px", borderRadius: "6px", fontSize: "0.75rem", fontWeight: "700" }}>
+                                    ĐÃ KẾT THÚC
+                                  </span>
                                 )}
-                              </span>
-                            </div>
 
-                            <div className={styles.cardBottom}>
-                              <h3 className={styles.streamTitle}>{stream.title}</h3>
-                              <div className={styles.streamerInfo}>
-                                <img src={stream.streamer.avatarUrl} alt={stream.streamer.displayName} className={styles.streamerAvatar} />
-                                <div style={{ display: "flex", flexDirection: "column" }}>
-                                  <span className={styles.streamerName}>
-                                    Phát bởi <strong>{stream.streamer.displayName}</strong>
-                                  </span>
-                                  <span style={{ fontSize: "0.7rem", color: streamerLevelInfo.color, fontWeight: "bold" }}>
-                                    {streamerLevelInfo.title} (Lvl {streamerLevelInfo.level})
-                                  </span>
-                                </div>
-                              </div>
-                              {stream.status === "LIVE" && (
-                                <span style={{ color: "var(--color-secondary)", fontSize: "0.85rem", fontWeight: "700", textAlign: "right" }}>
-                                  Xem ngay ➔
+                                <span style={{ background: "rgba(157, 78, 221, 0.2)", border: "1px solid var(--color-primary)", color: "var(--color-primary)", padding: "2px 8px", borderRadius: "6px", fontSize: "0.7rem", fontWeight: "700" }}>
+                                  {categoryLabel}
                                 </span>
-                              )}
+
+                                <span className={styles.statsBadge}>
+                                  {stream.status === "LIVE" ? (
+                                    <>👤 {stream.viewerCount} xem</>
+                                  ) : (
+                                    <>✨ {stream.totalStars} sao</>
+                                  )}
+                                </span>
+                              </div>
+
+                              <div className={styles.cardBottom}>
+                                <h3 className={styles.streamTitle}>{stream.title}</h3>
+                                <div className={styles.streamerInfo}>
+                                  <img src={stream.streamer.avatarUrl} alt={stream.streamer.displayName} className={styles.streamerAvatar} />
+                                  <div style={{ display: "flex", flexDirection: "column" }}>
+                                    <span className={styles.streamerName}>
+                                      Phát bởi <strong>{stream.streamer.displayName}</strong>
+                                    </span>
+                                    <span style={{ fontSize: "0.7rem", color: streamerLevelInfo.color, fontWeight: "bold" }}>
+                                      {streamerLevelInfo.title} (Lvl {streamerLevelInfo.level})
+                                    </span>
+                                  </div>
+                                </div>
+                                {stream.status === "LIVE" && (
+                                  <span style={{ color: "var(--color-secondary)", fontSize: "0.85rem", fontWeight: "700", textAlign: "right" }}>
+                                    Xem ngay ➔
+                                  </span>
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
+                          );
+                        })}
+                      </div>
+                    );
+                  })()}
                 </>
               )}
             </div>
@@ -745,6 +892,132 @@ export default function HomePage() {
           </div>
         </div>
       )}
+
+      {/* Modal Đăng Nhập / Đăng Ký bằng Username & Password */}
+      {showAuthModal && (
+        <div className={styles.modalOverlay} onClick={() => setShowAuthModal(false)}>
+          <div 
+            className={styles.modalContent} 
+            onClick={(e) => e.stopPropagation()} 
+            style={{ 
+              maxWidth: "420px", 
+              background: "rgba(20, 20, 28, 0.9)", 
+              backdropFilter: "blur(20px)",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              boxShadow: "0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(157, 78, 221, 0.25)"
+            }}
+          >
+            {/* Modal Tabs */}
+            <div style={{ display: "flex", borderBottom: "1px solid rgba(255, 255, 255, 0.1)", paddingBottom: "10px", justifyContent: "space-around" }}>
+              <button 
+                type="button"
+                onClick={() => { setAuthTab("login"); setAuthError(""); }}
+                style={{ 
+                  background: "none", 
+                  border: "none", 
+                  color: authTab === "login" ? "var(--color-primary)" : "var(--text-secondary)", 
+                  fontSize: "1.2rem", 
+                  fontWeight: "bold", 
+                  cursor: "pointer",
+                  paddingBottom: "6px",
+                  borderBottom: authTab === "login" ? "3px solid var(--color-primary)" : "none",
+                  transition: "all var(--transition-fast)"
+                }}
+              >
+                Đăng Nhập
+              </button>
+              <button 
+                type="button"
+                onClick={() => { setAuthTab("register"); setAuthError(""); }}
+                style={{ 
+                  background: "none", 
+                  border: "none", 
+                  color: authTab === "register" ? "var(--color-primary)" : "var(--text-secondary)", 
+                  fontSize: "1.2rem", 
+                  fontWeight: "bold", 
+                  cursor: "pointer",
+                  paddingBottom: "6px",
+                  borderBottom: authTab === "register" ? "3px solid var(--color-primary)" : "none",
+                  transition: "all var(--transition-fast)"
+                }}
+              >
+                Đăng Ký
+              </button>
+            </div>
+
+            <form onSubmit={handleAuthSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px", marginTop: "10px" }}>
+              {authError && (
+                <div style={{ background: "rgba(239, 68, 68, 0.1)", border: "1px solid var(--error)", color: "var(--error)", padding: "10px", borderRadius: "8px", fontSize: "0.85rem", textAlign: "center" }}>
+                  ⚠️ {authError}
+                </div>
+              )}
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Tên đăng nhập (Username)</label>
+                <input 
+                  type="text" 
+                  className={styles.input} 
+                  value={authUsername}
+                  onChange={(e) => setAuthUsername(e.target.value)}
+                  placeholder="Ví dụ: myusername (3-20 ký tự)..."
+                  required
+                />
+              </div>
+
+              {authTab === "register" && (
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Tên hiển thị (Display Name)</label>
+                  <input 
+                    type="text" 
+                    className={styles.input} 
+                    value={authDisplayName}
+                    onChange={(e) => setAuthDisplayName(e.target.value)}
+                    placeholder="Ví dụ: Nguyễn Văn A..."
+                    required
+                  />
+                </div>
+              )}
+
+              <div className={styles.formGroup}>
+                <label className={styles.label}>Mật khẩu (Password)</label>
+                <input 
+                  type="password" 
+                  className={styles.input} 
+                  value={authPassword}
+                  onChange={(e) => setAuthPassword(e.target.value)}
+                  placeholder="Nhập mật khẩu (tối thiểu 6 ký tự)..."
+                  required
+                />
+              </div>
+
+              <div className={styles.modalActions} style={{ marginTop: "15px", justifyContent: "space-between", alignItems: "center" }}>
+                <button
+                  type="button"
+                  className="glow-btn-secondary"
+                  onClick={() => setShowAuthModal(false)}
+                  disabled={authLoading}
+                  style={{ padding: "8px 16px" }}
+                >
+                  Hủy
+                </button>
+                <button
+                  type="submit"
+                  className="glow-btn-primary"
+                  disabled={authLoading}
+                  style={{ 
+                    padding: "8px 20px", 
+                    background: "linear-gradient(135deg, var(--color-primary), var(--color-secondary))",
+                    boxShadow: "0 4px 15px rgba(255, 0, 127, 0.3)"
+                  }}
+                >
+                  {authLoading ? "Đang xử lý..." : authTab === "login" ? "Đăng Nhập ➔" : "Đăng Ký ➔"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Mobile Bottom Navigation Bar */}
       <nav className={styles.bottomNav}>
         <button className={`${styles.bottomNavItem} ${styles.bottomNavItemActive}`} type="button">

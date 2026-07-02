@@ -108,6 +108,15 @@ function StreamerContent() {
   const [goalTargetInput, setGoalTargetInput] = useState("");
   const [goalAchieved, setGoalAchieved] = useState(false);
 
+  // Trạng thái Dự Đoán và VIP Entry
+  const [activePrediction, setActivePrediction] = useState<any | null>(null);
+  const [showPredictionModal, setShowPredictionModal] = useState(false);
+  const [predTitleInput, setPredTitleInput] = useState("");
+  const [predOptionAInput, setPredOptionAInput] = useState("");
+  const [predOptionBInput, setPredOptionBInput] = useState("");
+  const [predSubmitting, setPredSubmitting] = useState(false);
+  const [vipEntryNotification, setVipEntryNotification] = useState<any | null>(null);
+
   // 1.1 Khởi chạy các đồng hồ đếm ngược và helper
   useEffect(() => {
     if (pkBattle && pkBattle.status === "LIVE" && pkBattle.endTime) {
@@ -271,6 +280,100 @@ function StreamerContent() {
     }
   };
 
+  // Tạo kèo dự đoán mới
+  const handleCreatePredictionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentUser || !stream) return;
+    if (!predTitleInput.trim() || !predOptionAInput.trim() || !predOptionBInput.trim()) {
+      alert("Vui lòng điền đầy đủ thông tin kèo dự đoán!");
+      return;
+    }
+    setPredSubmitting(true);
+    try {
+      const res = await fetch("/api/predictions/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          streamId: stream.id,
+          streamerId: currentUser.id,
+          title: predTitleInput,
+          optionA: predOptionAInput,
+          optionB: predOptionBInput
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setActivePrediction(data.prediction);
+        setShowPredictionModal(false);
+        setPredTitleInput("");
+        setPredOptionAInput("");
+        setPredOptionBInput("");
+      } else {
+        alert(data.error || "Không thể tạo kèo dự đoán!");
+      }
+    } catch (err) {
+      console.error("Lỗi tạo dự đoán:", err);
+      alert("Lỗi hệ thống khi tạo dự đoán!");
+    } finally {
+      setPredSubmitting(false);
+    }
+  };
+
+  // Khóa kèo cược dự đoán
+  const handleLockPredictionSubmit = async () => {
+    if (!currentUser || !activePrediction) return;
+    try {
+      const res = await fetch("/api/predictions/lock", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          predictionId: activePrediction.id,
+          streamerId: currentUser.id
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setActivePrediction(data.prediction);
+      } else {
+        alert(data.error || "Không thể khóa kèo dự đoán!");
+      }
+    } catch (err) {
+      console.error("Lỗi khóa cược:", err);
+    }
+  };
+
+  // Cập nhật kết quả dự đoán
+  const handleResolvePredictionSubmit = async (outcome: "A" | "B" | "CANCELLED") => {
+    if (!currentUser || !activePrediction) return;
+    const confirmMsg = outcome === "CANCELLED"
+      ? "Bạn có chắc chắn muốn HỦY kèo này và hoàn trả lại sao cho tất cả người cược?"
+      : `Bạn có chắc chắn chọn [Lựa chọn ${outcome === "A" ? activePrediction.optionA : activePrediction.optionB}] thắng cuộc?`;
+    
+    if (!confirm(confirmMsg)) return;
+
+    try {
+      const res = await fetch("/api/predictions/resolve", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          predictionId: activePrediction.id,
+          streamerId: currentUser.id,
+          winOption: outcome
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setActivePrediction(null);
+        setShowPredictionModal(false);
+        alert(outcome === "CANCELLED" ? "Đã hủy kèo và hoàn tiền thành công!" : "Đã công bố kết quả và phát thưởng thành công!");
+      } else {
+        alert(data.error || "Không thể giải quyết kèo dự đoán!");
+      }
+    } catch (err) {
+      console.error("Lỗi cập nhật kết quả dự đoán:", err);
+    }
+  };
+
   // 1. Tải thông tin người dùng bằng Cookie và kiểm tra tính hợp lệ của luồng stream
   useEffect(() => {
     if (!streamId) {
@@ -334,6 +437,19 @@ function StreamerContent() {
           }
         } catch (pkErr) {
           console.error("Lỗi lấy PK status ban đầu:", pkErr);
+        }
+
+        // Lấy trạng thái Dự đoán khởi chạy
+        try {
+          const predRes = await fetch(`/api/predictions/active?streamId=${streamId}`);
+          if (predRes.ok) {
+            const predData = await predRes.json();
+            if (predData.success && predData.prediction) {
+              setActivePrediction(predData.prediction);
+            }
+          }
+        } catch (predErr) {
+          console.error("Lỗi lấy trạng thái Dự đoán khởi chạy:", predErr);
         }
 
         // Bắt đầu kết nối cổng WebSockets thời gian thực
@@ -583,6 +699,90 @@ function StreamerContent() {
               setGoalAchieved(true);
             }
             break;
+
+          case "prediction-created":
+            setActivePrediction(payload.prediction);
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `🔮 Kèo dự đoán bắt đầu: "${payload.prediction.title}".`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            break;
+
+          case "prediction-locked": {
+            const lockedPred = payload.prediction;
+            setActivePrediction((prev: any) =>
+              prev ? { ...prev, ...lockedPred, status: "LOCKED" } : null
+            );
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `🔒 Kèo dự đoán: "${lockedPred?.title || "Dự đoán"}" đã khóa nhận cược! Hãy chọn đáp án thắng.`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            break;
+          }
+
+          case "prediction-resolved": {
+            const resolvedPred = payload.prediction;
+            const winOpt = resolvedPred?.winOption || payload.winOption;
+
+            // Hiển thị kết quả đầy đủ rồi mới ẩn sau 15 giây
+            setActivePrediction(resolvedPred || null);
+
+            // Đẩy thông báo kết quả vào chat của Streamer
+            if (resolvedPred) {
+              const chatText = winOpt === "CANCELLED"
+                ? `🚫 Kèo dự đoán "${resolvedPred.title}" đã bị HUỶ. Toàn bộ số sao đặt cược đã được hoàn lại!`
+                : `🏆 Kết quả kèo "${resolvedPred.title}": [${winOpt === "A" ? resolvedPred.optionA : resolvedPred.optionB}] đã thắng! Phần thưởng đã được phát cho người dự đoán đúng.`;
+              setMessages((prev) => [...prev, {
+                id: Math.random().toString(),
+                sender: { displayName: "Hệ thống" } as any,
+                text: chatText,
+                createdAt: new Date().toISOString(),
+                isGift: true
+              }]);
+            }
+
+            setTimeout(() => setActivePrediction(null), 15000);
+            break;
+          }
+
+          case "prediction-bet": {
+            const { prediction } = payload;
+            setActivePrediction((prev: any) => {
+              if (!prev || prev.id !== prediction.id) return prev;
+              return {
+                ...prev,
+                totalStarsA: prediction.totalStarsA,
+                totalStarsB: prediction.totalStarsB,
+                bets: prediction.bets || prev.bets
+              };
+            });
+            break;
+          }
+
+          case "vip-entry": {
+            const { user: vipUser, level: vipLevel, title: vipTitle } = payload;
+            setVipEntryNotification({
+              displayName: vipUser.displayName,
+              title: vipTitle,
+              level: vipLevel
+            });
+            setTimeout(() => setVipEntryNotification(null), 4000);
+
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `💎 VIP [${vipTitle}] ${vipUser.displayName} đã cưỡi rồng tiến vào phòng live!`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            break;
+          }
 
           // ==========================================
           // KIẾN THỨC BE: XỬ LÝ HANDSHAKE WEBRTC SIGNALING
@@ -1251,6 +1451,23 @@ function StreamerContent() {
               🎯 Đặt Mục Tiêu
             </button>
 
+            {/* Nút quản lý Dự Đoán */}
+            <button
+              onClick={() => setShowPredictionModal(true)}
+              style={{
+                background: "rgba(157, 78, 221, 0.2)",
+                color: "var(--color-primary)",
+                border: "1px solid var(--color-primary)",
+                borderRadius: "6px",
+                padding: "8px 14px",
+                fontSize: "0.85rem",
+                fontWeight: "bold",
+                cursor: "pointer"
+              }}
+            >
+              🔮 Quản Lý Dự Đoán
+            </button>
+
             {/* Nút thách đấu PK */}
             <button
               onClick={loadActiveStreams}
@@ -1449,6 +1666,163 @@ function StreamerContent() {
                 Hủy
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* CSS Keyframes cho thông báo VIP Entry */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes slideDownFade {
+          0% { transform: translate(-50%, -20px); opacity: 0; }
+          100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+      `}} />
+
+      {/* Banner thông báo VIP gia nhập */}
+      {vipEntryNotification && (
+        <div
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "linear-gradient(90deg, rgba(255, 0, 127, 0.95), rgba(157, 78, 221, 0.95))",
+            border: "2px solid var(--color-accent)",
+            boxShadow: "0 0 20px var(--color-accent-glow)",
+            borderRadius: "50px",
+            padding: "10px 24px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            zIndex: 9999,
+            animation: "slideDownFade 0.4s ease-out forwards",
+          }}
+        >
+          <span style={{ fontSize: "1.5rem" }}>💎</span>
+          <div style={{ color: "#fff", fontWeight: "800", fontSize: "0.95rem", whiteSpace: "nowrap" }}>
+            VIP <span style={{ color: "var(--color-accent)" }}>[{vipEntryNotification.title}]</span> {vipEntryNotification.displayName} đã tiến vào phòng!
+          </div>
+        </div>
+      )}
+
+      {/* MODAL QUẢN LÝ DỰ ĐOÁN (PREDICTION CONTROL MODAL) */}
+      {showPredictionModal && (
+        <div className={styles.wheelModalOverlay} onClick={() => setShowPredictionModal(false)}>
+          <div className={styles.wheelModalContent} onClick={(e) => e.stopPropagation()} style={{ width: "380px" }}>
+            <h3 style={{ fontSize: "1.2rem", fontWeight: "800", color: "var(--color-accent)", display: "flex", alignItems: "center", gap: "6px", marginBottom: "15px" }}>
+              <span>🔮</span> Quản Lý Kèo Dự Đoán
+            </h3>
+
+            {/* Kịch bản 1: Không có kèo đang chạy -> Form tạo mới */}
+            {!activePrediction ? (
+              <form onSubmit={handleCreatePredictionSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <div>
+                  <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>Câu hỏi dự đoán:</label>
+                  <input
+                    type="text"
+                    required
+                    value={predTitleInput}
+                    onChange={(e) => setPredTitleInput(e.target.value)}
+                    placeholder="Ví dụ: Idol có thắng trận PK tiếp theo không?"
+                    style={{ width: "100%", padding: "10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", fontSize: "0.85rem" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>Lựa chọn A:</label>
+                  <input
+                    type="text"
+                    required
+                    value={predOptionAInput}
+                    onChange={(e) => setPredOptionAInput(e.target.value)}
+                    placeholder="Ví dụ: Có, chắc chắn thắng"
+                    style={{ width: "100%", padding: "10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", fontSize: "0.85rem" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: "0.75rem", color: "var(--text-secondary)", display: "block", marginBottom: "4px" }}>Lựa chọn B:</label>
+                  <input
+                    type="text"
+                    required
+                    value={predOptionBInput}
+                    onChange={(e) => setPredOptionBInput(e.target.value)}
+                    placeholder="Ví dụ: Không, đối thủ quá mạnh"
+                    style={{ width: "100%", padding: "10px", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: "6px", color: "#fff", fontSize: "0.85rem" }}
+                  />
+                </div>
+                <div style={{ display: "flex", gap: "10px", marginTop: "8px" }}>
+                  <button type="submit" disabled={predSubmitting} style={{ flex: 1, padding: "10px", background: "linear-gradient(135deg, var(--color-primary), #7b2cbf)", border: "none", color: "#fff", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}>
+                    {predSubmitting ? "Đang tạo..." : "Bắt Đầu Kèo 🔮"}
+                  </button>
+                  <button type="button" onClick={() => setShowPredictionModal(false)} style={{ flex: 1, padding: "10px", background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}>
+                    Hủy
+                  </button>
+                </div>
+              </form>
+            ) : (
+              /* Kịch bản 2: Có kèo đang hoạt động -> Panel quản lý */
+              <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                <div style={{ padding: "12px", background: "rgba(255,255,255,0.02)", borderRadius: "8px", border: "1px solid var(--border-subtle)" }}>
+                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "4px" }}>Đang diễn ra:</div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: "bold", color: "#fff", marginBottom: "10px" }}>{activePrediction.title}</div>
+                  
+                  {/* Trạng thái và số liệu */}
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                    <span>Trạng thái: <strong>{activePrediction.status === "LOCKED" ? "🔒 Đã đóng cược" : "⚡ Đang nhận cược"}</strong></span>
+                  </div>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--text-secondary)", marginTop: "4px" }}>
+                    <span>[A] {activePrediction.optionA}: {activePrediction.totalStarsA} ⭐</span>
+                    <span>[B] {activePrediction.optionB}: {activePrediction.totalStarsB} ⭐</span>
+                  </div>
+                </div>
+
+                {/* Các nút điều khiển trạng thái kèo */}
+                <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                  {activePrediction.status === "ACTIVE" && (
+                    <button
+                      onClick={handleLockPredictionSubmit}
+                      style={{ width: "100%", padding: "10px", background: "var(--color-accent)", border: "none", color: "#000", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}
+                    >
+                      Khóa Nhận Cược 🔒
+                    </button>
+                  )}
+
+                  {activePrediction.status === "LOCKED" && (
+                    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-secondary)", textAlign: "center" }}>Chọn bên chiến thắng để chia thưởng:</div>
+                      <div style={{ display: "flex", gap: "10px" }}>
+                        <button
+                          onClick={() => handleResolvePredictionSubmit("A")}
+                          style={{ flex: 1, padding: "10px", background: "var(--color-primary)", border: "none", color: "#fff", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}
+                        >
+                          A Thắng 🏆
+                        </button>
+                        <button
+                          onClick={() => handleResolvePredictionSubmit("B")}
+                          style={{ flex: 1, padding: "10px", background: "var(--color-secondary)", border: "none", color: "#fff", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}
+                        >
+                          B Thắng 🏆
+                        </button>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Nút hủy kèo hoàn tiền */}
+                  <button
+                    onClick={() => handleResolvePredictionSubmit("CANCELLED")}
+                    style={{ width: "100%", padding: "10px", background: "rgba(239, 68, 68, 0.15)", border: "1px solid var(--error)", color: "var(--error)", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}
+                  >
+                    Hủy Kèo & Hoàn Tiền 🚫
+                  </button>
+
+                  <button
+                    onClick={() => setShowPredictionModal(false)}
+                    style={{ width: "100%", padding: "10px", background: "rgba(255,255,255,0.08)", border: "none", color: "#fff", borderRadius: "6px", fontWeight: "bold", cursor: "pointer" }}
+                  >
+                    Đóng Bảng
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -46,11 +46,11 @@ redisSub.on("error", (err) => {
 const rooms = new Map();
 
 // Đăng ký nhận message pattern
-redisSub.psubscribe("room:*:gifts", (err, count) => {
+redisSub.psubscribe("room:*:gifts", "room:*:predictions", (err, count) => {
   if (err) {
     console.error("❌ [WS Redis] Lỗi đăng ký pattern:", err.message);
   } else {
-    console.log(`📡 [WS Redis] Đăng ký thành công pattern room:*:gifts`);
+    console.log(`📡 [WS Redis] Đăng ký thành công pattern room:*:gifts và room:*:predictions`);
   }
 });
 
@@ -198,6 +198,27 @@ function handleJoinRoom(ws, payload) {
     room.viewers.set(ws.id, ws);
     room.viewerCount++;
     console.log(`👤 Viewer [${user?.displayName}] đã tham gia phòng: ${streamId}. Tổng người xem: ${room.viewerCount}`);
+
+    // Tự động kiểm tra và thông báo VIP gia nhập (Cấp 3 trở lên, tức là starsGifted >= 100)
+    const starsGifted = user?.starsGifted || 0;
+    let vipLevel = 1;
+    let vipTitle = "";
+    if (starsGifted >= 5000) { vipLevel = 6; vipTitle = "Thần Thoại 👑"; }
+    else if (starsGifted >= 1000) { vipLevel = 5; vipTitle = "Huyền Thoại 💎"; }
+    else if (starsGifted >= 500) { vipLevel = 4; vipTitle = "Đại Phú Hộ 🚀"; }
+    else if (starsGifted >= 100) { vipLevel = 3; vipTitle = "Đại Gia 🌟"; }
+    else if (starsGifted >= 10) { vipLevel = 2; vipTitle = "Tích Cực ✨"; }
+
+    if (vipLevel >= 3) {
+      broadcastToRoom(streamId, {
+        type: "vip-entry",
+        payload: {
+          user: ws.user,
+          level: vipLevel,
+          title: vipTitle
+        }
+      });
+    }
   }
 
   // Thông báo cập nhật số lượng người xem cho tất cả mọi người trong phòng
@@ -562,3 +583,4 @@ function handlePKScoreUpdate(ws, payload) {
     broadcastToRoom(opponentStreamId, msg);
   }
 }
+

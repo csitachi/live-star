@@ -123,6 +123,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   username: 'username',
+  passwordHash: 'passwordHash',
   displayName: 'displayName',
   avatarUrl: 'avatarUrl',
   email: 'email',
@@ -246,6 +247,30 @@ exports.Prisma.PostCommentScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.PredictionScalarFieldEnum = {
+  id: 'id',
+  streamId: 'streamId',
+  title: 'title',
+  optionA: 'optionA',
+  optionB: 'optionB',
+  status: 'status',
+  winOption: 'winOption',
+  totalStarsA: 'totalStarsA',
+  totalStarsB: 'totalStarsB',
+  createdAt: 'createdAt',
+  lockedAt: 'lockedAt',
+  endedAt: 'endedAt'
+};
+
+exports.Prisma.PredictionBetScalarFieldEnum = {
+  id: 'id',
+  predictionId: 'predictionId',
+  userId: 'userId',
+  option: 'option',
+  starAmount: 'starAmount',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -284,7 +309,9 @@ exports.Prisma.ModelName = {
   TreasureClaim: 'TreasureClaim',
   Post: 'Post',
   PostLike: 'PostLike',
-  PostComment: 'PostComment'
+  PostComment: 'PostComment',
+  Prediction: 'Prediction',
+  PredictionBet: 'PredictionBet'
 };
 
 /**

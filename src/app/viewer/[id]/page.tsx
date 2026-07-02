@@ -13,6 +13,7 @@ import Leaderboard, { LeaderboardEntry } from "@/features/stream/components/Lead
 import GiftSelector, { GiftTier } from "@/features/gift/components/GiftSelector";
 import GiftAnimationCanvas from "@/features/gift/components/GiftAnimationCanvas";
 import { getViewerLevel, getStreamerLevel } from "@/lib/level";
+import PredictionWidget from "@/features/stream/components/PredictionWidget";
 
 interface User {
   id: string;
@@ -108,6 +109,11 @@ export default function ViewerPage() {
 
   // Trạng thái Đóng góp mục tiêu nhóm
   const [goalAchieved, setGoalAchieved] = useState(false);
+
+  // Trạng thái Dự Đoán và VIP Entry
+  const [activePrediction, setActivePrediction] = useState<any | null>(null);
+  const [betting, setBetting] = useState(false);
+  const [vipEntryNotification, setVipEntryNotification] = useState<any | null>(null);
 
   // Refs WebSockets, WebRTC và Canvas hoạt họa
   const wsRef = useRef<WebSocket | null>(null);
@@ -290,7 +296,7 @@ export default function ViewerPage() {
         setLeaderboard(detailData.leaderboard);
         setLoading(false);
 
-        // Lấy trạng thái trận PK Battle hiện tại
+        // Lấy trạng thái PK khởi chạy
         try {
           const pkRes = await fetch(`/api/pk/status?streamerId=${detailData.stream.streamerId}`);
           if (pkRes.ok) {
@@ -301,6 +307,19 @@ export default function ViewerPage() {
           }
         } catch (pkErr) {
           console.error("Lỗi lấy trạng thái PK khởi chạy:", pkErr);
+        }
+
+        // Lấy trạng thái Dự đoán khởi chạy
+        try {
+          const predRes = await fetch(`/api/predictions/active?streamId=${streamId}`);
+          if (predRes.ok) {
+            const predData = await predRes.json();
+            if (predData.success && predData.prediction) {
+              setActivePrediction(predData.prediction);
+            }
+          }
+        } catch (predErr) {
+          console.error("Lỗi lấy trạng thái Dự đoán khởi chạy:", predErr);
         }
 
         // Chỉ thiết lập kết nối thời gian thực nếu stream đang LIVE
@@ -592,6 +611,104 @@ export default function ViewerPage() {
             if (videoRef.current) videoRef.current.srcObject = null;
             startCanvasAnimation();
             break;
+
+          case "prediction-created":
+            setActivePrediction(payload.prediction);
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `🔮 Kèo dự đoán bắt đầu: "${payload.prediction.title}". Lựa chọn [A]: ${payload.prediction.optionA} | [B]: ${payload.prediction.optionB}. Hãy đặt cược ngay!`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            scrollToBottom();
+            break;
+
+          case "prediction-locked": {
+            const lockedPred = payload.prediction;
+            setActivePrediction((prev: any) =>
+              prev ? { ...prev, ...lockedPred, status: "LOCKED" } : null
+            );
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `🔒 Kèo dự đoán: "${lockedPred?.title || "Dự đoán"}" đã đóng cửa cược! Đang đợi kết quả...`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            scrollToBottom();
+            break;
+          }
+
+          case "prediction-resolved": {
+            const resolvedPred = payload.prediction;
+            const resolvedPayouts = payload.payouts || [];
+            const winOpt = resolvedPred?.winOption || payload.winOption;
+
+            // 1. Cập nhật toàn bộ prediction kèm theo bets để widget hiển thị thắng/thua chính xác
+            setActivePrediction(resolvedPred || null);
+
+            // 2. Cộng thưởng sã trực tiếp vào số dư của viewer nếu họ có trong danh sách thắng
+            if (currentUser && resolvedPayouts.length > 0) {
+              const myPayout = resolvedPayouts.find((p: any) => p.userId === currentUser.id);
+              if (myPayout) {
+                setCurrentUser((prev: any) => prev ? { ...prev, starBalance: prev.starBalance + myPayout.amount } : null);
+              }
+            }
+
+            // 3. Đẩy thông báo kết quả vào chat
+            if (resolvedPred) {
+              const chatText = winOpt === "CANCELLED"
+                ? `🚫 Kèo dự đoán "${resolvedPred.title}" đã bị HUỶ. Toàn bộ số sao đặt cược đã được hoàn lại!`
+                : `🏆 Kèo dự đoán "${resolvedPred.title}" đã kết thúc! Kết quả đúng: [${winOpt === "A" ? resolvedPred.optionA : resolvedPred.optionB}]. Phần thưởng đã được phát!`;
+              setMessages((prev) => [...prev, {
+                id: Math.random().toString(),
+                sender: { displayName: "Hệ thống" } as any,
+                text: chatText,
+                createdAt: new Date().toISOString(),
+                isGift: true
+              }]);
+              scrollToBottom();
+            }
+
+            // 4. Ẩn widget sau 15 giây để người xem kịp ăn mừng kết quả
+            setTimeout(() => setActivePrediction(null), 15000);
+            break;
+          }
+
+          case "prediction-bet": {
+            const { prediction } = payload;
+            setActivePrediction((prev: any) => {
+              if (!prev || prev.id !== prediction.id) return prev;
+              return {
+                ...prev,
+                totalStarsA: prediction.totalStarsA,
+                totalStarsB: prediction.totalStarsB,
+                bets: prediction.bets || prev.bets
+              };
+            });
+            break;
+          }
+
+          case "vip-entry": {
+            const { user: vipUser, level: vipLevel, title: vipTitle } = payload;
+            setVipEntryNotification({
+              displayName: vipUser.displayName,
+              title: vipTitle,
+              level: vipLevel
+            });
+            setTimeout(() => setVipEntryNotification(null), 4000);
+
+            setMessages((prev) => [...prev, {
+              id: Math.random().toString(),
+              sender: { displayName: "Hệ thống" } as any,
+              text: `💎 VIP [${vipTitle}] ${vipUser.displayName} đã cưỡi rồng tiến vào phòng live!`,
+              createdAt: new Date().toISOString(),
+              isGift: true
+            }]);
+            setTimeout(scrollToBottom, 50);
+            break;
+          }
         }
       } catch (err) {
         console.error("Lỗi xử lý WebSocket:", err);
@@ -831,7 +948,36 @@ export default function ViewerPage() {
     }
   };
 
-  // Chơi minigame Vòng quay may mắn (Lucky Wheel)
+  // Đặt cược dự đoán trực tiếp
+  const handleBet = async (option: "A" | "B", amount: number) => {
+    if (!currentUser || !activePrediction) return;
+    setBetting(true);
+    try {
+      const res = await fetch("/api/predictions/bet", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          predictionId: activePrediction.id,
+          userId: currentUser.id,
+          option,
+          starAmount: amount,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setCurrentUser((prev) => prev ? { ...prev, starBalance: data.newBalance } : null);
+        setActivePrediction(data.prediction);
+      } else {
+        throw new Error(data.error || "Đặt cược thất bại!");
+      }
+    } catch (err: any) {
+      console.error("Lỗi khi đặt cược:", err);
+      throw err;
+    } finally {
+      setBetting(false);
+    }
+  };  // Chơi minigame Vòng quay may mắn (Lucky Wheel)
   const handleSpinWheel = async () => {
     if (!currentUser || isWheelSpinning) return;
 
@@ -1020,6 +1166,40 @@ export default function ViewerPage() {
 
   return (
     <div className={styles.container}>
+      {/* CSS Keyframes cho thông báo VIP Entry */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes slideDownFade {
+          0% { transform: translate(-50%, -20px); opacity: 0; }
+          100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+      `}} />
+
+      {/* Banner thông báo VIP gia nhập */}
+      {vipEntryNotification && (
+        <div
+          style={{
+            position: "absolute",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            background: "linear-gradient(90deg, rgba(255, 0, 127, 0.95), rgba(157, 78, 221, 0.95))",
+            border: "2px solid var(--color-accent)",
+            boxShadow: "0 0 20px var(--color-accent-glow)",
+            borderRadius: "50px",
+            padding: "10px 24px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            zIndex: 9999,
+            animation: "slideDownFade 0.4s ease-out forwards",
+          }}
+        >
+          <span style={{ fontSize: "1.5rem" }}>💎</span>
+          <div style={{ color: "#fff", fontWeight: "800", fontSize: "0.95rem", whiteSpace: "nowrap" }}>
+            VIP <span style={{ color: "var(--color-accent)" }}>[{vipEntryNotification.title}]</span> {vipEntryNotification.displayName} đã tiến vào phòng!
+          </div>
+        </div>
+      )}
       {/* Cột trái: Player, Gửi quà tặng và mô tả */}
       <div className={styles.mainContent}>
         {/* Header phòng live */}
@@ -1294,6 +1474,14 @@ export default function ViewerPage() {
           onSendGift={handleSendGiftSubmit}
           gifting={gifting}
           styles={styles}
+        />
+
+        {/* Widget Dự Đoán Thời Gian Thực */}
+        <PredictionWidget
+          prediction={activePrediction}
+          currentUser={currentUser}
+          onBet={handleBet}
+          betting={betting}
         />
       </div>
 
