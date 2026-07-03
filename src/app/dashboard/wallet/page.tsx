@@ -30,7 +30,7 @@ export default function WalletDashboardPage() {
     async function loadWalletData() {
       try {
         // Kiểm tra đăng nhập qua api/auth/me trước
-        const meRes = await fetch("/api/auth/me");
+        const meRes = await fetch("/api/auth/me", { cache: "no-store" });
         if (!meRes.ok) {
           setAuthError(true);
           router.replace("/");
@@ -38,7 +38,7 @@ export default function WalletDashboardPage() {
         }
 
         // Tải dữ liệu ví sao
-        const walletRes = await fetch("/api/dashboard/wallet");
+        const walletRes = await fetch("/api/dashboard/wallet", { cache: "no-store" });
         if (walletRes.ok) {
           const json = await walletRes.json();
           setSummary(json.data);

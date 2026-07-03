@@ -1287,8 +1287,283 @@
 }
 
 /* === FILTER BOMB GRID — base rule (responsive override ở media queries trên) === */
+/* === FILTER BOMB GRID — base rule (responsive override ở media queries trên) === */
 .filterBombGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+}
+
+/* =====================================================
+   MOBILE IMMERSIVE VIEWER LAYOUT & BOTTOM SHEET
+   ===================================================== */
+
+/* Mặc định trên Desktop: Ẩn các thanh di động hoặc hiển thị dạng thường */
+.mobileToolbar {
+  display: none;
+}
+
+.mobileBottomSheet {
+  background: transparent;
+  border-radius: 0;
+  border-top: none;
+  transform: none !important;
+  box-shadow: none;
+  padding: 0;
+  position: static;
+  z-index: auto;
+}
+
+.mobileBottomSheetHeader {
+  display: none;
+}
+
+/* Overrides khi chạy trên di động */
+@media (max-width: 768px) {
+  .container {
+    position: relative;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    background: #000;
+  }
+
+  .mainContent {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none; /* Cho phép tương tác xuyên qua các vùng trống để bấm vào video */
+  }
+
+  /* Kích hoạt lại pointer-events cho các phần tử con thật sự */
+  .streamHeader,
+  .goalContainer,
+  .mobileToolbar,
+  .mobileBottomSheet,
+  .wheelModalOverlay,
+  .pkContainer {
+    pointer-events: auto;
+  }
+
+  /* Header phòng live nổi trên cùng */
+  .streamHeader {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 15;
+    background: rgba(15, 15, 24, 0.65) !important;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 10px 12px !important;
+  }
+
+  /* Streamer details gọn hơn trên mobile */
+  .streamerAvatar {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  .streamTitle {
+    font-size: 0.9rem !important;
+    max-width: 160px !important;
+  }
+  .streamerName {
+    font-size: 0.72rem !important;
+  }
+
+  /* Thanh mục tiêu nổi bên dưới Header */
+  .goalContainer {
+    position: absolute;
+    top: 120px;
+    left: 10px;
+    right: 10px;
+    z-index: 14;
+    background: rgba(15, 15, 24, 0.5) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    padding: 8px 12px;
+    margin: 0;
+  }
+
+  /* Video tràn toàn màn hình nền */
+  .videoSection {
+    position: absolute;
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    z-index: 1;
+    border-radius: 0 !important;
+    border: none !important;
+    margin: 0 !important;
+  }
+
+  .videoFeed {
+    height: 100% !important;
+    width: 100% !important;
+    object-fit: cover !important; /* Video tràn nền điện thoại */
+  }
+
+  /* Đối thủ PK song đấu di động */
+  .opponentPanel {
+    background: rgba(5, 5, 8, 0.7) !important;
+    border-left: 2px solid var(--color-primary) !important;
+  }
+  .opponentAvatar {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  /* PK score bar di động */
+  .pkContainer {
+    top: 180px !important; /* Đẩy xuống dưới goal container */
+    background: rgba(11, 11, 15, 0.75) !important;
+    backdrop-filter: blur(8px);
+  }
+
+  /* Chat trôi nổi trong suốt góc dưới bên trái */
+  .sidebar {
+    position: absolute;
+    bottom: 80px;
+    left: 12px;
+    width: 72% !important;
+    height: auto !important;
+    max-height: 220px !important;
+    z-index: 10;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    pointer-events: none; /* Vùng rỗng không cản click */
+  }
+
+  .chatSection {
+    background: transparent !important;
+    height: 100% !important;
+  }
+
+  .chatHeader {
+    display: none !important; /* Ẩn tiêu đề chat trên mobile */
+  }
+
+  .chatMessages {
+    pointer-events: auto !important;
+    background: transparent !important;
+    mask-image: linear-gradient(to bottom, transparent 0%, white 20%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, white 20%);
+    overflow-y: auto;
+    gap: 4px;
+    padding: 0 4px;
+  }
+
+  /* Ẩn form nhập chat mặc định của component để dùng bottom sheet */
+  .chatInputArea {
+    display: none !important;
+  }
+
+  /* Toolbar nổi (Bottom Right) */
+  .mobileToolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    position: absolute;
+    bottom: 80px;
+    right: 12px;
+    z-index: 15;
+    pointer-events: auto;
+  }
+
+  .toolbarBtn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(15, 15, 24, 0.75);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .toolbarBtn:active {
+    transform: scale(0.85);
+  }
+
+  .toolbarBtnActive {
+    background: var(--color-primary) !important;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 10px var(--color-primary-glow) !important;
+  }
+
+  /* Thiết kế Bottom Sheet trượt lên di động */
+  .mobileBottomSheet {
+    display: flex !important;
+    flex-direction: column;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60vh !important;
+    max-height: 480px !important;
+    background: rgba(15, 15, 24, 0.96) !important;
+    backdrop-filter: blur(20px);
+    border-radius: 24px 24px 0 0 !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.12) !important;
+    z-index: 30;
+    transform: translateY(100%) !important;
+    transition: transform 0.35s cubic-bezier(0.15, 0.85, 0.15, 1) !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+  }
+
+  .mobileBottomSheetActive {
+    transform: translateY(0) !important;
+  }
+
+  .mobileBottomSheetHeader {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .mobileBottomSheetTitle {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--color-accent);
+    letter-spacing: 0.5px;
+  }
+
+  .mobileBottomSheetClose {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .mobileBottomSheetBody {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  /* Ẩn các hiệu ứng Toast đè lên Header */
+  .overlayTop {
+    top: 75px !important;
+    left: 12px;
+  }
 }

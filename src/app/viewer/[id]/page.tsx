@@ -132,6 +132,9 @@ export default function ViewerPage() {
   // Trạng thái hiển thị Nhiệm vụ hàng ngày
   const [showQuests, setShowQuests] = useState(false);
 
+  // Trạng thái hiển thị Bottom Sheet trên di động (none | gift | prediction | leaderboard | chat_input)
+  const [activeMobileSheet, setActiveMobileSheet] = useState<"none" | "gift" | "prediction" | "leaderboard" | "chat_input">("none");
+
   // Phase 2: CSS Filter Effect state
   const [activeFilterEffect, setActiveFilterEffect] = useState<string | null>(null);
   const [filterDuration, setFilterDuration] = useState(15000);
@@ -1565,101 +1568,119 @@ export default function ViewerPage() {
           </div>
         )}
 
-        {/* Component bảng chọn quà tặng chia tách */}
-        <GiftSelector
-          giftTiers={GIFT_TIERS}
-          selectedGiftIndex={selectedGiftIndex}
-          onSelectGift={setSelectedGiftIndex}
-          giftMessage={giftMessage}
-          onGiftMessageChange={setGiftMessage}
-          onSendGift={handleSendGiftSubmit}
-          gifting={gifting}
-          styles={styles}
-        />
-
-        {/* Phase 2: Filter Bomb Gift Panel — gửi hiệu ứng CSS filter cho toàn phòng */}
-        {currentUser && stream?.status === "LIVE" && (
-          <div style={{
-            background: "linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(255, 183, 3, 0.05))",
-            border: "1px solid rgba(255, 183, 3, 0.2)",
-            borderRadius: "16px",
-            padding: "16px",
-            marginTop: "12px",
-          }}>
-            <div style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--color-accent)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px", letterSpacing: "0.5px" }}>
-              ✨ FILTER BOMB — Biến màu video toàn phòng!
-            </div>
-            <div className={styles.filterBombGrid}>
-              {FILTER_GIFT_TIERS.map((fg) => (
-                <button
-                  key={fg.filterEffect}
-                  disabled={gifting || !currentUser || currentUser.starBalance < fg.starAmount}
-                  onClick={async () => {
-                    if (!currentUser || !stream) return;
-                    setGifting(true);
-                    try {
-                      const res = await fetch("/api/gifts", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                          streamId: stream.id,
-                          senderId: currentUser.id,
-                          starAmount: fg.starAmount,
-                          message: `kích hoạt ${fg.label}`,
-                          filterEffect: fg.filterEffect,
-                          filterDuration: fg.duration,
-                        }),
-                      });
-                      if (res.ok) {
-                        const data = await res.json();
-                        setCurrentUser((prev: any) => prev ? { ...prev, starBalance: data.data.updatedSenderBalance } : null);
-                      }
-                    } finally {
-                      setGifting(false);
-                    }
-                  }}
-                  style={{
-                    background: currentUser && currentUser.starBalance >= fg.starAmount
-                      ? "linear-gradient(135deg, rgba(255, 183, 3, 0.12), rgba(157, 78, 221, 0.08))"
-                      : "rgba(255,255,255,0.03)",
-                    border: `1px solid ${currentUser && currentUser.starBalance >= fg.starAmount ? "rgba(255, 183, 3, 0.35)" : "rgba(255,255,255,0.06)"}`,
-                    borderRadius: "10px",
-                    padding: "8px 6px",
-                    cursor: currentUser && currentUser.starBalance >= fg.starAmount ? "pointer" : "not-allowed",
-                    opacity: currentUser && currentUser.starBalance >= fg.starAmount ? 1 : 0.45,
-                    transition: "all 0.2s ease",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: "3px",
-                    color: "var(--text-primary)",
-                    fontFamily: "var(--font-family)",
-                  }}
-                  title={`${fg.starAmount} sao — hiệu ứng ${fg.duration}s`}
-                >
-                  <span style={{ fontSize: "1.3rem" }}>{fg.emoji}</span>
-                  <span style={{ fontSize: "0.68rem", fontWeight: "700", color: "var(--color-accent)" }}>
-                    {fg.label}
-                  </span>
-                  <span style={{ fontSize: "0.62rem", color: "var(--text-muted)" }}>
-                    {fg.starAmount}⭐
-                  </span>
-                </button>
-              ))}
-            </div>
+        {/* Bảng chọn quà tặng: Hiển thị dạng Bottom Sheet trượt trên Mobile */}
+        <div className={`${styles.mobileBottomSheet} ${activeMobileSheet === "gift" ? styles.mobileBottomSheetActive : ""}`}>
+          <div className={styles.mobileBottomSheetHeader}>
+            <span className={styles.mobileBottomSheetTitle}>🎁 Gửi Quà & Hiệu Ứng</span>
+            <button className={styles.mobileBottomSheetClose} onClick={() => setActiveMobileSheet("none")}>×</button>
           </div>
-        )}
+          <div className={styles.mobileBottomSheetBody}>
+            {/* Component bảng chọn quà tặng chia tách */}
+            <GiftSelector
+              giftTiers={GIFT_TIERS}
+              selectedGiftIndex={selectedGiftIndex}
+              onSelectGift={setSelectedGiftIndex}
+              giftMessage={giftMessage}
+              onGiftMessageChange={setGiftMessage}
+              onSendGift={handleSendGiftSubmit}
+              gifting={gifting}
+              styles={styles}
+            />
 
-        {/* Widget Dự Đoán Thời Gian Thực */}
-        <PredictionWidget
-          prediction={activePrediction}
-          currentUser={currentUser}
-          onBet={handleBet}
-          betting={betting}
-        />
+            {/* Phase 2: Filter Bomb Gift Panel — gửi hiệu ứng CSS filter cho toàn phòng */}
+            {currentUser && stream?.status === "LIVE" && (
+              <div style={{
+                background: "linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(255, 183, 3, 0.05))",
+                border: "1px solid rgba(255, 183, 3, 0.2)",
+                borderRadius: "16px",
+                padding: "16px",
+                marginTop: "12px",
+              }}>
+                <div style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--color-accent)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px", letterSpacing: "0.5px" }}>
+                  ✨ FILTER BOMB — Biến màu video toàn phòng!
+                </div>
+                <div className={styles.filterBombGrid}>
+                  {FILTER_GIFT_TIERS.map((fg) => (
+                    <button
+                      key={fg.filterEffect}
+                      disabled={gifting || !currentUser || currentUser.starBalance < fg.starAmount}
+                      onClick={async () => {
+                        if (!currentUser || !stream) return;
+                        setGifting(true);
+                        try {
+                          const res = await fetch("/api/gifts", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                              streamId: stream.id,
+                              senderId: currentUser.id,
+                              starAmount: fg.starAmount,
+                              message: `kích hoạt ${fg.label}`,
+                              filterEffect: fg.filterEffect,
+                              filterDuration: fg.duration,
+                            }),
+                          });
+                          if (res.ok) {
+                            const data = await res.json();
+                            setCurrentUser((prev: any) => prev ? { ...prev, starBalance: data.data.updatedSenderBalance } : null);
+                            setActiveMobileSheet("none"); // Tự động đóng sheet sau khi kích hoạt thành công
+                          }
+                        } finally {
+                          setGifting(false);
+                        }
+                      }}
+                      style={{
+                        background: currentUser && currentUser.starBalance >= fg.starAmount
+                          ? "linear-gradient(135deg, rgba(255, 183, 3, 0.12), rgba(157, 78, 221, 0.08))"
+                          : "rgba(255,255,255,0.03)",
+                        border: `1px solid ${currentUser && currentUser.starBalance >= fg.starAmount ? "rgba(255, 183, 3, 0.35)" : "rgba(255,255,255,0.06)"}`,
+                        borderRadius: "10px",
+                        padding: "8px 6px",
+                        cursor: currentUser && currentUser.starBalance >= fg.starAmount ? "pointer" : "not-allowed",
+                        opacity: currentUser && currentUser.starBalance >= fg.starAmount ? 1 : 0.45,
+                        transition: "all 0.2s ease",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        gap: "3px",
+                        color: "var(--text-primary)",
+                        fontFamily: "var(--font-family)",
+                      }}
+                      title={`${fg.starAmount} sao — hiệu ứng ${fg.duration}s`}
+                    >
+                      <span style={{ fontSize: "1.3rem" }}>{fg.emoji}</span>
+                      <span style={{ fontSize: "0.68rem", fontWeight: "700", color: "var(--color-accent)" }}>
+                        {fg.label}
+                      </span>
+                      <span style={{ fontSize: "0.62rem", color: "var(--text-muted)" }}>
+                        {fg.starAmount}⭐
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Widget Dự Đoán: Hiển thị dạng Bottom Sheet trên Mobile */}
+        <div className={`${styles.mobileBottomSheet} ${activeMobileSheet === "prediction" ? styles.mobileBottomSheetActive : ""}`}>
+          <div className={styles.mobileBottomSheetHeader}>
+            <span className={styles.mobileBottomSheetTitle}>🔮 Dự Đoán Phòng Live</span>
+            <button className={styles.mobileBottomSheetClose} onClick={() => setActiveMobileSheet("none")}>×</button>
+          </div>
+          <div className={styles.mobileBottomSheetBody}>
+            <PredictionWidget
+              prediction={activePrediction}
+              currentUser={currentUser}
+              onBet={handleBet}
+              betting={betting}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Cột phải: Live Chat và Gifter Leaderboard sử dụng Component chia tách */}
+      {/* Cột phải: Live Chat */}
       <div className={`${styles.sidebar} glass`}>
         <LiveChat
           messages={messages}
@@ -1668,11 +1689,20 @@ export default function ViewerPage() {
           onSendMessage={handleSendChat}
           styles={styles}
         />
-        
-        <Leaderboard
-          leaderboard={leaderboard}
-          styles={styles}
-        />
+      </div>
+
+      {/* Bảng Xếp Hạng Fan Cống Hiến: Hiển thị dạng Bottom Sheet trượt trên Mobile */}
+      <div className={`${styles.mobileBottomSheet} ${activeMobileSheet === "leaderboard" ? styles.mobileBottomSheetActive : ""}`}>
+        <div className={styles.mobileBottomSheetHeader}>
+          <span className={styles.mobileBottomSheetTitle}>🏆 Bảng Xếp Hạng Gifter</span>
+          <button className={styles.mobileBottomSheetClose} onClick={() => setActiveMobileSheet("none")}>×</button>
+        </div>
+        <div className={styles.mobileBottomSheetBody}>
+          <Leaderboard
+            leaderboard={leaderboard}
+            styles={styles}
+          />
+        </div>
       </div>
 
       {/* MODAL VÒNG QUAY MAY MẮN (LUCKY WHEEL) */}
@@ -1867,6 +1897,86 @@ export default function ViewerPage() {
           }}
         />
       )}
+
+      {/* Mobile Chat Input Bottom Sheet */}
+      <div className={`${styles.mobileBottomSheet} ${activeMobileSheet === "chat_input" ? styles.mobileBottomSheetActive : ""}`} style={{ height: "auto", padding: "12px 16px" }}>
+        <form 
+          onSubmit={(e) => {
+            handleSendChat(e);
+            setActiveMobileSheet("none"); // Đóng sheet sau khi gửi chat
+          }} 
+          style={{ display: "flex", gap: "8px", width: "100%", alignItems: "center" }}
+        >
+          <input
+            type="text"
+            className={styles.chatInput}
+            style={{ flex: 1, padding: "10px 14px", borderRadius: "10px", background: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)", color: "#fff", outline: "none" }}
+            placeholder="Nói gì đó với Idol..."
+            value={inputMsg}
+            onChange={(e) => setInputMsg(e.target.value)}
+            maxLength={150}
+            autoFocus={activeMobileSheet === "chat_input"}
+          />
+          <button type="submit" className={styles.sendBtn} style={{ padding: "10px 16px", borderRadius: "10px" }}>
+            Gửi
+          </button>
+          <button type="button" onClick={() => setActiveMobileSheet("none")} style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "1.2rem", marginLeft: "4px" }}>
+            ×
+          </button>
+        </form>
+      </div>
+
+      {/* Floating Action Toolbar - chỉ hiển thị trên mobile */}
+      <div className={styles.mobileToolbar}>
+        <button 
+          onClick={() => setActiveMobileSheet(activeMobileSheet === "chat_input" ? "none" : "chat_input")} 
+          className={`${styles.toolbarBtn} ${activeMobileSheet === "chat_input" ? styles.toolbarBtnActive : ""}`}
+          title="Bình luận"
+        >
+          💬
+        </button>
+        <button 
+          onClick={() => setActiveMobileSheet(activeMobileSheet === "gift" ? "none" : "gift")} 
+          className={`${styles.toolbarBtn} ${activeMobileSheet === "gift" ? styles.toolbarBtnActive : ""}`}
+          title="Tặng quà"
+        >
+          🎁
+        </button>
+        <button 
+          onClick={() => setActiveMobileSheet(activeMobileSheet === "prediction" ? "none" : "prediction")} 
+          className={`${styles.toolbarBtn} ${activeMobileSheet === "prediction" ? styles.toolbarBtnActive : ""}`}
+          title="Dự đoán"
+        >
+          🔮
+        </button>
+        <button 
+          onClick={() => setActiveMobileSheet(activeMobileSheet === "leaderboard" ? "none" : "leaderboard")} 
+          className={`${styles.toolbarBtn} ${activeMobileSheet === "leaderboard" ? styles.toolbarBtnActive : ""}`}
+          title="BXH Gifter"
+        >
+          🏆
+        </button>
+        <button 
+          onClick={() => {
+            setActiveMobileSheet("none");
+            setShowWheel(true);
+          }} 
+          className={styles.toolbarBtn}
+          title="Minigame"
+        >
+          🎰
+        </button>
+        <button 
+          onClick={() => {
+            setActiveMobileSheet("none");
+            setShowQuests(true);
+          }} 
+          className={styles.toolbarBtn}
+          title="Nhiệm vụ"
+        >
+          🎯
+        </button>
+      </div>
     </div>
   );
 }

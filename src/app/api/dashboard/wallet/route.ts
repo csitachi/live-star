@@ -147,6 +147,10 @@ export async function GET() {
         chartData,
         donutData,
       },
+    }, {
+      headers: {
+        "Cache-Control": "no-store, max-age=0, must-revalidate",
+      }
     });
   } catch (error: any) {
     console.error("❌ Error in GET /api/dashboard/wallet:", error);

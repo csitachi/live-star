@@ -478,6 +478,16 @@ export default function HomePage() {
               <ProfileIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Trang cá nhân</span>
             </button>
+            <button className={styles.menuItem} onClick={() => {
+              if (!currentUser) {
+                toast.warning("Vui lòng đăng nhập trước khi xem ví sao!");
+              } else {
+                router.push("/dashboard/wallet");
+              }
+            }} type="button">
+              <CoinIcon size={20} className={styles.menuIconSvg} />
+              <span className={styles.menuLabel}>Ví sao & Giao dịch</span>
+            </button>
           </div>
           <div className={styles.sidebarDivider} />
           <div className={styles.menuGroup}>

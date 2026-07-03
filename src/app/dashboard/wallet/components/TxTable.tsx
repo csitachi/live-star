@@ -59,7 +59,7 @@ export default function TxTable() {
       if (fromDate) url += `&from=${fromDate}`;
       if (toDate) url += `&to=${toDate}`;
 
-      const res = await fetch(url);
+      const res = await fetch(url, { cache: "no-store" });
       if (res.ok) {
         const json = await res.json();
         setTransactions(json.data.transactions);
