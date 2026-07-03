@@ -21,6 +21,9 @@ export interface GiftJob {
   starAmount: number;
   message?: string;
   enqueuedAt: number;       // timestamp để monitor độ trễ
+  // Phase 2: CSS Filter Effect
+  filterEffect?: string;    // "neon", "retro", "cinema", "frost", "sunset", "glitch"
+  filterDuration?: number;  // Thời lượng giây (mặc định 15)
 }
 
 // Singleton queue instance

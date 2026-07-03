@@ -13,6 +13,7 @@ import LiveChat, { ChatMessage } from "@/features/stream/components/LiveChat";
 import Leaderboard, { LeaderboardEntry } from "@/features/stream/components/Leaderboard";
 import GiftSelector, { GiftTier } from "@/features/gift/components/GiftSelector";
 import GiftAnimationCanvas from "@/features/gift/components/GiftAnimationCanvas";
+import VideoFilterOverlay, { FILTER_PRESETS } from "@/features/gift/components/VideoFilterOverlay";
 import { getViewerLevel, getStreamerLevel } from "@/lib/level";
 import PredictionWidget from "@/features/stream/components/PredictionWidget";
 import QuestDrawer from "@/components/QuestDrawer";
@@ -63,6 +64,16 @@ const GIFT_TIERS: GiftTier[] = [
   { amount: 100, icon: "💎", label: "Kim Cương", price: 100 },
   { amount: 500, icon: "🚀", label: "Tên Lửa", price: 500 },
   { amount: 1000, icon: "👑", label: "Vương Miện", price: 1000 },
+];
+
+// Gói quà Filter Bomb — kích hoạt CSS filter trên video toàn phòng
+const FILTER_GIFT_TIERS = [
+  { filterEffect: "neon",   starAmount: 500,  label: "Neon Bomb",   emoji: "💜", duration: 15 },
+  { filterEffect: "retro",  starAmount: 300,  label: "VHS Retro",   emoji: "📼", duration: 15 },
+  { filterEffect: "cinema", starAmount: 200,  label: "Cinema Mode", emoji: "🎬", duration: 12 },
+  { filterEffect: "frost",  starAmount: 300,  label: "Frost",       emoji: "❄️", duration: 12 },
+  { filterEffect: "sunset", starAmount: 200,  label: "Sunset",      emoji: "🌅", duration: 12 },
+  { filterEffect: "glitch", starAmount: 1000, label: "GLITCH!",     emoji: "⚡", duration: 10 },
 ];
 
 export default function ViewerPage() {
@@ -120,6 +131,11 @@ export default function ViewerPage() {
 
   // Trạng thái hiển thị Nhiệm vụ hàng ngày
   const [showQuests, setShowQuests] = useState(false);
+
+  // Phase 2: CSS Filter Effect state
+  const [activeFilterEffect, setActiveFilterEffect] = useState<string | null>(null);
+  const [filterDuration, setFilterDuration] = useState(15000);
+  const [filterTriggeredBy, setFilterTriggeredBy] = useState("Viewer");
 
   // Refs WebSockets, WebRTC và Canvas hoạt họa
   const wsRef = useRef<WebSocket | null>(null);
@@ -733,6 +749,26 @@ export default function ViewerPage() {
               isGift: true
             }]);
             setTimeout(scrollToBottom, 50);
+            break;
+          }
+
+          // Phase 2: CSS Filter Bomb — kích hoạt CSS filter trên video toàn phòng
+          case "filter-activate": {
+            const { filter, duration, triggeredBy } = payload;
+            if (filter && FILTER_PRESETS[filter]) {
+              setActiveFilterEffect(filter);
+              setFilterDuration(duration || 15000);
+              setFilterTriggeredBy(triggeredBy?.displayName || "Viewer");
+              // Thông báo chat khi filter được kích hoạt
+              setMessages((prev) => [...prev, {
+                id: Math.random().toString(),
+                sender: { displayName: "Hiệu ứng" } as any,
+                text: `${FILTER_PRESETS[filter].emoji} ${triggeredBy?.displayName || "Viewer"} đã kích hoạt hiệu ứng "${FILTER_PRESETS[filter].label}" cho toàn phòng!`,
+                createdAt: new Date().toISOString(),
+                isGift: true
+              }]);
+              scrollToBottom();
+            }
             break;
           }
         }
@@ -1357,6 +1393,17 @@ export default function ViewerPage() {
             
             {/* Canvas vẽ visualizer dự phòng */}
             <canvas ref={canvasRef} className={styles.virtualCanvas} style={{ display: videoRef.current?.srcObject ? "none" : "block", width: "100%", height: "100%" }} />
+
+            {/* Phase 2: CSS Filter Overlay — hiển thị badge + timer khi filter đang kích hoạt */}
+            {activeFilterEffect && (
+              <VideoFilterOverlay
+                activeFilter={activeFilterEffect}
+                duration={filterDuration}
+                triggeredByName={filterTriggeredBy}
+                videoRef={videoRef}
+                onExpire={() => setActiveFilterEffect(null)}
+              />
+            )}
             
             {pkBattle && pkBattle.status === "LIVE" && (
               <span style={{ position: "absolute", bottom: "10px", left: "10px", background: "rgba(0,0,0,0.6)", padding: "4px 8px", borderRadius: "6px", fontSize: "0.8rem", fontWeight: "bold", zIndex: 10 }}>
@@ -1521,6 +1568,79 @@ export default function ViewerPage() {
           gifting={gifting}
           styles={styles}
         />
+
+        {/* Phase 2: Filter Bomb Gift Panel — gửi hiệu ứng CSS filter cho toàn phòng */}
+        {currentUser && stream?.status === "LIVE" && (
+          <div style={{
+            background: "linear-gradient(135deg, rgba(157, 78, 221, 0.08), rgba(255, 183, 3, 0.05))",
+            border: "1px solid rgba(255, 183, 3, 0.2)",
+            borderRadius: "16px",
+            padding: "16px",
+            marginTop: "12px",
+          }}>
+            <div style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--color-accent)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px", letterSpacing: "0.5px" }}>
+              ✨ FILTER BOMB — Biến màu video toàn phòng!
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+              {FILTER_GIFT_TIERS.map((fg) => (
+                <button
+                  key={fg.filterEffect}
+                  disabled={gifting || !currentUser || currentUser.starBalance < fg.starAmount}
+                  onClick={async () => {
+                    if (!currentUser || !stream) return;
+                    setGifting(true);
+                    try {
+                      const res = await fetch("/api/gifts", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                          streamId: stream.id,
+                          senderId: currentUser.id,
+                          starAmount: fg.starAmount,
+                          message: `kích hoạt ${fg.label}`,
+                          filterEffect: fg.filterEffect,
+                          filterDuration: fg.duration,
+                        }),
+                      });
+                      if (res.ok) {
+                        const data = await res.json();
+                        setCurrentUser((prev: any) => prev ? { ...prev, starBalance: data.data.updatedSenderBalance } : null);
+                      }
+                    } finally {
+                      setGifting(false);
+                    }
+                  }}
+                  style={{
+                    background: currentUser && currentUser.starBalance >= fg.starAmount
+                      ? "linear-gradient(135deg, rgba(255, 183, 3, 0.12), rgba(157, 78, 221, 0.08))"
+                      : "rgba(255,255,255,0.03)",
+                    border: `1px solid ${currentUser && currentUser.starBalance >= fg.starAmount ? "rgba(255, 183, 3, 0.35)" : "rgba(255,255,255,0.06)"}`,
+                    borderRadius: "10px",
+                    padding: "8px 6px",
+                    cursor: currentUser && currentUser.starBalance >= fg.starAmount ? "pointer" : "not-allowed",
+                    opacity: currentUser && currentUser.starBalance >= fg.starAmount ? 1 : 0.45,
+                    transition: "all 0.2s ease",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    gap: "3px",
+                    color: "var(--text-primary)",
+                    fontFamily: "var(--font-family)",
+                  }}
+                  title={`${fg.starAmount} sao — hiệu ứng ${fg.duration}s`}
+                >
+                  <span style={{ fontSize: "1.3rem" }}>{fg.emoji}</span>
+                  <span style={{ fontSize: "0.68rem", fontWeight: "700", color: "var(--color-accent)" }}>
+                    {fg.label}
+                  </span>
+                  <span style={{ fontSize: "0.62rem", color: "var(--text-muted)" }}>
+                    {fg.starAmount}⭐
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Widget Dự Đoán Thời Gian Thực */}
         <PredictionWidget

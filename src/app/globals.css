@@ -221,3 +221,228 @@ body {
   0%   { opacity: 1; transform: translateY(0)   scale(1); }
   100% { opacity: 0; transform: translateY(-80px) scale(1.5); }
 }
+
+/* Phase 2: Glitch Shake animation cho VideoFilterOverlay */
+@keyframes glitchShake {
+  0%   { transform: translate(0, 0) skewX(0deg); }
+  20%  { transform: translate(-2px, 1px) skewX(-1deg); filter: hue-rotate(90deg) invert(0.08) contrast(1.5); }
+  40%  { transform: translate(2px, -1px) skewX(1deg); }
+  60%  { transform: translate(-1px, 2px) skewX(-0.5deg); filter: hue-rotate(180deg) invert(0.1) contrast(1.6); }
+  80%  { transform: translate(1px, -2px) skewX(0.5deg); }
+  100% { transform: translate(0, 0) skewX(0deg); }
+}
+
+/* =====================================================
+   PHASE 1 PREMIUM ANIMATIONS & UTILITIES
+   ===================================================== */
+
+/* A. Radar Scanner Animation (WebRTC connecting state) */
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 0.4; }
+  100% { transform: scale(0.8); opacity: 0.8; }
+}
+
+@keyframes radarSweep {
+  0% { background: conic-gradient(rgba(0, 220, 255, 0.5) 0deg, transparent 60deg, transparent 360deg); transform: rotate(0deg); }
+  100% { background: conic-gradient(rgba(0, 220, 255, 0.5) 0deg, transparent 60deg, transparent 360deg); transform: rotate(360deg); }
+}
+
+.radar-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radar-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 220, 255, 0.2);
+  background: radial-gradient(circle, rgba(0, 220, 255, 0.05) 0%, rgba(0, 0, 0, 0) 70%);
+}
+
+.radar-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 220, 255, 0.25);
+}
+
+.radar-ring:nth-child(2) { width: 33%; height: 33%; }
+.radar-ring:nth-child(3) { width: 55%; height: 55%; }
+.radar-ring:nth-child(4) { width: 77%; height: 77%; }
+
+.radar-sweep {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: radarSweep 2.5s linear infinite;
+  background: conic-gradient(rgba(0, 220, 255, 0.5) 0deg, transparent 60deg, transparent 360deg);
+}
+
+.radar-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 220, 255, 0.9);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 12px rgba(0, 220, 255, 1), 0 0 24px rgba(0, 220, 255, 0.6);
+  animation: radarPulse 1.5s ease-in-out infinite;
+}
+
+.radar-label {
+  position: absolute;
+  bottom: -36px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  color: rgba(0, 220, 255, 0.8);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 220, 255, 0.5);
+}
+
+/* B. Shimmer Progress Bar */
+@keyframes shimmerSlide {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes particleBurst {
+  0% { transform: scale(0) translateY(0); opacity: 1; }
+  100% { transform: scale(1.5) translateY(-30px); opacity: 0; }
+}
+
+.star-progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.star-progress-fill {
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-secondary) 40%,
+    rgba(255, 255, 255, 0.6) 60%,
+    var(--color-primary) 80%
+  );
+  background-size: 200% auto;
+  animation: shimmerSlide 2s linear infinite;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 0 12px var(--color-primary-glow), 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.star-progress-milestone {
+  animation: particleBurst 0.6s ease-out forwards;
+}
+
+/* C. Magnetic Hover Card */
+.magnetic-card {
+  transform-style: preserve-3d;
+  transform: perspective(1000px);
+  transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.magnetic-card:hover {
+  box-shadow: 0 20px 60px rgba(157, 78, 221, 0.3), 0 0 0 1px rgba(157, 78, 221, 0.4);
+}
+
+/* D. VIP Chat Neon Bubble */
+@keyframes neonBorderPulse {
+  0% { box-shadow: 0 0 5px var(--color-secondary), 0 0 10px rgba(255, 0, 127, 0.3), inset 0 0 5px rgba(255, 0, 127, 0.1); }
+  50% { box-shadow: 0 0 10px var(--color-secondary), 0 0 20px rgba(255, 0, 127, 0.5), inset 0 0 8px rgba(255, 0, 127, 0.15); }
+  100% { box-shadow: 0 0 5px var(--color-secondary), 0 0 10px rgba(255, 0, 127, 0.3), inset 0 0 5px rgba(255, 0, 127, 0.1); }
+}
+
+@keyframes slideInUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.chat-bubble-vip {
+  border: 1px solid var(--color-secondary) !important;
+  background: rgba(255, 0, 127, 0.06) !important;
+  animation: neonBorderPulse 2.5s ease-in-out infinite, slideInUp 0.3s ease-out;
+}
+
+.chat-bubble-gift {
+  background: linear-gradient(135deg, rgba(255, 183, 3, 0.12), rgba(255, 183, 3, 0.05)) !important;
+  border: 1px solid rgba(255, 183, 3, 0.4) !important;
+  animation: slideInUp 0.3s ease-out;
+}
+
+.chat-bubble-new {
+  animation: slideInUp 0.25s ease-out;
+}
+
+.gift-highlight-row {
+  background: linear-gradient(90deg, rgba(255, 183, 3, 0.15), transparent);
+  border-left: 3px solid var(--color-accent);
+  padding-left: 8px;
+  border-radius: 0 6px 6px 0;
+}
+
+/* E. Category Pill active animation */
+@keyframes pillActivate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.category-pill-active-anim {
+  animation: pillActivate 0.3s ease-out;
+}
+
+/* F. Stream Card gradient border hover */
+.stream-card-live {
+  position: relative;
+  background: var(--bg-surface);
+  border-radius: 16px;
+  overflow: hidden;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.stream-card-live::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  padding: 1.5px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.stream-card-live:hover::before {
+  opacity: 1;
+}
+
+.stream-card-live:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 20px 50px rgba(157, 78, 221, 0.25);
+}

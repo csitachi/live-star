@@ -156,6 +156,8 @@ exports.Prisma.GiftTransactionScalarFieldEnum = {
   receiverId: 'receiverId',
   starAmount: 'starAmount',
   message: 'message',
+  filterEffect: 'filterEffect',
+  filterDuration: 'filterDuration',
   createdAt: 'createdAt'
 };
 

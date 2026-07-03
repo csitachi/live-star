@@ -31,7 +31,7 @@ import { randomUUID } from 'crypto';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { streamId, senderId, starAmount, message } = body;
+    const { streamId, senderId, starAmount, message, filterEffect, filterDuration } = body;
 
     // ==========================================
     // 1. VALIDATION CƠ BẢN
@@ -140,6 +140,9 @@ export async function POST(request: Request) {
         starAmount,
         message: message?.trim() || undefined,
         enqueuedAt: Date.now(),
+        // Phase 2: CSS Filter Effect (nếu có)
+        filterEffect: filterEffect || undefined,
+        filterDuration: filterDuration || undefined,
       },
       {
         // Priority: gifts lớn hơn được xử lý ưu tiên hơn

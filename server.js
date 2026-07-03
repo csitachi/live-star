@@ -46,11 +46,11 @@ redisSub.on("error", (err) => {
 const rooms = new Map();
 
 // Đăng ký nhận message pattern
-redisSub.psubscribe("room:*:gifts", "room:*:predictions", (err, count) => {
+redisSub.psubscribe("room:*:gifts", "room:*:predictions", "room:*:filters", (err, count) => {
   if (err) {
     console.error("❌ [WS Redis] Lỗi đăng ký pattern:", err.message);
   } else {
-    console.log(`📡 [WS Redis] Đăng ký thành công pattern room:*:gifts và room:*:predictions`);
+    console.log(`📡 [WS Redis] Đăng ký thành công pattern room:*:gifts, room:*:predictions và room:*:filters`);
   }
 });
 

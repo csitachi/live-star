@@ -95,9 +95,12 @@ model GiftTransaction {
   receiverId String
   receiver   User   @relation("ReceiverRelation", fields: [receiverId], references: [id], onDelete: Cascade)
 
-  starAmount Int // Số lượng sao được tặng (ví dụ: 10, 100, 1000)
-  message    String? // Lời nhắn đi kèm
-  createdAt  DateTime @default(now())
+  starAmount     Int // Số lượng sao được tặng (ví dụ: 10, 100, 1000)
+  message        String? // Lời nhắn đi kèm
+  // Phase 2: CSS Filter Effect khi tặng quà đặc biệt
+  filterEffect   String? // "neon", "retro", "cinema", "frost", "sunset", "glitch" (null = không kích hoạt)
+  filterDuration Int? // Thời lượng hiệu ứng tính bằng giây (mặc định 15)
+  createdAt      DateTime @default(now())
 
   @@index([streamId])
   @@index([streamId, createdAt])

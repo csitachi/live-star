@@ -325,6 +325,22 @@ async function processBatch(bufferedJobs: BufferedJob[]) {
     // Publish lên Redis channel để server.js nhận và phát đi
     await redis.publish(`room:${streamId}:gifts`, JSON.stringify(wsPayload));
     console.log(`📢 [Gift Worker] Đã publish batch ${streamGifts.length} gifts cho phòng ${streamId}`);
+
+    // Phase 2: Nếu có filter gift, publish event filter-activate riêng cho phòng này
+    const filterGifts = streamGifts.filter(g => g.filterEffect);
+    for (const fg of filterGifts) {
+      const filterPayload = {
+        type: 'filter-activate',
+        payload: {
+          filter: fg.filterEffect,
+          duration: (fg.filterDuration || 15) * 1000, // chuyển sang ms
+          triggeredBy: senderMap.get(fg.senderId) || { displayName: 'Viewer' },
+          starAmount: fg.starAmount,
+        },
+      };
+      await redis.publish(`room:${streamId}:filters`, JSON.stringify(filterPayload));
+      console.log(`🎨 [Gift Worker] Đã publish filter-activate (${fg.filterEffect}) cho phòng ${streamId}`);
+    }
   }
 
   // Giải phóng toàn bộ jobs trong batch này

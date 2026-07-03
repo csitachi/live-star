@@ -5442,10 +5442,12 @@ export namespace Prisma {
 
   export type GiftTransactionAvgAggregateOutputType = {
     starAmount: number | null
+    filterDuration: number | null
   }
 
   export type GiftTransactionSumAggregateOutputType = {
     starAmount: number | null
+    filterDuration: number | null
   }
 
   export type GiftTransactionMinAggregateOutputType = {
@@ -5455,6 +5457,8 @@ export namespace Prisma {
     receiverId: string | null
     starAmount: number | null
     message: string | null
+    filterEffect: string | null
+    filterDuration: number | null
     createdAt: Date | null
   }
 
@@ -5465,6 +5469,8 @@ export namespace Prisma {
     receiverId: string | null
     starAmount: number | null
     message: string | null
+    filterEffect: string | null
+    filterDuration: number | null
     createdAt: Date | null
   }
 
@@ -5475,6 +5481,8 @@ export namespace Prisma {
     receiverId: number
     starAmount: number
     message: number
+    filterEffect: number
+    filterDuration: number
     createdAt: number
     _all: number
   }
@@ -5482,10 +5490,12 @@ export namespace Prisma {
 
   export type GiftTransactionAvgAggregateInputType = {
     starAmount?: true
+    filterDuration?: true
   }
 
   export type GiftTransactionSumAggregateInputType = {
     starAmount?: true
+    filterDuration?: true
   }
 
   export type GiftTransactionMinAggregateInputType = {
@@ -5495,6 +5505,8 @@ export namespace Prisma {
     receiverId?: true
     starAmount?: true
     message?: true
+    filterEffect?: true
+    filterDuration?: true
     createdAt?: true
   }
 
@@ -5505,6 +5517,8 @@ export namespace Prisma {
     receiverId?: true
     starAmount?: true
     message?: true
+    filterEffect?: true
+    filterDuration?: true
     createdAt?: true
   }
 
@@ -5515,6 +5529,8 @@ export namespace Prisma {
     receiverId?: true
     starAmount?: true
     message?: true
+    filterEffect?: true
+    filterDuration?: true
     createdAt?: true
     _all?: true
   }
@@ -5612,6 +5628,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message: string | null
+    filterEffect: string | null
+    filterDuration: number | null
     createdAt: Date
     _count: GiftTransactionCountAggregateOutputType | null
     _avg: GiftTransactionAvgAggregateOutputType | null
@@ -5641,6 +5659,8 @@ export namespace Prisma {
     receiverId?: boolean
     starAmount?: boolean
     message?: boolean
+    filterEffect?: boolean
+    filterDuration?: boolean
     createdAt?: boolean
     stream?: boolean | StreamDefaultArgs<ExtArgs>
     sender?: boolean | UserDefaultArgs<ExtArgs>
@@ -5654,6 +5674,8 @@ export namespace Prisma {
     receiverId?: boolean
     starAmount?: boolean
     message?: boolean
+    filterEffect?: boolean
+    filterDuration?: boolean
     createdAt?: boolean
     stream?: boolean | StreamDefaultArgs<ExtArgs>
     sender?: boolean | UserDefaultArgs<ExtArgs>
@@ -5667,6 +5689,8 @@ export namespace Prisma {
     receiverId?: boolean
     starAmount?: boolean
     message?: boolean
+    filterEffect?: boolean
+    filterDuration?: boolean
     createdAt?: boolean
     stream?: boolean | StreamDefaultArgs<ExtArgs>
     sender?: boolean | UserDefaultArgs<ExtArgs>
@@ -5680,10 +5704,12 @@ export namespace Prisma {
     receiverId?: boolean
     starAmount?: boolean
     message?: boolean
+    filterEffect?: boolean
+    filterDuration?: boolean
     createdAt?: boolean
   }
 
-  export type GiftTransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "streamId" | "senderId" | "receiverId" | "starAmount" | "message" | "createdAt", ExtArgs["result"]["giftTransaction"]>
+  export type GiftTransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "streamId" | "senderId" | "receiverId" | "starAmount" | "message" | "filterEffect" | "filterDuration" | "createdAt", ExtArgs["result"]["giftTransaction"]>
   export type GiftTransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     stream?: boolean | StreamDefaultArgs<ExtArgs>
     sender?: boolean | UserDefaultArgs<ExtArgs>
@@ -5714,6 +5740,8 @@ export namespace Prisma {
       receiverId: string
       starAmount: number
       message: string | null
+      filterEffect: string | null
+      filterDuration: number | null
       createdAt: Date
     }, ExtArgs["result"]["giftTransaction"]>
     composites: {}
@@ -6147,6 +6175,8 @@ export namespace Prisma {
     readonly receiverId: FieldRef<"GiftTransaction", 'String'>
     readonly starAmount: FieldRef<"GiftTransaction", 'Int'>
     readonly message: FieldRef<"GiftTransaction", 'String'>
+    readonly filterEffect: FieldRef<"GiftTransaction", 'String'>
+    readonly filterDuration: FieldRef<"GiftTransaction", 'Int'>
     readonly createdAt: FieldRef<"GiftTransaction", 'DateTime'>
   }
     
@@ -21429,6 +21459,8 @@ export namespace Prisma {
     receiverId: 'receiverId',
     starAmount: 'starAmount',
     message: 'message',
+    filterEffect: 'filterEffect',
+    filterDuration: 'filterDuration',
     createdAt: 'createdAt'
   };
 
@@ -21971,6 +22003,8 @@ export namespace Prisma {
     receiverId?: StringFilter<"GiftTransaction"> | string
     starAmount?: IntFilter<"GiftTransaction"> | number
     message?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterEffect?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterDuration?: IntNullableFilter<"GiftTransaction"> | number | null
     createdAt?: DateTimeFilter<"GiftTransaction"> | Date | string
     stream?: XOR<StreamScalarRelationFilter, StreamWhereInput>
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -21984,6 +22018,8 @@ export namespace Prisma {
     receiverId?: SortOrder
     starAmount?: SortOrder
     message?: SortOrderInput | SortOrder
+    filterEffect?: SortOrderInput | SortOrder
+    filterDuration?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     stream?: StreamOrderByWithRelationInput
     sender?: UserOrderByWithRelationInput
@@ -22000,6 +22036,8 @@ export namespace Prisma {
     receiverId?: StringFilter<"GiftTransaction"> | string
     starAmount?: IntFilter<"GiftTransaction"> | number
     message?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterEffect?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterDuration?: IntNullableFilter<"GiftTransaction"> | number | null
     createdAt?: DateTimeFilter<"GiftTransaction"> | Date | string
     stream?: XOR<StreamScalarRelationFilter, StreamWhereInput>
     sender?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -22013,6 +22051,8 @@ export namespace Prisma {
     receiverId?: SortOrder
     starAmount?: SortOrder
     message?: SortOrderInput | SortOrder
+    filterEffect?: SortOrderInput | SortOrder
+    filterDuration?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     _count?: GiftTransactionCountOrderByAggregateInput
     _avg?: GiftTransactionAvgOrderByAggregateInput
@@ -22031,6 +22071,8 @@ export namespace Prisma {
     receiverId?: StringWithAggregatesFilter<"GiftTransaction"> | string
     starAmount?: IntWithAggregatesFilter<"GiftTransaction"> | number
     message?: StringNullableWithAggregatesFilter<"GiftTransaction"> | string | null
+    filterEffect?: StringNullableWithAggregatesFilter<"GiftTransaction"> | string | null
+    filterDuration?: IntNullableWithAggregatesFilter<"GiftTransaction"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"GiftTransaction"> | Date | string
   }
 
@@ -23240,6 +23282,8 @@ export namespace Prisma {
     id?: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
     stream: StreamCreateNestedOneWithoutGiftsInput
     sender: UserCreateNestedOneWithoutSentGiftsInput
@@ -23253,6 +23297,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -23260,6 +23306,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     stream?: StreamUpdateOneRequiredWithoutGiftsNestedInput
     sender?: UserUpdateOneRequiredWithoutSentGiftsNestedInput
@@ -23273,6 +23321,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23283,6 +23333,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -23290,6 +23342,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -23300,6 +23354,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -24673,6 +24729,17 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
   export type StreamScalarRelationFilter = {
     is?: StreamWhereInput
     isNot?: StreamWhereInput
@@ -24685,11 +24752,14 @@ export namespace Prisma {
     receiverId?: SortOrder
     starAmount?: SortOrder
     message?: SortOrder
+    filterEffect?: SortOrder
+    filterDuration?: SortOrder
     createdAt?: SortOrder
   }
 
   export type GiftTransactionAvgOrderByAggregateInput = {
     starAmount?: SortOrder
+    filterDuration?: SortOrder
   }
 
   export type GiftTransactionMaxOrderByAggregateInput = {
@@ -24699,6 +24769,8 @@ export namespace Prisma {
     receiverId?: SortOrder
     starAmount?: SortOrder
     message?: SortOrder
+    filterEffect?: SortOrder
+    filterDuration?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -24709,19 +24781,17 @@ export namespace Prisma {
     receiverId?: SortOrder
     starAmount?: SortOrder
     message?: SortOrder
+    filterEffect?: SortOrder
+    filterDuration?: SortOrder
     createdAt?: SortOrder
   }
 
   export type GiftTransactionSumOrderByAggregateInput = {
     starAmount?: SortOrder
+    filterDuration?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
     notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -24729,7 +24799,17 @@ export namespace Prisma {
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type CommentCountOrderByAggregateInput = {
@@ -24776,22 +24856,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type SessionCountOrderByAggregateInput = {
@@ -26099,6 +26163,14 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type StreamUpdateOneRequiredWithoutGiftsNestedInput = {
     create?: XOR<StreamCreateWithoutGiftsInput, StreamUncheckedCreateWithoutGiftsInput>
     connectOrCreate?: StreamCreateOrConnectWithoutGiftsInput
@@ -26137,14 +26209,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type StreamUpdateOneRequiredWithoutCommentsNestedInput = {
@@ -26779,19 +26843,6 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -26817,6 +26868,19 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
   }
 
   export type NestedEnumPostTypeFilter<$PrismaModel = never> = {
@@ -26888,6 +26952,8 @@ export namespace Prisma {
     id?: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
     stream: StreamCreateNestedOneWithoutGiftsInput
     receiver: UserCreateNestedOneWithoutReceivedGiftsInput
@@ -26899,6 +26965,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -26916,6 +26984,8 @@ export namespace Prisma {
     id?: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
     stream: StreamCreateNestedOneWithoutGiftsInput
     sender: UserCreateNestedOneWithoutSentGiftsInput
@@ -26927,6 +26997,8 @@ export namespace Prisma {
     senderId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -27194,6 +27266,8 @@ export namespace Prisma {
     receiverId?: StringFilter<"GiftTransaction"> | string
     starAmount?: IntFilter<"GiftTransaction"> | number
     message?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterEffect?: StringNullableFilter<"GiftTransaction"> | string | null
+    filterDuration?: IntNullableFilter<"GiftTransaction"> | number | null
     createdAt?: DateTimeFilter<"GiftTransaction"> | Date | string
   }
 
@@ -27631,6 +27705,8 @@ export namespace Prisma {
     id?: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
     sender: UserCreateNestedOneWithoutSentGiftsInput
     receiver: UserCreateNestedOneWithoutReceivedGiftsInput
@@ -27642,6 +27718,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -30197,6 +30275,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -30206,6 +30286,8 @@ export namespace Prisma {
     senderId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -30324,6 +30406,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     stream?: StreamUpdateOneRequiredWithoutGiftsNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedGiftsNestedInput
@@ -30335,6 +30419,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30344,6 +30430,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30351,6 +30439,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     stream?: StreamUpdateOneRequiredWithoutGiftsNestedInput
     sender?: UserUpdateOneRequiredWithoutSentGiftsNestedInput
@@ -30362,6 +30452,8 @@ export namespace Prisma {
     senderId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30371,6 +30463,8 @@ export namespace Prisma {
     senderId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30620,6 +30714,8 @@ export namespace Prisma {
     receiverId: string
     starAmount: number
     message?: string | null
+    filterEffect?: string | null
+    filterDuration?: number | null
     createdAt?: Date | string
   }
 
@@ -30802,6 +30898,8 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sender?: UserUpdateOneRequiredWithoutSentGiftsNestedInput
     receiver?: UserUpdateOneRequiredWithoutReceivedGiftsNestedInput
@@ -30813,6 +30911,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -30822,6 +30922,8 @@ export namespace Prisma {
     receiverId?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     message?: NullableStringFieldUpdateOperationsInput | string | null
+    filterEffect?: NullableStringFieldUpdateOperationsInput | string | null
+    filterDuration?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
