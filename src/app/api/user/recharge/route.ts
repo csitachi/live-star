@@ -35,14 +35,38 @@ export async function POST(request: Request) {
       );
     }
 
-    // Thực hiện cộng sao trong database
-    const updatedUser = await prisma.user.update({
-      where: { id: userId },
-      data: {
-        starBalance: {
-          increment: amount,
+    // Thực hiện cộng sao và ghi sổ cái trong một Prisma Transaction để đảm bảo tính toàn vẹn
+    const updatedUser = await prisma.$transaction(async (tx) => {
+      const user = await tx.user.findUnique({
+        where: { id: userId },
+        select: { starBalance: true }
+      });
+      if (!user) {
+        throw new Error("Người dùng không tồn tại!");
+      }
+
+      const balanceBefore = user.starBalance;
+      const balanceAfter = balanceBefore + amount;
+
+      const updated = await tx.user.update({
+        where: { id: userId },
+        data: {
+          starBalance: balanceAfter,
         },
-      },
+      });
+
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "RECHARGE",
+          amount: amount,
+          balanceBefore,
+          balanceAfter,
+          note: `Nạp thành công +${amount.toLocaleString()} sao (thử nghiệm)`,
+        },
+      });
+
+      return updated;
     });
 
     console.log(`💰 Người dùng [${updatedUser.displayName}] vừa nạp thành công +${amount} sao. Số dư mới: ${updatedUser.starBalance}`);

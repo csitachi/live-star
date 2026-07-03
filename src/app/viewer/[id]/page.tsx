@@ -1328,7 +1328,12 @@ export default function ViewerPage() {
                 Viewer Lv.{viewerLevel.level}
               </span>
 
-              <div className={styles.viewerBalance}>
+              <div 
+                className={styles.viewerBalance}
+                onClick={() => router.push("/dashboard/wallet")}
+                style={{ cursor: "pointer" }}
+                title="Xem chi tiết ví sao & lịch sử giao dịch"
+              >
                 🪙 {currentUser.starBalance.toLocaleString()} sao
               </div>
 

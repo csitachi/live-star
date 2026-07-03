@@ -406,8 +406,9 @@ export default function HomePage() {
             />
             <div 
               className={styles.userInfo}
-              onClick={() => router.push(`/profile/${currentUser.username}`)}
+              onClick={() => router.push("/dashboard/wallet")}
               style={{ cursor: "pointer" }}
+              title="Xem chi tiết ví sao & lịch sử giao dịch"
             >
               <span className={styles.username}>{currentUser.displayName}</span>
               <span className={styles.balance}>

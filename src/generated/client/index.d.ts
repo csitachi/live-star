@@ -93,6 +93,19 @@ export type QuestDefinition = $Result.DefaultSelection<Prisma.$QuestDefinitionPa
  * 
  */
 export type UserQuest = $Result.DefaultSelection<Prisma.$UserQuestPayload>
+/**
+ * Model StarLedger
+ * ==========================================
+ * StarLedger — Sổ cái giao dịch sao (Audit Trail)
+ * 
+ * KIẾN THỨC: Ledger pattern đảm bảo:
+ * 1. Mọi thay đổi starBalance đều có bản ghi vĩnh viễn
+ * 2. balanceBefore/After cho phép phát hiện bất thường (balance != sum of ledger)
+ * 3. 1 query đơn giản thay vì JOIN 5+ bảng để lấy lịch sử
+ * 4. Có thể reconstruct lại toàn bộ balance history nếu có bug
+ * ==========================================
+ */
+export type StarLedger = $Result.DefaultSelection<Prisma.$StarLedgerPayload>
 
 /**
  * Enums
@@ -105,6 +118,24 @@ export namespace $Enums {
 };
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const LedgerType: {
+  RECHARGE: 'RECHARGE',
+  GIFT_SENT: 'GIFT_SENT',
+  FILTER_BOMB: 'FILTER_BOMB',
+  LUCKY_WHEEL: 'LUCKY_WHEEL',
+  CHEST_DROP: 'CHEST_DROP',
+  GIFT_RECEIVED: 'GIFT_RECEIVED',
+  CHEST_CLAIM: 'CHEST_CLAIM',
+  QUEST_REWARD: 'QUEST_REWARD',
+  PREDICTION_BET: 'PREDICTION_BET',
+  PREDICTION_WIN: 'PREDICTION_WIN',
+  PREDICTION_REFUND: 'PREDICTION_REFUND',
+  ADMIN_ADJUST: 'ADMIN_ADJUST'
+};
+
+export type LedgerType = (typeof LedgerType)[keyof typeof LedgerType]
 
 
 export const PostType: {
@@ -120,6 +151,10 @@ export type PostType = (typeof PostType)[keyof typeof PostType]
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type LedgerType = $Enums.LedgerType
+
+export const LedgerType: typeof $Enums.LedgerType
 
 export type PostType = $Enums.PostType
 
@@ -405,6 +440,16 @@ export class PrismaClient<
     * ```
     */
   get userQuest(): Prisma.UserQuestDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.starLedger`: Exposes CRUD operations for the **StarLedger** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StarLedgers
+    * const starLedgers = await prisma.starLedger.findMany()
+    * ```
+    */
+  get starLedger(): Prisma.StarLedgerDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -854,7 +899,8 @@ export namespace Prisma {
     Prediction: 'Prediction',
     PredictionBet: 'PredictionBet',
     QuestDefinition: 'QuestDefinition',
-    UserQuest: 'UserQuest'
+    UserQuest: 'UserQuest',
+    StarLedger: 'StarLedger'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -870,7 +916,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment" | "prediction" | "predictionBet" | "questDefinition" | "userQuest"
+      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment" | "prediction" | "predictionBet" | "questDefinition" | "userQuest" | "starLedger"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2058,6 +2104,80 @@ export namespace Prisma {
           }
         }
       }
+      StarLedger: {
+        payload: Prisma.$StarLedgerPayload<ExtArgs>
+        fields: Prisma.StarLedgerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StarLedgerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StarLedgerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          findFirst: {
+            args: Prisma.StarLedgerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StarLedgerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          findMany: {
+            args: Prisma.StarLedgerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          create: {
+            args: Prisma.StarLedgerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          createMany: {
+            args: Prisma.StarLedgerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StarLedgerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          delete: {
+            args: Prisma.StarLedgerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          update: {
+            args: Prisma.StarLedgerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          deleteMany: {
+            args: Prisma.StarLedgerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StarLedgerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StarLedgerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          upsert: {
+            args: Prisma.StarLedgerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          aggregate: {
+            args: Prisma.StarLedgerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStarLedger>
+          }
+          groupBy: {
+            args: Prisma.StarLedgerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StarLedgerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StarLedgerCountArgs<ExtArgs>
+            result: $Utils.Optional<StarLedgerCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2182,6 +2302,7 @@ export namespace Prisma {
     predictionBet?: PredictionBetOmit
     questDefinition?: QuestDefinitionOmit
     userQuest?: UserQuestOmit
+    starLedger?: StarLedgerOmit
   }
 
   /* Types for Logging */
@@ -2272,6 +2393,7 @@ export namespace Prisma {
     postComments: number
     predictionBets: number
     quests: number
+    starLedger: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2285,6 +2407,7 @@ export namespace Prisma {
     postComments?: boolean | UserCountOutputTypeCountPostCommentsArgs
     predictionBets?: boolean | UserCountOutputTypeCountPredictionBetsArgs
     quests?: boolean | UserCountOutputTypeCountQuestsArgs
+    starLedger?: boolean | UserCountOutputTypeCountStarLedgerArgs
   }
 
   // Custom InputTypes
@@ -2366,6 +2489,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountQuestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserQuestWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountStarLedgerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StarLedgerWhereInput
   }
 
 
@@ -2871,6 +3001,7 @@ export namespace Prisma {
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
     predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
     quests?: boolean | User$questsArgs<ExtArgs>
+    starLedger?: boolean | User$starLedgerArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2934,6 +3065,7 @@ export namespace Prisma {
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
     predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
     quests?: boolean | User$questsArgs<ExtArgs>
+    starLedger?: boolean | User$starLedgerArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2952,6 +3084,7 @@ export namespace Prisma {
       postComments: Prisma.$PostCommentPayload<ExtArgs>[]
       predictionBets: Prisma.$PredictionBetPayload<ExtArgs>[]
       quests: Prisma.$UserQuestPayload<ExtArgs>[]
+      starLedger: Prisma.$StarLedgerPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3371,6 +3504,7 @@ export namespace Prisma {
     postComments<T extends User$postCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$postCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     predictionBets<T extends User$predictionBetsArgs<ExtArgs> = {}>(args?: Subset<T, User$predictionBetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     quests<T extends User$questsArgs<ExtArgs> = {}>(args?: Subset<T, User$questsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    starLedger<T extends User$starLedgerArgs<ExtArgs> = {}>(args?: Subset<T, User$starLedgerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4043,6 +4177,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
+  }
+
+  /**
+   * User.starLedger
+   */
+  export type User$starLedgerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    where?: StarLedgerWhereInput
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    cursor?: StarLedgerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
   }
 
   /**
@@ -21404,6 +21562,1215 @@ export namespace Prisma {
 
 
   /**
+   * Model StarLedger
+   */
+
+  export type AggregateStarLedger = {
+    _count: StarLedgerCountAggregateOutputType | null
+    _avg: StarLedgerAvgAggregateOutputType | null
+    _sum: StarLedgerSumAggregateOutputType | null
+    _min: StarLedgerMinAggregateOutputType | null
+    _max: StarLedgerMaxAggregateOutputType | null
+  }
+
+  export type StarLedgerAvgAggregateOutputType = {
+    amount: number | null
+    balanceBefore: number | null
+    balanceAfter: number | null
+  }
+
+  export type StarLedgerSumAggregateOutputType = {
+    amount: number | null
+    balanceBefore: number | null
+    balanceAfter: number | null
+  }
+
+  export type StarLedgerMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: $Enums.LedgerType | null
+    amount: number | null
+    balanceBefore: number | null
+    balanceAfter: number | null
+    giftTxId: string | null
+    chestClaimId: string | null
+    questId: string | null
+    predictionBetId: string | null
+    streamId: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type StarLedgerMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: $Enums.LedgerType | null
+    amount: number | null
+    balanceBefore: number | null
+    balanceAfter: number | null
+    giftTxId: string | null
+    chestClaimId: string | null
+    questId: string | null
+    predictionBetId: string | null
+    streamId: string | null
+    note: string | null
+    createdAt: Date | null
+  }
+
+  export type StarLedgerCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId: number
+    chestClaimId: number
+    questId: number
+    predictionBetId: number
+    streamId: number
+    note: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type StarLedgerAvgAggregateInputType = {
+    amount?: true
+    balanceBefore?: true
+    balanceAfter?: true
+  }
+
+  export type StarLedgerSumAggregateInputType = {
+    amount?: true
+    balanceBefore?: true
+    balanceAfter?: true
+  }
+
+  export type StarLedgerMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    amount?: true
+    balanceBefore?: true
+    balanceAfter?: true
+    giftTxId?: true
+    chestClaimId?: true
+    questId?: true
+    predictionBetId?: true
+    streamId?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type StarLedgerMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    amount?: true
+    balanceBefore?: true
+    balanceAfter?: true
+    giftTxId?: true
+    chestClaimId?: true
+    questId?: true
+    predictionBetId?: true
+    streamId?: true
+    note?: true
+    createdAt?: true
+  }
+
+  export type StarLedgerCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    amount?: true
+    balanceBefore?: true
+    balanceAfter?: true
+    giftTxId?: true
+    chestClaimId?: true
+    questId?: true
+    predictionBetId?: true
+    streamId?: true
+    note?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type StarLedgerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StarLedger to aggregate.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StarLedgers
+    **/
+    _count?: true | StarLedgerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StarLedgerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StarLedgerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StarLedgerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StarLedgerMaxAggregateInputType
+  }
+
+  export type GetStarLedgerAggregateType<T extends StarLedgerAggregateArgs> = {
+        [P in keyof T & keyof AggregateStarLedger]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStarLedger[P]>
+      : GetScalarType<T[P], AggregateStarLedger[P]>
+  }
+
+
+
+
+  export type StarLedgerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StarLedgerWhereInput
+    orderBy?: StarLedgerOrderByWithAggregationInput | StarLedgerOrderByWithAggregationInput[]
+    by: StarLedgerScalarFieldEnum[] | StarLedgerScalarFieldEnum
+    having?: StarLedgerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StarLedgerCountAggregateInputType | true
+    _avg?: StarLedgerAvgAggregateInputType
+    _sum?: StarLedgerSumAggregateInputType
+    _min?: StarLedgerMinAggregateInputType
+    _max?: StarLedgerMaxAggregateInputType
+  }
+
+  export type StarLedgerGroupByOutputType = {
+    id: string
+    userId: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId: string | null
+    chestClaimId: string | null
+    questId: string | null
+    predictionBetId: string | null
+    streamId: string | null
+    note: string | null
+    createdAt: Date
+    _count: StarLedgerCountAggregateOutputType | null
+    _avg: StarLedgerAvgAggregateOutputType | null
+    _sum: StarLedgerSumAggregateOutputType | null
+    _min: StarLedgerMinAggregateOutputType | null
+    _max: StarLedgerMaxAggregateOutputType | null
+  }
+
+  type GetStarLedgerGroupByPayload<T extends StarLedgerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StarLedgerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StarLedgerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StarLedgerGroupByOutputType[P]>
+            : GetScalarType<T[P], StarLedgerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StarLedgerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    amount?: boolean
+    balanceBefore?: boolean
+    balanceAfter?: boolean
+    giftTxId?: boolean
+    chestClaimId?: boolean
+    questId?: boolean
+    predictionBetId?: boolean
+    streamId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    amount?: boolean
+    balanceBefore?: boolean
+    balanceAfter?: boolean
+    giftTxId?: boolean
+    chestClaimId?: boolean
+    questId?: boolean
+    predictionBetId?: boolean
+    streamId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    amount?: boolean
+    balanceBefore?: boolean
+    balanceAfter?: boolean
+    giftTxId?: boolean
+    chestClaimId?: boolean
+    questId?: boolean
+    predictionBetId?: boolean
+    streamId?: boolean
+    note?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    amount?: boolean
+    balanceBefore?: boolean
+    balanceAfter?: boolean
+    giftTxId?: boolean
+    chestClaimId?: boolean
+    questId?: boolean
+    predictionBetId?: boolean
+    streamId?: boolean
+    note?: boolean
+    createdAt?: boolean
+  }
+
+  export type StarLedgerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "amount" | "balanceBefore" | "balanceAfter" | "giftTxId" | "chestClaimId" | "questId" | "predictionBetId" | "streamId" | "note" | "createdAt", ExtArgs["result"]["starLedger"]>
+  export type StarLedgerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StarLedgerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type StarLedgerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $StarLedgerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StarLedger"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      type: $Enums.LedgerType
+      amount: number
+      balanceBefore: number
+      balanceAfter: number
+      giftTxId: string | null
+      chestClaimId: string | null
+      questId: string | null
+      predictionBetId: string | null
+      streamId: string | null
+      note: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["starLedger"]>
+    composites: {}
+  }
+
+  type StarLedgerGetPayload<S extends boolean | null | undefined | StarLedgerDefaultArgs> = $Result.GetResult<Prisma.$StarLedgerPayload, S>
+
+  type StarLedgerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StarLedgerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StarLedgerCountAggregateInputType | true
+    }
+
+  export interface StarLedgerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StarLedger'], meta: { name: 'StarLedger' } }
+    /**
+     * Find zero or one StarLedger that matches the filter.
+     * @param {StarLedgerFindUniqueArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StarLedgerFindUniqueArgs>(args: SelectSubset<T, StarLedgerFindUniqueArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StarLedger that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StarLedgerFindUniqueOrThrowArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StarLedgerFindUniqueOrThrowArgs>(args: SelectSubset<T, StarLedgerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StarLedger that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindFirstArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StarLedgerFindFirstArgs>(args?: SelectSubset<T, StarLedgerFindFirstArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StarLedger that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindFirstOrThrowArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StarLedgerFindFirstOrThrowArgs>(args?: SelectSubset<T, StarLedgerFindFirstOrThrowArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StarLedgers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StarLedgers
+     * const starLedgers = await prisma.starLedger.findMany()
+     * 
+     * // Get first 10 StarLedgers
+     * const starLedgers = await prisma.starLedger.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StarLedgerFindManyArgs>(args?: SelectSubset<T, StarLedgerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StarLedger.
+     * @param {StarLedgerCreateArgs} args - Arguments to create a StarLedger.
+     * @example
+     * // Create one StarLedger
+     * const StarLedger = await prisma.starLedger.create({
+     *   data: {
+     *     // ... data to create a StarLedger
+     *   }
+     * })
+     * 
+     */
+    create<T extends StarLedgerCreateArgs>(args: SelectSubset<T, StarLedgerCreateArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StarLedgers.
+     * @param {StarLedgerCreateManyArgs} args - Arguments to create many StarLedgers.
+     * @example
+     * // Create many StarLedgers
+     * const starLedger = await prisma.starLedger.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StarLedgerCreateManyArgs>(args?: SelectSubset<T, StarLedgerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StarLedgers and returns the data saved in the database.
+     * @param {StarLedgerCreateManyAndReturnArgs} args - Arguments to create many StarLedgers.
+     * @example
+     * // Create many StarLedgers
+     * const starLedger = await prisma.starLedger.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StarLedgers and only return the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StarLedgerCreateManyAndReturnArgs>(args?: SelectSubset<T, StarLedgerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StarLedger.
+     * @param {StarLedgerDeleteArgs} args - Arguments to delete one StarLedger.
+     * @example
+     * // Delete one StarLedger
+     * const StarLedger = await prisma.starLedger.delete({
+     *   where: {
+     *     // ... filter to delete one StarLedger
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StarLedgerDeleteArgs>(args: SelectSubset<T, StarLedgerDeleteArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StarLedger.
+     * @param {StarLedgerUpdateArgs} args - Arguments to update one StarLedger.
+     * @example
+     * // Update one StarLedger
+     * const starLedger = await prisma.starLedger.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StarLedgerUpdateArgs>(args: SelectSubset<T, StarLedgerUpdateArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StarLedgers.
+     * @param {StarLedgerDeleteManyArgs} args - Arguments to filter StarLedgers to delete.
+     * @example
+     * // Delete a few StarLedgers
+     * const { count } = await prisma.starLedger.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StarLedgerDeleteManyArgs>(args?: SelectSubset<T, StarLedgerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StarLedgers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StarLedgers
+     * const starLedger = await prisma.starLedger.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StarLedgerUpdateManyArgs>(args: SelectSubset<T, StarLedgerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StarLedgers and returns the data updated in the database.
+     * @param {StarLedgerUpdateManyAndReturnArgs} args - Arguments to update many StarLedgers.
+     * @example
+     * // Update many StarLedgers
+     * const starLedger = await prisma.starLedger.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StarLedgers and only return the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StarLedgerUpdateManyAndReturnArgs>(args: SelectSubset<T, StarLedgerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StarLedger.
+     * @param {StarLedgerUpsertArgs} args - Arguments to update or create a StarLedger.
+     * @example
+     * // Update or create a StarLedger
+     * const starLedger = await prisma.starLedger.upsert({
+     *   create: {
+     *     // ... data to create a StarLedger
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StarLedger we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StarLedgerUpsertArgs>(args: SelectSubset<T, StarLedgerUpsertArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StarLedgers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerCountArgs} args - Arguments to filter StarLedgers to count.
+     * @example
+     * // Count the number of StarLedgers
+     * const count = await prisma.starLedger.count({
+     *   where: {
+     *     // ... the filter for the StarLedgers we want to count
+     *   }
+     * })
+    **/
+    count<T extends StarLedgerCountArgs>(
+      args?: Subset<T, StarLedgerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StarLedgerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StarLedger.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StarLedgerAggregateArgs>(args: Subset<T, StarLedgerAggregateArgs>): Prisma.PrismaPromise<GetStarLedgerAggregateType<T>>
+
+    /**
+     * Group by StarLedger.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StarLedgerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StarLedgerGroupByArgs['orderBy'] }
+        : { orderBy?: StarLedgerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StarLedgerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStarLedgerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StarLedger model
+   */
+  readonly fields: StarLedgerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StarLedger.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StarLedgerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StarLedger model
+   */
+  interface StarLedgerFieldRefs {
+    readonly id: FieldRef<"StarLedger", 'String'>
+    readonly userId: FieldRef<"StarLedger", 'String'>
+    readonly type: FieldRef<"StarLedger", 'LedgerType'>
+    readonly amount: FieldRef<"StarLedger", 'Int'>
+    readonly balanceBefore: FieldRef<"StarLedger", 'Int'>
+    readonly balanceAfter: FieldRef<"StarLedger", 'Int'>
+    readonly giftTxId: FieldRef<"StarLedger", 'String'>
+    readonly chestClaimId: FieldRef<"StarLedger", 'String'>
+    readonly questId: FieldRef<"StarLedger", 'String'>
+    readonly predictionBetId: FieldRef<"StarLedger", 'String'>
+    readonly streamId: FieldRef<"StarLedger", 'String'>
+    readonly note: FieldRef<"StarLedger", 'String'>
+    readonly createdAt: FieldRef<"StarLedger", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StarLedger findUnique
+   */
+  export type StarLedgerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger findUniqueOrThrow
+   */
+  export type StarLedgerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger findFirst
+   */
+  export type StarLedgerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StarLedgers.
+     */
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger findFirstOrThrow
+   */
+  export type StarLedgerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StarLedgers.
+     */
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger findMany
+   */
+  export type StarLedgerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedgers to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StarLedgers.
+     */
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger create
+   */
+  export type StarLedgerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StarLedger.
+     */
+    data: XOR<StarLedgerCreateInput, StarLedgerUncheckedCreateInput>
+  }
+
+  /**
+   * StarLedger createMany
+   */
+  export type StarLedgerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StarLedgers.
+     */
+    data: StarLedgerCreateManyInput | StarLedgerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StarLedger createManyAndReturn
+   */
+  export type StarLedgerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * The data used to create many StarLedgers.
+     */
+    data: StarLedgerCreateManyInput | StarLedgerCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StarLedger update
+   */
+  export type StarLedgerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StarLedger.
+     */
+    data: XOR<StarLedgerUpdateInput, StarLedgerUncheckedUpdateInput>
+    /**
+     * Choose, which StarLedger to update.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger updateMany
+   */
+  export type StarLedgerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StarLedgers.
+     */
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyInput>
+    /**
+     * Filter which StarLedgers to update
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StarLedger updateManyAndReturn
+   */
+  export type StarLedgerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * The data used to update StarLedgers.
+     */
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyInput>
+    /**
+     * Filter which StarLedgers to update
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StarLedger upsert
+   */
+  export type StarLedgerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StarLedger to update in case it exists.
+     */
+    where: StarLedgerWhereUniqueInput
+    /**
+     * In case the StarLedger found by the `where` argument doesn't exist, create a new StarLedger with this data.
+     */
+    create: XOR<StarLedgerCreateInput, StarLedgerUncheckedCreateInput>
+    /**
+     * In case the StarLedger was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StarLedgerUpdateInput, StarLedgerUncheckedUpdateInput>
+  }
+
+  /**
+   * StarLedger delete
+   */
+  export type StarLedgerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter which StarLedger to delete.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger deleteMany
+   */
+  export type StarLedgerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StarLedgers to delete
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StarLedger without action
+   */
+  export type StarLedgerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -21643,6 +23010,25 @@ export namespace Prisma {
   export type UserQuestScalarFieldEnum = (typeof UserQuestScalarFieldEnum)[keyof typeof UserQuestScalarFieldEnum]
 
 
+  export const StarLedgerScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    amount: 'amount',
+    balanceBefore: 'balanceBefore',
+    balanceAfter: 'balanceAfter',
+    giftTxId: 'giftTxId',
+    chestClaimId: 'chestClaimId',
+    questId: 'questId',
+    predictionBetId: 'predictionBetId',
+    streamId: 'streamId',
+    note: 'note',
+    createdAt: 'createdAt'
+  };
+
+  export type StarLedgerScalarFieldEnum = (typeof StarLedgerScalarFieldEnum)[keyof typeof StarLedgerScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -21750,6 +23136,20 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'LedgerType'
+   */
+  export type EnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType'>
+    
+
+
+  /**
+   * Reference to a field of type 'LedgerType[]'
+   */
+  export type ListEnumLedgerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'LedgerType[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -21793,6 +23193,7 @@ export namespace Prisma {
     postComments?: PostCommentListRelationFilter
     predictionBets?: PredictionBetListRelationFilter
     quests?: UserQuestListRelationFilter
+    starLedger?: StarLedgerListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -21819,6 +23220,7 @@ export namespace Prisma {
     postComments?: PostCommentOrderByRelationAggregateInput
     predictionBets?: PredictionBetOrderByRelationAggregateInput
     quests?: UserQuestOrderByRelationAggregateInput
+    starLedger?: StarLedgerOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -21848,6 +23250,7 @@ export namespace Prisma {
     postComments?: PostCommentListRelationFilter
     predictionBets?: PredictionBetListRelationFilter
     quests?: UserQuestListRelationFilter
+    starLedger?: StarLedgerListRelationFilter
   }, "id" | "username" | "email" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
@@ -23008,6 +24411,103 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"UserQuest"> | Date | string
   }
 
+  export type StarLedgerWhereInput = {
+    AND?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    OR?: StarLedgerWhereInput[]
+    NOT?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    id?: StringFilter<"StarLedger"> | string
+    userId?: StringFilter<"StarLedger"> | string
+    type?: EnumLedgerTypeFilter<"StarLedger"> | $Enums.LedgerType
+    amount?: IntFilter<"StarLedger"> | number
+    balanceBefore?: IntFilter<"StarLedger"> | number
+    balanceAfter?: IntFilter<"StarLedger"> | number
+    giftTxId?: StringNullableFilter<"StarLedger"> | string | null
+    chestClaimId?: StringNullableFilter<"StarLedger"> | string | null
+    questId?: StringNullableFilter<"StarLedger"> | string | null
+    predictionBetId?: StringNullableFilter<"StarLedger"> | string | null
+    streamId?: StringNullableFilter<"StarLedger"> | string | null
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type StarLedgerOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+    giftTxId?: SortOrderInput | SortOrder
+    chestClaimId?: SortOrderInput | SortOrder
+    questId?: SortOrderInput | SortOrder
+    predictionBetId?: SortOrderInput | SortOrder
+    streamId?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type StarLedgerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    OR?: StarLedgerWhereInput[]
+    NOT?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    userId?: StringFilter<"StarLedger"> | string
+    type?: EnumLedgerTypeFilter<"StarLedger"> | $Enums.LedgerType
+    amount?: IntFilter<"StarLedger"> | number
+    balanceBefore?: IntFilter<"StarLedger"> | number
+    balanceAfter?: IntFilter<"StarLedger"> | number
+    giftTxId?: StringNullableFilter<"StarLedger"> | string | null
+    chestClaimId?: StringNullableFilter<"StarLedger"> | string | null
+    questId?: StringNullableFilter<"StarLedger"> | string | null
+    predictionBetId?: StringNullableFilter<"StarLedger"> | string | null
+    streamId?: StringNullableFilter<"StarLedger"> | string | null
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type StarLedgerOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+    giftTxId?: SortOrderInput | SortOrder
+    chestClaimId?: SortOrderInput | SortOrder
+    questId?: SortOrderInput | SortOrder
+    predictionBetId?: SortOrderInput | SortOrder
+    streamId?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: StarLedgerCountOrderByAggregateInput
+    _avg?: StarLedgerAvgOrderByAggregateInput
+    _max?: StarLedgerMaxOrderByAggregateInput
+    _min?: StarLedgerMinOrderByAggregateInput
+    _sum?: StarLedgerSumOrderByAggregateInput
+  }
+
+  export type StarLedgerScalarWhereWithAggregatesInput = {
+    AND?: StarLedgerScalarWhereWithAggregatesInput | StarLedgerScalarWhereWithAggregatesInput[]
+    OR?: StarLedgerScalarWhereWithAggregatesInput[]
+    NOT?: StarLedgerScalarWhereWithAggregatesInput | StarLedgerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StarLedger"> | string
+    userId?: StringWithAggregatesFilter<"StarLedger"> | string
+    type?: EnumLedgerTypeWithAggregatesFilter<"StarLedger"> | $Enums.LedgerType
+    amount?: IntWithAggregatesFilter<"StarLedger"> | number
+    balanceBefore?: IntWithAggregatesFilter<"StarLedger"> | number
+    balanceAfter?: IntWithAggregatesFilter<"StarLedger"> | number
+    giftTxId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    chestClaimId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    questId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    predictionBetId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    streamId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    note?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StarLedger"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -23032,6 +24532,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -23058,6 +24559,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -23084,6 +24586,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -23110,6 +24613,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -24320,6 +25824,117 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type StarLedgerCreateInput = {
+    id?: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutStarLedgerInput
+  }
+
+  export type StarLedgerUncheckedCreateInput = {
+    id?: string
+    userId: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutStarLedgerNestedInput
+  }
+
+  export type StarLedgerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerCreateManyInput = {
+    id?: string
+    userId: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -24433,6 +26048,12 @@ export namespace Prisma {
     none?: UserQuestWhereInput
   }
 
+  export type StarLedgerListRelationFilter = {
+    every?: StarLedgerWhereInput
+    some?: StarLedgerWhereInput
+    none?: StarLedgerWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -24471,6 +26092,10 @@ export namespace Prisma {
   }
 
   export type UserQuestOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StarLedgerOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25389,6 +27014,83 @@ export namespace Prisma {
     rewardStars?: SortOrder
   }
 
+  export type EnumLedgerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LedgerType | EnumLedgerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLedgerTypeFilter<$PrismaModel> | $Enums.LedgerType
+  }
+
+  export type StarLedgerCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+    giftTxId?: SortOrder
+    chestClaimId?: SortOrder
+    questId?: SortOrder
+    predictionBetId?: SortOrder
+    streamId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerAvgOrderByAggregateInput = {
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+  }
+
+  export type StarLedgerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+    giftTxId?: SortOrder
+    chestClaimId?: SortOrder
+    questId?: SortOrder
+    predictionBetId?: SortOrder
+    streamId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+    giftTxId?: SortOrder
+    chestClaimId?: SortOrder
+    questId?: SortOrder
+    predictionBetId?: SortOrder
+    streamId?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerSumOrderByAggregateInput = {
+    amount?: SortOrder
+    balanceBefore?: SortOrder
+    balanceAfter?: SortOrder
+  }
+
+  export type EnumLedgerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LedgerType | EnumLedgerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLedgerTypeWithAggregatesFilter<$PrismaModel> | $Enums.LedgerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLedgerTypeFilter<$PrismaModel>
+    _max?: NestedEnumLedgerTypeFilter<$PrismaModel>
+  }
+
   export type StreamCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -25459,6 +27161,13 @@ export namespace Prisma {
     connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
   }
 
+  export type StarLedgerCreateNestedManyWithoutUserInput = {
+    create?: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput> | StarLedgerCreateWithoutUserInput[] | StarLedgerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutUserInput | StarLedgerCreateOrConnectWithoutUserInput[]
+    createMany?: StarLedgerCreateManyUserInputEnvelope
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+  }
+
   export type StreamUncheckedCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -25527,6 +27236,13 @@ export namespace Prisma {
     connectOrCreate?: UserQuestCreateOrConnectWithoutUserInput | UserQuestCreateOrConnectWithoutUserInput[]
     createMany?: UserQuestCreateManyUserInputEnvelope
     connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+  }
+
+  export type StarLedgerUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput> | StarLedgerCreateWithoutUserInput[] | StarLedgerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutUserInput | StarLedgerCreateOrConnectWithoutUserInput[]
+    createMany?: StarLedgerCreateManyUserInputEnvelope
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -25693,6 +27409,20 @@ export namespace Prisma {
     deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
   }
 
+  export type StarLedgerUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput> | StarLedgerCreateWithoutUserInput[] | StarLedgerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutUserInput | StarLedgerCreateOrConnectWithoutUserInput[]
+    upsert?: StarLedgerUpsertWithWhereUniqueWithoutUserInput | StarLedgerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StarLedgerCreateManyUserInputEnvelope
+    set?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    disconnect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    delete?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    update?: StarLedgerUpdateWithWhereUniqueWithoutUserInput | StarLedgerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StarLedgerUpdateManyWithWhereWithoutUserInput | StarLedgerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+  }
+
   export type StreamUncheckedUpdateManyWithoutStreamerNestedInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -25831,6 +27561,20 @@ export namespace Prisma {
     update?: UserQuestUpdateWithWhereUniqueWithoutUserInput | UserQuestUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: UserQuestUpdateManyWithWhereWithoutUserInput | UserQuestUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+  }
+
+  export type StarLedgerUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput> | StarLedgerCreateWithoutUserInput[] | StarLedgerUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutUserInput | StarLedgerCreateOrConnectWithoutUserInput[]
+    upsert?: StarLedgerUpsertWithWhereUniqueWithoutUserInput | StarLedgerUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: StarLedgerCreateManyUserInputEnvelope
+    set?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    disconnect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    delete?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    update?: StarLedgerUpdateWithWhereUniqueWithoutUserInput | StarLedgerUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: StarLedgerUpdateManyWithWhereWithoutUserInput | StarLedgerUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutStreamsInput = {
@@ -26665,6 +28409,24 @@ export namespace Prisma {
     update?: XOR<XOR<QuestDefinitionUpdateToOneWithWhereWithoutUserQuestsInput, QuestDefinitionUpdateWithoutUserQuestsInput>, QuestDefinitionUncheckedUpdateWithoutUserQuestsInput>
   }
 
+  export type UserCreateNestedOneWithoutStarLedgerInput = {
+    create?: XOR<UserCreateWithoutStarLedgerInput, UserUncheckedCreateWithoutStarLedgerInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStarLedgerInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumLedgerTypeFieldUpdateOperationsInput = {
+    set?: $Enums.LedgerType
+  }
+
+  export type UserUpdateOneRequiredWithoutStarLedgerNestedInput = {
+    create?: XOR<UserCreateWithoutStarLedgerInput, UserUncheckedCreateWithoutStarLedgerInput>
+    connectOrCreate?: UserCreateOrConnectWithoutStarLedgerInput
+    upsert?: UserUpsertWithoutStarLedgerInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutStarLedgerInput, UserUpdateWithoutStarLedgerInput>, UserUncheckedUpdateWithoutStarLedgerInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -26898,6 +28660,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumPostTypeFilter<$PrismaModel>
     _max?: NestedEnumPostTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumLedgerTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.LedgerType | EnumLedgerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLedgerTypeFilter<$PrismaModel> | $Enums.LedgerType
+  }
+
+  export type NestedEnumLedgerTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.LedgerType | EnumLedgerTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.LedgerType[] | ListEnumLedgerTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumLedgerTypeWithAggregatesFilter<$PrismaModel> | $Enums.LedgerType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumLedgerTypeFilter<$PrismaModel>
+    _max?: NestedEnumLedgerTypeFilter<$PrismaModel>
   }
 
   export type StreamCreateWithoutStreamerInput = {
@@ -27208,6 +28987,46 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type StarLedgerCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerCreateOrConnectWithoutUserInput = {
+    where: StarLedgerWhereUniqueInput
+    create: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput>
+  }
+
+  export type StarLedgerCreateManyUserInputEnvelope = {
+    data: StarLedgerCreateManyUserInput | StarLedgerCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type StreamUpsertWithWhereUniqueWithoutStreamerInput = {
     where: StreamWhereUniqueInput
     update: XOR<StreamUpdateWithoutStreamerInput, StreamUncheckedUpdateWithoutStreamerInput>
@@ -27488,6 +29307,41 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"UserQuest"> | Date | string
   }
 
+  export type StarLedgerUpsertWithWhereUniqueWithoutUserInput = {
+    where: StarLedgerWhereUniqueInput
+    update: XOR<StarLedgerUpdateWithoutUserInput, StarLedgerUncheckedUpdateWithoutUserInput>
+    create: XOR<StarLedgerCreateWithoutUserInput, StarLedgerUncheckedCreateWithoutUserInput>
+  }
+
+  export type StarLedgerUpdateWithWhereUniqueWithoutUserInput = {
+    where: StarLedgerWhereUniqueInput
+    data: XOR<StarLedgerUpdateWithoutUserInput, StarLedgerUncheckedUpdateWithoutUserInput>
+  }
+
+  export type StarLedgerUpdateManyWithWhereWithoutUserInput = {
+    where: StarLedgerScalarWhereInput
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type StarLedgerScalarWhereInput = {
+    AND?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+    OR?: StarLedgerScalarWhereInput[]
+    NOT?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+    id?: StringFilter<"StarLedger"> | string
+    userId?: StringFilter<"StarLedger"> | string
+    type?: EnumLedgerTypeFilter<"StarLedger"> | $Enums.LedgerType
+    amount?: IntFilter<"StarLedger"> | number
+    balanceBefore?: IntFilter<"StarLedger"> | number
+    balanceAfter?: IntFilter<"StarLedger"> | number
+    giftTxId?: StringNullableFilter<"StarLedger"> | string | null
+    chestClaimId?: StringNullableFilter<"StarLedger"> | string | null
+    questId?: StringNullableFilter<"StarLedger"> | string | null
+    predictionBetId?: StringNullableFilter<"StarLedger"> | string | null
+    streamId?: StringNullableFilter<"StarLedger"> | string | null
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+  }
+
   export type UserCreateWithoutStreamsInput = {
     id?: string
     username: string
@@ -27511,6 +29365,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStreamsInput = {
@@ -27536,6 +29391,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStreamsInput = {
@@ -27807,6 +29663,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStreamsInput = {
@@ -27832,6 +29689,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamGoalUpsertWithWhereUniqueWithoutStreamInput = {
@@ -28074,6 +29932,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGiftsInput = {
@@ -28099,6 +29958,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGiftsInput = {
@@ -28129,6 +29989,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedGiftsInput = {
@@ -28154,6 +30015,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedGiftsInput = {
@@ -28244,6 +30106,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGiftsInput = {
@@ -28269,6 +30132,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedGiftsInput = {
@@ -28305,6 +30169,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedGiftsInput = {
@@ -28330,6 +30195,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutCommentsInput = {
@@ -28398,6 +30264,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -28423,6 +30290,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -28513,6 +30381,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -28538,6 +30407,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -28563,6 +30433,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -28588,6 +30459,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -28629,6 +30501,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -28654,6 +30527,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutGoalsInput = {
@@ -29162,6 +31036,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -29187,6 +31062,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -29276,6 +31152,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -29301,6 +31178,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostLikeUpsertWithWhereUniqueWithoutPostInput = {
@@ -29389,6 +31267,7 @@ export namespace Prisma {
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostLikesInput = {
@@ -29414,6 +31293,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostLikesInput = {
@@ -29492,6 +31372,7 @@ export namespace Prisma {
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostLikesInput = {
@@ -29517,6 +31398,7 @@ export namespace Prisma {
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostCreateWithoutCommentsInput = {
@@ -29573,6 +31455,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostCommentsInput = {
@@ -29598,6 +31481,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostCommentsInput = {
@@ -29676,6 +31560,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostCommentsInput = {
@@ -29701,6 +31586,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutPredictionsInput = {
@@ -29895,6 +31781,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     quests?: UserQuestCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPredictionBetsInput = {
@@ -29920,6 +31807,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPredictionBetsInput = {
@@ -30002,6 +31890,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     quests?: UserQuestUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPredictionBetsInput = {
@@ -30027,6 +31916,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserQuestCreateWithoutDefinitionInput = {
@@ -30104,6 +31994,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutQuestsInput = {
@@ -30129,6 +32020,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    starLedger?: StarLedgerUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutQuestsInput = {
@@ -30197,6 +32089,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuestsInput = {
@@ -30222,6 +32115,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    starLedger?: StarLedgerUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type QuestDefinitionUpsertWithoutUserQuestsInput = {
@@ -30255,6 +32149,126 @@ export namespace Prisma {
     isActive?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserCreateWithoutStarLedgerInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionCreateNestedManyWithoutReceiverInput
+    comments?: CommentCreateNestedManyWithoutSenderInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeCreateNestedManyWithoutUserInput
+    postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutStarLedgerInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamUncheckedCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionUncheckedCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionUncheckedCreateNestedManyWithoutReceiverInput
+    comments?: CommentUncheckedCreateNestedManyWithoutSenderInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
+    postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutStarLedgerInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutStarLedgerInput, UserUncheckedCreateWithoutStarLedgerInput>
+  }
+
+  export type UserUpsertWithoutStarLedgerInput = {
+    update: XOR<UserUpdateWithoutStarLedgerInput, UserUncheckedUpdateWithoutStarLedgerInput>
+    create: XOR<UserCreateWithoutStarLedgerInput, UserUncheckedCreateWithoutStarLedgerInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutStarLedgerInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutStarLedgerInput, UserUncheckedUpdateWithoutStarLedgerInput>
+  }
+
+  export type UserUpdateWithoutStarLedgerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutStarLedgerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUncheckedUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUncheckedUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateManyStreamerInput = {
@@ -30350,6 +32364,21 @@ export namespace Prisma {
     date: string
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type StarLedgerCreateManyUserInput = {
+    id?: string
+    type: $Enums.LedgerType
+    amount: number
+    balanceBefore: number
+    balanceAfter: number
+    giftTxId?: string | null
+    chestClaimId?: string | null
+    questId?: string | null
+    predictionBetId?: string | null
+    streamId?: string | null
+    note?: string | null
+    createdAt?: Date | string
   }
 
   export type StreamUpdateWithoutStreamerInput = {
@@ -30653,6 +32682,51 @@ export namespace Prisma {
     date?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumLedgerTypeFieldUpdateOperationsInput | $Enums.LedgerType
+    amount?: IntFieldUpdateOperationsInput | number
+    balanceBefore?: IntFieldUpdateOperationsInput | number
+    balanceAfter?: IntFieldUpdateOperationsInput | number
+    giftTxId?: NullableStringFieldUpdateOperationsInput | string | null
+    chestClaimId?: NullableStringFieldUpdateOperationsInput | string | null
+    questId?: NullableStringFieldUpdateOperationsInput | string | null
+    predictionBetId?: NullableStringFieldUpdateOperationsInput | string | null
+    streamId?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StreamGoalCreateManyStreamInput = {

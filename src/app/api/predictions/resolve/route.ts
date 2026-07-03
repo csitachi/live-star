@@ -41,13 +41,36 @@ export async function POST(request: Request) {
       // 3. Xử lý kịch bản HỦY KÈO (CANCELLED) -> Hoàn tiền cược cho tất cả mọi người
       if (winOption === "CANCELLED") {
         for (const bet of prediction.bets) {
-          await tx.user.update({
+          const userForRefund = await tx.user.findUnique({
             where: { id: bet.userId },
-            data: {
-              starBalance: { increment: bet.starAmount },
-              starsGifted: { decrement: bet.starAmount }, // Trả lại EXP/sao tích lũy
-            },
+            select: { starBalance: true }
           });
+          if (userForRefund) {
+            const balanceBefore = userForRefund.starBalance;
+            const balanceAfter = balanceBefore + bet.starAmount;
+
+            await tx.user.update({
+              where: { id: bet.userId },
+              data: {
+                starBalance: balanceAfter,
+                starsGifted: { decrement: bet.starAmount }, // Trả lại EXP/sao tích lũy
+              },
+            });
+
+            // Ghi sổ cái StarLedger hoàn tiền cược
+            await tx.starLedger.create({
+              data: {
+                userId: bet.userId,
+                type: "PREDICTION_REFUND",
+                amount: bet.starAmount,
+                balanceBefore,
+                balanceAfter,
+                predictionBetId: bet.id,
+                streamId: prediction.streamId,
+                note: `Hoàn cược kèo: "${prediction.title}" (Kèo bị hủy)`,
+              },
+            });
+          }
         }
 
         const updatedPrediction = await tx.prediction.update({
@@ -87,13 +110,36 @@ export async function POST(request: Request) {
         if (winningTotalStars === 0) {
           // TH đặc biệt: Có người cược bên thua nhưng không ai cược bên thắng -> Hoàn trả sao cho bên cược thua
           for (const bet of prediction.bets) {
-            await tx.user.update({
+            const userForSpecialRefund = await tx.user.findUnique({
               where: { id: bet.userId },
-              data: {
-                starBalance: { increment: bet.starAmount },
-                starsGifted: { decrement: bet.starAmount },
-              },
+              select: { starBalance: true }
             });
+            if (userForSpecialRefund) {
+              const balanceBefore = userForSpecialRefund.starBalance;
+              const balanceAfter = balanceBefore + bet.starAmount;
+
+              await tx.user.update({
+                where: { id: bet.userId },
+                data: {
+                  starBalance: balanceAfter,
+                  starsGifted: { decrement: bet.starAmount },
+                },
+              });
+
+              // Ghi sổ cái StarLedger hoàn cược
+              await tx.starLedger.create({
+                data: {
+                  userId: bet.userId,
+                  type: "PREDICTION_REFUND",
+                  amount: bet.starAmount,
+                  balanceBefore,
+                  balanceAfter,
+                  predictionBetId: bet.id,
+                  streamId: prediction.streamId,
+                  note: `Hoàn cược kèo: "${prediction.title}" (Không ai đặt bên thắng)`,
+                },
+              });
+            }
           }
         } else {
           // Phân phối quỹ thưởng cho những người thắng
@@ -101,12 +147,36 @@ export async function POST(request: Request) {
             // Payout = Số sao cược * Tổng quỹ cược / Tổng cược bên thắng
             const payoutAmount = Math.floor((bet.starAmount * totalPool) / winningTotalStars);
             
-            await tx.user.update({
+            const userForPayout = await tx.user.findUnique({
               where: { id: bet.userId },
-              data: {
-                starBalance: { increment: payoutAmount },
-              },
+              select: { starBalance: true }
             });
+
+            if (userForPayout) {
+              const balanceBefore = userForPayout.starBalance;
+              const balanceAfter = balanceBefore + payoutAmount;
+
+              await tx.user.update({
+                where: { id: bet.userId },
+                data: {
+                  starBalance: balanceAfter,
+                },
+              });
+
+              // Ghi sổ cái StarLedger nhận tiền cược thắng
+              await tx.starLedger.create({
+                data: {
+                  userId: bet.userId,
+                  type: "PREDICTION_WIN",
+                  amount: payoutAmount,
+                  balanceBefore,
+                  balanceAfter,
+                  predictionBetId: bet.id,
+                  streamId: prediction.streamId,
+                  note: `Nhận sao thắng cược kèo: "${prediction.title}"`,
+                },
+              });
+            }
 
             payoutDetails.push({
               userId: bet.userId,

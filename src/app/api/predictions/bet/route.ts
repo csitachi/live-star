@@ -60,11 +60,14 @@ export async function POST(request: Request) {
         throw new Error(`Bạn đã đặt cược ở Lựa chọn [${oppositeOption}]. Không thể đặt cược cả hai bên!`);
       }
 
+      const balanceBefore = user.starBalance;
+      const balanceAfter = balanceBefore - starAmount;
+
       // 4. Khấu trừ sao và cập nhật tổng cược của User
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
-          starBalance: { decrement: starAmount },
+          starBalance: balanceAfter,
           starsGifted: { increment: starAmount }, // Đóng góp sao cũng giúp tăng cấp độ của viewer
         },
       });
@@ -85,6 +88,20 @@ export async function POST(request: Request) {
           userId,
           option,
           starAmount,
+        },
+      });
+
+      // Ghi sổ cái StarLedger cho đặt cược
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "PREDICTION_BET",
+          amount: -starAmount,
+          balanceBefore,
+          balanceAfter,
+          predictionBetId: bet.id,
+          streamId: prediction.streamId,
+          note: `Đặt cược ${starAmount} sao vào [${option === "A" ? prediction.optionA : prediction.optionB}] cho kèo: "${prediction.title}"`,
         },
       });
 

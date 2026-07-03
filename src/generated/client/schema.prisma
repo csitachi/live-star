@@ -28,6 +28,22 @@ enum UserRole {
   ADMIN
 }
 
+/// Loại giao dịch sao — dùng để phân loại trong StarLedger (sổ cái)
+enum LedgerType {
+  RECHARGE // Nạp sao (mua)
+  GIFT_SENT // Chi quà cho streamer
+  FILTER_BOMB // Chi Filter Bomb effect
+  LUCKY_WHEEL // Chi vòng quay may mắn
+  CHEST_DROP // Chi thả rương
+  GIFT_RECEIVED // Nhận quà từ viewer (vai streamer)
+  CHEST_CLAIM // Giật rương thành công
+  QUEST_REWARD // Nhận thưởng nhiệm vụ
+  PREDICTION_BET // Đặt cược kèo dự đoán
+  PREDICTION_WIN // Thắng kèo dự đoán
+  PREDICTION_REFUND // Hoàn cược kèo bị huỷ
+  ADMIN_ADJUST // Admin điều chỉnh thủ công
+}
+
 model User {
   id           String   @id @default(uuid())
   username     String   @unique // Đảm bảo không trùng tên đăng nhập
@@ -54,6 +70,7 @@ model User {
   postComments   PostComment[]
   predictionBets PredictionBet[]
   quests         UserQuest[]
+  starLedger     StarLedger[] // Sổ cái giao dịch sao
 }
 
 model Stream {
@@ -314,4 +331,38 @@ model UserQuest {
 
   @@unique([userId, questType, date])
   @@index([userId, date])
+}
+
+/// ==========================================
+/// StarLedger — Sổ cái giao dịch sao (Audit Trail)
+///
+/// KIẾN THỨC: Ledger pattern đảm bảo:
+/// 1. Mọi thay đổi starBalance đều có bản ghi vĩnh viễn
+/// 2. balanceBefore/After cho phép phát hiện bất thường (balance != sum of ledger)
+/// 3. 1 query đơn giản thay vì JOIN 5+ bảng để lấy lịch sử
+/// 4. Có thể reconstruct lại toàn bộ balance history nếu có bug
+/// ==========================================
+model StarLedger {
+  id     String @id @default(uuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type          LedgerType
+  amount        Int // Dương = nhận sao, Âm = chi sao
+  balanceBefore Int // Số dư trước giao dịch
+  balanceAfter  Int // Số dư sau giao dịch
+
+  // Liên kết nguồn gốc — nullable, chỉ 1 field được set mỗi entry
+  giftTxId        String? // → GiftTransaction.id
+  chestClaimId    String? // → TreasureClaim.id
+  questId         String? // → UserQuest.id
+  predictionBetId String? // → PredictionBet.id
+  streamId        String? // context: phiên live nào (để filter "sao từ live")
+
+  note      String? // Mô tả tự do ("Tặng 500 sao cho @idol")
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt(sort: Desc)], map: "StarLedger_userId_createdAt_desc_idx")
+  @@index([userId, type], map: "StarLedger_userId_type_idx")
+  @@index([userId, createdAt], map: "StarLedger_userId_createdAt_asc_idx")
 }

@@ -128,12 +128,73 @@ async function processBatch(bufferedJobs: BufferedJob[]) {
 
   // 5. Thực hiện transaction ghi dữ liệu hàng loạt
   await prisma.$transaction(async (tx) => {
-    // A. Trừ sao của người gửi
+    // Thu thập số dư hiện tại của tất cả senders và streamers trước giao dịch
+    const allUserIds = Array.from(new Set([
+      ...senderIds,
+      ...Array.from(new Set(newJobs.map(j => streamToStreamer.get(j.streamId)).filter(Boolean))) as string[]
+    ]));
+
+    const usersForBalance = await tx.user.findMany({
+      where: { id: { in: allUserIds } },
+      select: { id: true, starBalance: true, displayName: true }
+    });
+
+    const runningBalances = new Map(usersForBalance.map(u => [u.id, u.starBalance]));
+    const displayNameMap = new Map(usersForBalance.map(u => [u.id, u.displayName]));
+    const ledgerData: any[] = [];
+
+    // Giả lập giao dịch theo trình tự thời gian để tính balanceBefore / balanceAfter chính xác
+    for (const job of newJobs) {
+      const streamerId = streamToStreamer.get(job.streamId);
+      if (!streamerId) continue;
+
+      const senderBal = runningBalances.get(job.senderId) || 0;
+      const senderBalAfter = senderBal - job.starAmount;
+      runningBalances.set(job.senderId, senderBalAfter);
+
+      const receiverBal = runningBalances.get(streamerId) || 0;
+      const receiverBalAfter = receiverBal + job.starAmount;
+      runningBalances.set(streamerId, receiverBalAfter);
+
+      const senderName = displayNameMap.get(job.senderId) || "Người dùng";
+      const streamerName = displayNameMap.get(streamerId) || "Streamer";
+
+      // 1. Ledger cho người gửi
+      ledgerData.push({
+        userId: job.senderId,
+        type: job.filterEffect ? "FILTER_BOMB" : "GIFT_SENT",
+        amount: -job.starAmount,
+        balanceBefore: senderBal,
+        balanceAfter: senderBalAfter,
+        giftTxId: job.idempotencyKey,
+        streamId: job.streamId,
+        note: job.filterEffect 
+          ? `Kích hoạt hiệu ứng ${job.filterEffect.toUpperCase()} cho phòng của ${streamerName}`
+          : `Tặng ${job.starAmount} sao cho ${streamerName}`,
+        createdAt: new Date(job.enqueuedAt)
+      });
+
+      // 2. Ledger cho streamer nhận
+      ledgerData.push({
+        userId: streamerId,
+        type: "GIFT_RECEIVED",
+        amount: job.starAmount,
+        balanceBefore: receiverBal,
+        balanceAfter: receiverBalAfter,
+        giftTxId: job.idempotencyKey,
+        streamId: job.streamId,
+        note: `Nhận ${job.starAmount} sao từ ${senderName}`,
+        createdAt: new Date(job.enqueuedAt)
+      });
+    }
+
+    // A. Cập nhật số dư cuối của người gửi
     for (const [senderId, amount] of senderBalanceChanges.entries()) {
+      const finalBal = runningBalances.get(senderId) || 0;
       await tx.user.update({
         where: { id: senderId },
         data: {
-          starBalance: { decrement: amount },
+          starBalance: finalBal,
           starsGifted: { increment: amount },
         },
       });
@@ -146,14 +207,22 @@ async function processBatch(bufferedJobs: BufferedJob[]) {
       }
     }
 
-    // B. Cộng sao cho streamers
+    // B. Cập nhật số dư cuối của streamers
     for (const [streamerId, amount] of streamerBalanceChanges.entries()) {
+      const finalBal = runningBalances.get(streamerId) || 0;
       await tx.user.update({
         where: { id: streamerId },
         data: {
-          starBalance: { increment: amount },
+          starBalance: finalBal,
           starsEarned: { increment: amount },
         },
+      });
+    }
+
+    // Ghi StarLedger
+    if (ledgerData.length > 0) {
+      await tx.starLedger.createMany({
+        data: ledgerData,
       });
     }
 
@@ -369,11 +438,31 @@ async function processSingleJob(jobData: GiftJob) {
   const receiverId = stream.streamerId;
 
   await prisma.$transaction(async (tx) => {
+    // Lấy thông tin số dư hiện tại của người gửi và streamer trước giao dịch
+    const senderUser = await tx.user.findUnique({
+      where: { id: senderId },
+      select: { starBalance: true, displayName: true }
+    });
+    const streamerUser = await tx.user.findUnique({
+      where: { id: receiverId },
+      select: { starBalance: true, displayName: true }
+    });
+
+    if (!senderUser || !streamerUser) {
+      throw new Error('Người gửi hoặc streamer không tồn tại!');
+    }
+
+    const senderBalBefore = senderUser.starBalance;
+    const senderBalAfter = senderBalBefore - starAmount;
+
+    const streamerBalBefore = streamerUser.starBalance;
+    const streamerBalAfter = streamerBalBefore + starAmount;
+
     // A. Trừ sao sender
     await tx.user.update({
       where: { id: senderId },
       data: {
-        starBalance: { decrement: starAmount },
+        starBalance: senderBalAfter,
         starsGifted: { increment: starAmount },
       },
     });
@@ -389,9 +478,41 @@ async function processSingleJob(jobData: GiftJob) {
     await tx.user.update({
       where: { id: receiverId },
       data: {
-        starBalance: { increment: starAmount },
+        starBalance: streamerBalAfter,
         starsEarned: { increment: starAmount },
       },
+    });
+
+    // Ghi StarLedger cho sender
+    await tx.starLedger.create({
+      data: {
+        userId: senderId,
+        type: jobData.filterEffect ? "FILTER_BOMB" : "GIFT_SENT",
+        amount: -starAmount,
+        balanceBefore: senderBalBefore,
+        balanceAfter: senderBalAfter,
+        giftTxId: idempotencyKey,
+        streamId,
+        note: jobData.filterEffect 
+          ? `Kích hoạt hiệu ứng ${jobData.filterEffect.toUpperCase()} cho phòng của ${streamerUser.displayName}`
+          : `Tặng ${starAmount} sao cho ${streamerUser.displayName}`,
+        createdAt: new Date(enqueuedAt)
+      }
+    });
+
+    // Ghi StarLedger cho receiver
+    await tx.starLedger.create({
+      data: {
+        userId: receiverId,
+        type: "GIFT_RECEIVED",
+        amount: starAmount,
+        balanceBefore: streamerBalBefore,
+        balanceAfter: streamerBalAfter,
+        giftTxId: idempotencyKey,
+        streamId,
+        note: `Nhận ${starAmount} sao từ ${senderUser.displayName}`,
+        createdAt: new Date(enqueuedAt)
+      }
     });
 
     // C. Cập nhật stream

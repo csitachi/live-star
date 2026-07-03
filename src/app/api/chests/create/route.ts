@@ -46,10 +46,13 @@ export async function POST(request: Request) {
       }
 
       // 3. Khấu trừ sao người tạo
+      const balanceBefore = creator.starBalance;
+      const balanceAfter = balanceBefore - totalStars;
+
       await tx.user.update({
         where: { id: creatorId },
         data: {
-          starBalance: { decrement: totalStars },
+          starBalance: balanceAfter,
           starsGifted: { increment: totalStars },
         },
       });
@@ -65,6 +68,19 @@ export async function POST(request: Request) {
           totalSlots,
           remainingSlots: totalSlots,
           expiresAt,
+        },
+      });
+
+      // Ghi sổ cái StarLedger cho việc thả rương
+      await tx.starLedger.create({
+        data: {
+          userId: creatorId,
+          type: "CHEST_DROP",
+          amount: -totalStars,
+          balanceBefore,
+          balanceAfter,
+          streamId,
+          note: `Thả Rương Quà May Mắn (${totalSlots} lượt, trị giá ${totalStars} sao)`,
         },
       });
 

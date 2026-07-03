@@ -148,10 +148,33 @@ export class QuestService {
       });
 
       // 2. Cộng sao thưởng trực tiếp vào số dư của user
+      const userForCheckin = await tx.user.findUnique({
+        where: { id: userId },
+        select: { starBalance: true }
+      });
+      if (!userForCheckin) {
+        throw new Error("Không tìm thấy người dùng!");
+      }
+      const balanceBefore = userForCheckin.starBalance;
+      const balanceAfter = balanceBefore + quest.rewardStars;
+
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
-          starBalance: { increment: quest.rewardStars },
+          starBalance: balanceAfter,
+        },
+      });
+
+      // Ghi sổ cái StarLedger cho Check-in
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "QUEST_REWARD",
+          amount: quest.rewardStars,
+          balanceBefore,
+          balanceAfter,
+          questId: quest.id,
+          note: `Nhận thưởng nhiệm vụ: Điểm danh hàng ngày (+${quest.rewardStars} sao)`,
         },
       });
 
@@ -195,10 +218,33 @@ export class QuestService {
       });
 
       // 2. Cộng sao thưởng vào User
+      const userForReward = await tx.user.findUnique({
+        where: { id: userId },
+        select: { starBalance: true }
+      });
+      if (!userForReward) {
+        throw new Error("Không tìm thấy người dùng!");
+      }
+      const balanceBefore = userForReward.starBalance;
+      const balanceAfter = balanceBefore + quest.rewardStars;
+
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
-          starBalance: { increment: quest.rewardStars },
+          starBalance: balanceAfter,
+        },
+      });
+
+      // Ghi sổ cái StarLedger cho nhận thưởng nhiệm vụ thông thường
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "QUEST_REWARD",
+          amount: quest.rewardStars,
+          balanceBefore,
+          balanceAfter,
+          questId: quest.id,
+          note: `Nhận thưởng nhiệm vụ: ${quest.questType} (+${quest.rewardStars} sao)`,
         },
       });
 

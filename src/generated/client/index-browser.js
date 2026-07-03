@@ -298,6 +298,22 @@ exports.Prisma.UserQuestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.StarLedgerScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  amount: 'amount',
+  balanceBefore: 'balanceBefore',
+  balanceAfter: 'balanceAfter',
+  giftTxId: 'giftTxId',
+  chestClaimId: 'chestClaimId',
+  questId: 'questId',
+  predictionBetId: 'predictionBetId',
+  streamId: 'streamId',
+  note: 'note',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -324,6 +340,21 @@ exports.PostType = exports.$Enums.PostType = {
   VIDEO: 'VIDEO'
 };
 
+exports.LedgerType = exports.$Enums.LedgerType = {
+  RECHARGE: 'RECHARGE',
+  GIFT_SENT: 'GIFT_SENT',
+  FILTER_BOMB: 'FILTER_BOMB',
+  LUCKY_WHEEL: 'LUCKY_WHEEL',
+  CHEST_DROP: 'CHEST_DROP',
+  GIFT_RECEIVED: 'GIFT_RECEIVED',
+  CHEST_CLAIM: 'CHEST_CLAIM',
+  QUEST_REWARD: 'QUEST_REWARD',
+  PREDICTION_BET: 'PREDICTION_BET',
+  PREDICTION_WIN: 'PREDICTION_WIN',
+  PREDICTION_REFUND: 'PREDICTION_REFUND',
+  ADMIN_ADJUST: 'ADMIN_ADJUST'
+};
+
 exports.Prisma.ModelName = {
   User: 'User',
   Stream: 'Stream',
@@ -340,7 +371,8 @@ exports.Prisma.ModelName = {
   Prediction: 'Prediction',
   PredictionBet: 'PredictionBet',
   QuestDefinition: 'QuestDefinition',
-  UserQuest: 'UserQuest'
+  UserQuest: 'UserQuest',
+  StarLedger: 'StarLedger'
 };
 
 /**

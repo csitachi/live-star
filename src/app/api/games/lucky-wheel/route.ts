@@ -64,14 +64,38 @@ export async function POST(request: Request) {
       }
 
       // Tính số dư mới: trừ đi SPIN_COST, cộng thêm selectedPrize.stars
-      const netChange = selectedPrize.stars - SPIN_COST;
+      const balanceBeforeCost = user.starBalance;
+      const balanceAfterCost = balanceBeforeCost - SPIN_COST;
+      const balanceAfterPrize = balanceAfterCost + selectedPrize.stars;
 
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
-          starBalance: {
-            increment: netChange
-          }
+          starBalance: balanceAfterPrize
+        }
+      });
+
+      // 1. Ghi nhận giao dịch chi phí quay
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "LUCKY_WHEEL",
+          amount: -SPIN_COST,
+          balanceBefore: balanceBeforeCost,
+          balanceAfter: balanceAfterCost,
+          note: "Quay Vòng Quay May Mắn (Phí lượt quay)",
+        }
+      });
+
+      // 2. Ghi nhận giao dịch nhận thưởng
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "LUCKY_WHEEL",
+          amount: selectedPrize.stars,
+          balanceBefore: balanceAfterCost,
+          balanceAfter: balanceAfterPrize,
+          note: `Trúng Vòng Quay May Mắn: ${selectedPrize.label}`,
         }
       });
 

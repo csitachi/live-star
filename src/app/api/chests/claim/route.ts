@@ -82,10 +82,34 @@ export async function POST(request: Request) {
       });
 
       // 6. Cộng sao cho người nhận
+      const userForClaim = await tx.user.findUnique({
+        where: { id: userId },
+        select: { starBalance: true }
+      });
+      if (!userForClaim) {
+        throw new Error("Không tìm thấy thông tin người nhận!");
+      }
+      const balanceBefore = userForClaim.starBalance;
+      const balanceAfter = balanceBefore + amount;
+
       const updatedUser = await tx.user.update({
         where: { id: userId },
         data: {
-          starBalance: { increment: amount },
+          starBalance: balanceAfter,
+        },
+      });
+
+      // Ghi sổ cái StarLedger cho việc giật rương
+      await tx.starLedger.create({
+        data: {
+          userId,
+          type: "CHEST_CLAIM",
+          amount: amount,
+          balanceBefore,
+          balanceAfter,
+          chestClaimId: claim.id,
+          streamId: chest.streamId,
+          note: `Nhận +${amount} sao từ Rương Quà May Mắn`,
         },
       });
 
