@@ -14,6 +14,7 @@ import GiftSelector, { GiftTier } from "@/features/gift/components/GiftSelector"
 import GiftAnimationCanvas from "@/features/gift/components/GiftAnimationCanvas";
 import { getViewerLevel, getStreamerLevel } from "@/lib/level";
 import PredictionWidget from "@/features/stream/components/PredictionWidget";
+import QuestDrawer from "@/components/QuestDrawer";
 
 interface User {
   id: string;
@@ -115,8 +116,31 @@ export default function ViewerPage() {
   const [betting, setBetting] = useState(false);
   const [vipEntryNotification, setVipEntryNotification] = useState<any | null>(null);
 
+  // Trạng thái hiển thị Nhiệm vụ hàng ngày
+  const [showQuests, setShowQuests] = useState(false);
+
   // Refs WebSockets, WebRTC và Canvas hoạt họa
   const wsRef = useRef<WebSocket | null>(null);
+
+  // Heartbeat Ping để tích lũy thời gian xem live (nhiệm vụ WATCH_5, WATCH_15)
+  useEffect(() => {
+    if (!currentUser || !streamId) return;
+
+    // Lập lịch gửi ping mỗi 60 giây (1 phút)
+    const interval = setInterval(async () => {
+      try {
+        await fetch("/api/quests/watch-ping", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ streamId }),
+        });
+      } catch (err) {
+        console.error("Lỗi gửi ping xem stream:", err);
+      }
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [currentUser, streamId]);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null); // Canvas hiển thị luồng giả lập
   const pcRef = useRef<RTCPeerConnection | null>(null);
@@ -815,6 +839,14 @@ export default function ViewerPage() {
         text: inputMsg
       }
     }));
+
+    // Tích lũy tiến trình nhiệm vụ Chat (CHAT_3)
+    fetch("/api/quests/progress", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ questType: "CHAT_3", amount: 1 }),
+    }).catch(err => console.error("Lỗi cập nhật nhiệm vụ chat:", err));
+
     setInputMsg("");
   };
 
@@ -1277,6 +1309,18 @@ export default function ViewerPage() {
               >
                 🎁 Thả Rương
               </button>
+
+              {/* Nút mở bảng nhiệm vụ */}
+              <button
+                onClick={() => setShowQuests(true)}
+                className={styles.luckyWheelBtn}
+                style={{
+                  background: "linear-gradient(135deg, #f43f5e 0%, #d946ef 100%)",
+                  boxShadow: "0 4px 10px rgba(244, 63, 94, 0.2)"
+                }}
+              >
+                🏆 Nhiệm vụ
+              </button>
             </div>
           )}
         </div>
@@ -1681,6 +1725,17 @@ export default function ViewerPage() {
             </button>
           </div>
         </div>
+      )}
+
+      {/* Bảng Nhiệm Vụ Hàng Ngày */}
+      {currentUser && (
+        <QuestDrawer
+          isOpen={showQuests}
+          onClose={() => setShowQuests(false)}
+          onBalanceUpdate={(newBalance) => {
+            setCurrentUser(prev => prev ? { ...prev, starBalance: newBalance } : null);
+          }}
+        />
       )}
     </div>
   );

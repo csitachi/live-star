@@ -8,9 +8,10 @@ interface PostListProps {
   currentUserId?: string;
   isOwnProfile?: boolean;
   global?: boolean;
+  feedType?: 'global' | 'explore' | 'profile';
 }
 
-export default function PostList({ username, currentUserId, isOwnProfile = false, global = false }: PostListProps) {
+export default function PostList({ username, currentUserId, isOwnProfile = false, global = false, feedType }: PostListProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -21,7 +22,7 @@ export default function PostList({ username, currentUserId, isOwnProfile = false
   // Load feed ban đầu
   useEffect(() => {
     loadPosts(false);
-  }, [username, global]);
+  }, [username, global, feedType]);
 
   // Infinite Scroll Observer
   useEffect(() => {
@@ -56,9 +57,14 @@ export default function PostList({ username, currentUserId, isOwnProfile = false
     }
 
     try {
-      const url = global
-        ? `/api/posts?limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`
-        : `/api/users/${username}/posts?limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+      let url = '';
+      if (username) {
+        url = `/api/users/${username}/posts?limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+      } else {
+        const typeParam = feedType || (global ? 'global' : 'explore');
+        url = `/api/posts?feedType=${typeParam}&limit=5${isLoadMore && cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+      }
+      
       const res = await fetch(url);
       const data = await res.json();
 

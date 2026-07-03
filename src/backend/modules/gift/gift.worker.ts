@@ -1,6 +1,7 @@
 import { giftQueue, GiftJob } from '@/backend/shared/queue/giftQueue';
 import { prisma } from '@/backend/shared/database/prisma';
 import { redis } from '@/backend/shared/cache/redis';
+import { QuestService } from '@/backend/modules/quest/quest.service';
 
 interface BufferedJob {
   job: any;
@@ -136,6 +137,13 @@ async function processBatch(bufferedJobs: BufferedJob[]) {
           starsGifted: { increment: amount },
         },
       });
+
+      // Tích lũy tiến trình nhiệm vụ tặng quà (GIFT_1)
+      try {
+        await QuestService.incrementProgress(senderId, "GIFT_1", 1, tx);
+      } catch (err) {
+        console.error(`❌ [Gift Worker] Lỗi khi cập nhật nhiệm vụ GIFT_1 cho user ${senderId}:`, err);
+      }
     }
 
     // B. Cộng sao cho streamers
@@ -353,6 +361,13 @@ async function processSingleJob(jobData: GiftJob) {
         starsGifted: { increment: starAmount },
       },
     });
+
+    // Tích lũy tiến trình nhiệm vụ tặng quà (GIFT_1)
+    try {
+      await QuestService.incrementProgress(senderId, "GIFT_1", 1, tx);
+    } catch (err) {
+      console.error(`❌ [Gift Worker] Lỗi khi cập nhật nhiệm vụ GIFT_1 đơn lẻ cho user ${senderId}:`, err);
+    }
 
     // B. Cộng sao streamer
     await tx.user.update({

@@ -83,6 +83,16 @@ export type Prediction = $Result.DefaultSelection<Prisma.$PredictionPayload>
  * 
  */
 export type PredictionBet = $Result.DefaultSelection<Prisma.$PredictionBetPayload>
+/**
+ * Model QuestDefinition
+ * 
+ */
+export type QuestDefinition = $Result.DefaultSelection<Prisma.$QuestDefinitionPayload>
+/**
+ * Model UserQuest
+ * 
+ */
+export type UserQuest = $Result.DefaultSelection<Prisma.$UserQuestPayload>
 
 /**
  * Enums
@@ -375,6 +385,26 @@ export class PrismaClient<
     * ```
     */
   get predictionBet(): Prisma.PredictionBetDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.questDefinition`: Exposes CRUD operations for the **QuestDefinition** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more QuestDefinitions
+    * const questDefinitions = await prisma.questDefinition.findMany()
+    * ```
+    */
+  get questDefinition(): Prisma.QuestDefinitionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userQuest`: Exposes CRUD operations for the **UserQuest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserQuests
+    * const userQuests = await prisma.userQuest.findMany()
+    * ```
+    */
+  get userQuest(): Prisma.UserQuestDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -822,7 +852,9 @@ export namespace Prisma {
     PostLike: 'PostLike',
     PostComment: 'PostComment',
     Prediction: 'Prediction',
-    PredictionBet: 'PredictionBet'
+    PredictionBet: 'PredictionBet',
+    QuestDefinition: 'QuestDefinition',
+    UserQuest: 'UserQuest'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -838,7 +870,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment" | "prediction" | "predictionBet"
+      modelProps: "user" | "stream" | "giftTransaction" | "comment" | "session" | "streamGoal" | "pKBattle" | "treasureChest" | "treasureClaim" | "post" | "postLike" | "postComment" | "prediction" | "predictionBet" | "questDefinition" | "userQuest"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1878,6 +1910,154 @@ export namespace Prisma {
           }
         }
       }
+      QuestDefinition: {
+        payload: Prisma.$QuestDefinitionPayload<ExtArgs>
+        fields: Prisma.QuestDefinitionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.QuestDefinitionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.QuestDefinitionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          findFirst: {
+            args: Prisma.QuestDefinitionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.QuestDefinitionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          findMany: {
+            args: Prisma.QuestDefinitionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>[]
+          }
+          create: {
+            args: Prisma.QuestDefinitionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          createMany: {
+            args: Prisma.QuestDefinitionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.QuestDefinitionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>[]
+          }
+          delete: {
+            args: Prisma.QuestDefinitionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          update: {
+            args: Prisma.QuestDefinitionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          deleteMany: {
+            args: Prisma.QuestDefinitionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.QuestDefinitionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.QuestDefinitionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>[]
+          }
+          upsert: {
+            args: Prisma.QuestDefinitionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$QuestDefinitionPayload>
+          }
+          aggregate: {
+            args: Prisma.QuestDefinitionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateQuestDefinition>
+          }
+          groupBy: {
+            args: Prisma.QuestDefinitionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<QuestDefinitionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.QuestDefinitionCountArgs<ExtArgs>
+            result: $Utils.Optional<QuestDefinitionCountAggregateOutputType> | number
+          }
+        }
+      }
+      UserQuest: {
+        payload: Prisma.$UserQuestPayload<ExtArgs>
+        fields: Prisma.UserQuestFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserQuestFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserQuestFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          findFirst: {
+            args: Prisma.UserQuestFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserQuestFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          findMany: {
+            args: Prisma.UserQuestFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>[]
+          }
+          create: {
+            args: Prisma.UserQuestCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          createMany: {
+            args: Prisma.UserQuestCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserQuestCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>[]
+          }
+          delete: {
+            args: Prisma.UserQuestDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          update: {
+            args: Prisma.UserQuestUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserQuestDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserQuestUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserQuestUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserQuestUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserQuestPayload>
+          }
+          aggregate: {
+            args: Prisma.UserQuestAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserQuest>
+          }
+          groupBy: {
+            args: Prisma.UserQuestGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserQuestGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserQuestCountArgs<ExtArgs>
+            result: $Utils.Optional<UserQuestCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2000,6 +2180,8 @@ export namespace Prisma {
     postComment?: PostCommentOmit
     prediction?: PredictionOmit
     predictionBet?: PredictionBetOmit
+    questDefinition?: QuestDefinitionOmit
+    userQuest?: UserQuestOmit
   }
 
   /* Types for Logging */
@@ -2089,6 +2271,7 @@ export namespace Prisma {
     postLikes: number
     postComments: number
     predictionBets: number
+    quests: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2101,6 +2284,7 @@ export namespace Prisma {
     postLikes?: boolean | UserCountOutputTypeCountPostLikesArgs
     postComments?: boolean | UserCountOutputTypeCountPostCommentsArgs
     predictionBets?: boolean | UserCountOutputTypeCountPredictionBetsArgs
+    quests?: boolean | UserCountOutputTypeCountQuestsArgs
   }
 
   // Custom InputTypes
@@ -2175,6 +2359,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountPredictionBetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PredictionBetWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountQuestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserQuestWhereInput
   }
 
 
@@ -2362,6 +2553,37 @@ export namespace Prisma {
    */
   export type PredictionCountOutputTypeCountBetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: PredictionBetWhereInput
+  }
+
+
+  /**
+   * Count Type QuestDefinitionCountOutputType
+   */
+
+  export type QuestDefinitionCountOutputType = {
+    userQuests: number
+  }
+
+  export type QuestDefinitionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userQuests?: boolean | QuestDefinitionCountOutputTypeCountUserQuestsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * QuestDefinitionCountOutputType without action
+   */
+  export type QuestDefinitionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinitionCountOutputType
+     */
+    select?: QuestDefinitionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * QuestDefinitionCountOutputType without action
+   */
+  export type QuestDefinitionCountOutputTypeCountUserQuestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserQuestWhereInput
   }
 
 
@@ -2648,6 +2870,7 @@ export namespace Prisma {
     postLikes?: boolean | User$postLikesArgs<ExtArgs>
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
     predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
+    quests?: boolean | User$questsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2710,6 +2933,7 @@ export namespace Prisma {
     postLikes?: boolean | User$postLikesArgs<ExtArgs>
     postComments?: boolean | User$postCommentsArgs<ExtArgs>
     predictionBets?: boolean | User$predictionBetsArgs<ExtArgs>
+    quests?: boolean | User$questsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2727,6 +2951,7 @@ export namespace Prisma {
       postLikes: Prisma.$PostLikePayload<ExtArgs>[]
       postComments: Prisma.$PostCommentPayload<ExtArgs>[]
       predictionBets: Prisma.$PredictionBetPayload<ExtArgs>[]
+      quests: Prisma.$UserQuestPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3145,6 +3370,7 @@ export namespace Prisma {
     postLikes<T extends User$postLikesArgs<ExtArgs> = {}>(args?: Subset<T, User$postLikesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostLikePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postComments<T extends User$postCommentsArgs<ExtArgs> = {}>(args?: Subset<T, User$postCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     predictionBets<T extends User$predictionBetsArgs<ExtArgs> = {}>(args?: Subset<T, User$predictionBetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PredictionBetPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    quests<T extends User$questsArgs<ExtArgs> = {}>(args?: Subset<T, User$questsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3793,6 +4019,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PredictionBetScalarFieldEnum | PredictionBetScalarFieldEnum[]
+  }
+
+  /**
+   * User.quests
+   */
+  export type User$questsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    where?: UserQuestWhereInput
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    cursor?: UserQuestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
   }
 
   /**
@@ -18781,6 +19031,2349 @@ export namespace Prisma {
 
 
   /**
+   * Model QuestDefinition
+   */
+
+  export type AggregateQuestDefinition = {
+    _count: QuestDefinitionCountAggregateOutputType | null
+    _avg: QuestDefinitionAvgAggregateOutputType | null
+    _sum: QuestDefinitionSumAggregateOutputType | null
+    _min: QuestDefinitionMinAggregateOutputType | null
+    _max: QuestDefinitionMaxAggregateOutputType | null
+  }
+
+  export type QuestDefinitionAvgAggregateOutputType = {
+    target: number | null
+    rewardStars: number | null
+  }
+
+  export type QuestDefinitionSumAggregateOutputType = {
+    target: number | null
+    rewardStars: number | null
+  }
+
+  export type QuestDefinitionMinAggregateOutputType = {
+    questType: string | null
+    title: string | null
+    description: string | null
+    target: number | null
+    rewardStars: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type QuestDefinitionMaxAggregateOutputType = {
+    questType: string | null
+    title: string | null
+    description: string | null
+    target: number | null
+    rewardStars: number | null
+    isActive: boolean | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type QuestDefinitionCountAggregateOutputType = {
+    questType: number
+    title: number
+    description: number
+    target: number
+    rewardStars: number
+    isActive: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type QuestDefinitionAvgAggregateInputType = {
+    target?: true
+    rewardStars?: true
+  }
+
+  export type QuestDefinitionSumAggregateInputType = {
+    target?: true
+    rewardStars?: true
+  }
+
+  export type QuestDefinitionMinAggregateInputType = {
+    questType?: true
+    title?: true
+    description?: true
+    target?: true
+    rewardStars?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type QuestDefinitionMaxAggregateInputType = {
+    questType?: true
+    title?: true
+    description?: true
+    target?: true
+    rewardStars?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type QuestDefinitionCountAggregateInputType = {
+    questType?: true
+    title?: true
+    description?: true
+    target?: true
+    rewardStars?: true
+    isActive?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type QuestDefinitionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuestDefinition to aggregate.
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuestDefinitions to fetch.
+     */
+    orderBy?: QuestDefinitionOrderByWithRelationInput | QuestDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: QuestDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuestDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuestDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned QuestDefinitions
+    **/
+    _count?: true | QuestDefinitionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: QuestDefinitionAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: QuestDefinitionSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: QuestDefinitionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: QuestDefinitionMaxAggregateInputType
+  }
+
+  export type GetQuestDefinitionAggregateType<T extends QuestDefinitionAggregateArgs> = {
+        [P in keyof T & keyof AggregateQuestDefinition]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateQuestDefinition[P]>
+      : GetScalarType<T[P], AggregateQuestDefinition[P]>
+  }
+
+
+
+
+  export type QuestDefinitionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: QuestDefinitionWhereInput
+    orderBy?: QuestDefinitionOrderByWithAggregationInput | QuestDefinitionOrderByWithAggregationInput[]
+    by: QuestDefinitionScalarFieldEnum[] | QuestDefinitionScalarFieldEnum
+    having?: QuestDefinitionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: QuestDefinitionCountAggregateInputType | true
+    _avg?: QuestDefinitionAvgAggregateInputType
+    _sum?: QuestDefinitionSumAggregateInputType
+    _min?: QuestDefinitionMinAggregateInputType
+    _max?: QuestDefinitionMaxAggregateInputType
+  }
+
+  export type QuestDefinitionGroupByOutputType = {
+    questType: string
+    title: string
+    description: string | null
+    target: number
+    rewardStars: number
+    isActive: boolean
+    createdAt: Date
+    updatedAt: Date
+    _count: QuestDefinitionCountAggregateOutputType | null
+    _avg: QuestDefinitionAvgAggregateOutputType | null
+    _sum: QuestDefinitionSumAggregateOutputType | null
+    _min: QuestDefinitionMinAggregateOutputType | null
+    _max: QuestDefinitionMaxAggregateOutputType | null
+  }
+
+  type GetQuestDefinitionGroupByPayload<T extends QuestDefinitionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<QuestDefinitionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof QuestDefinitionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], QuestDefinitionGroupByOutputType[P]>
+            : GetScalarType<T[P], QuestDefinitionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type QuestDefinitionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    questType?: boolean
+    title?: boolean
+    description?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    userQuests?: boolean | QuestDefinition$userQuestsArgs<ExtArgs>
+    _count?: boolean | QuestDefinitionCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["questDefinition"]>
+
+  export type QuestDefinitionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    questType?: boolean
+    title?: boolean
+    description?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["questDefinition"]>
+
+  export type QuestDefinitionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    questType?: boolean
+    title?: boolean
+    description?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["questDefinition"]>
+
+  export type QuestDefinitionSelectScalar = {
+    questType?: boolean
+    title?: boolean
+    description?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type QuestDefinitionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"questType" | "title" | "description" | "target" | "rewardStars" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["questDefinition"]>
+  export type QuestDefinitionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    userQuests?: boolean | QuestDefinition$userQuestsArgs<ExtArgs>
+    _count?: boolean | QuestDefinitionCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type QuestDefinitionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type QuestDefinitionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $QuestDefinitionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "QuestDefinition"
+    objects: {
+      userQuests: Prisma.$UserQuestPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      questType: string
+      title: string
+      description: string | null
+      target: number
+      rewardStars: number
+      isActive: boolean
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["questDefinition"]>
+    composites: {}
+  }
+
+  type QuestDefinitionGetPayload<S extends boolean | null | undefined | QuestDefinitionDefaultArgs> = $Result.GetResult<Prisma.$QuestDefinitionPayload, S>
+
+  type QuestDefinitionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<QuestDefinitionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: QuestDefinitionCountAggregateInputType | true
+    }
+
+  export interface QuestDefinitionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuestDefinition'], meta: { name: 'QuestDefinition' } }
+    /**
+     * Find zero or one QuestDefinition that matches the filter.
+     * @param {QuestDefinitionFindUniqueArgs} args - Arguments to find a QuestDefinition
+     * @example
+     * // Get one QuestDefinition
+     * const questDefinition = await prisma.questDefinition.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends QuestDefinitionFindUniqueArgs>(args: SelectSubset<T, QuestDefinitionFindUniqueArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one QuestDefinition that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {QuestDefinitionFindUniqueOrThrowArgs} args - Arguments to find a QuestDefinition
+     * @example
+     * // Get one QuestDefinition
+     * const questDefinition = await prisma.questDefinition.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends QuestDefinitionFindUniqueOrThrowArgs>(args: SelectSubset<T, QuestDefinitionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuestDefinition that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionFindFirstArgs} args - Arguments to find a QuestDefinition
+     * @example
+     * // Get one QuestDefinition
+     * const questDefinition = await prisma.questDefinition.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends QuestDefinitionFindFirstArgs>(args?: SelectSubset<T, QuestDefinitionFindFirstArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first QuestDefinition that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionFindFirstOrThrowArgs} args - Arguments to find a QuestDefinition
+     * @example
+     * // Get one QuestDefinition
+     * const questDefinition = await prisma.questDefinition.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends QuestDefinitionFindFirstOrThrowArgs>(args?: SelectSubset<T, QuestDefinitionFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more QuestDefinitions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all QuestDefinitions
+     * const questDefinitions = await prisma.questDefinition.findMany()
+     * 
+     * // Get first 10 QuestDefinitions
+     * const questDefinitions = await prisma.questDefinition.findMany({ take: 10 })
+     * 
+     * // Only select the `questType`
+     * const questDefinitionWithQuestTypeOnly = await prisma.questDefinition.findMany({ select: { questType: true } })
+     * 
+     */
+    findMany<T extends QuestDefinitionFindManyArgs>(args?: SelectSubset<T, QuestDefinitionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a QuestDefinition.
+     * @param {QuestDefinitionCreateArgs} args - Arguments to create a QuestDefinition.
+     * @example
+     * // Create one QuestDefinition
+     * const QuestDefinition = await prisma.questDefinition.create({
+     *   data: {
+     *     // ... data to create a QuestDefinition
+     *   }
+     * })
+     * 
+     */
+    create<T extends QuestDefinitionCreateArgs>(args: SelectSubset<T, QuestDefinitionCreateArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many QuestDefinitions.
+     * @param {QuestDefinitionCreateManyArgs} args - Arguments to create many QuestDefinitions.
+     * @example
+     * // Create many QuestDefinitions
+     * const questDefinition = await prisma.questDefinition.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends QuestDefinitionCreateManyArgs>(args?: SelectSubset<T, QuestDefinitionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many QuestDefinitions and returns the data saved in the database.
+     * @param {QuestDefinitionCreateManyAndReturnArgs} args - Arguments to create many QuestDefinitions.
+     * @example
+     * // Create many QuestDefinitions
+     * const questDefinition = await prisma.questDefinition.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many QuestDefinitions and only return the `questType`
+     * const questDefinitionWithQuestTypeOnly = await prisma.questDefinition.createManyAndReturn({
+     *   select: { questType: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends QuestDefinitionCreateManyAndReturnArgs>(args?: SelectSubset<T, QuestDefinitionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a QuestDefinition.
+     * @param {QuestDefinitionDeleteArgs} args - Arguments to delete one QuestDefinition.
+     * @example
+     * // Delete one QuestDefinition
+     * const QuestDefinition = await prisma.questDefinition.delete({
+     *   where: {
+     *     // ... filter to delete one QuestDefinition
+     *   }
+     * })
+     * 
+     */
+    delete<T extends QuestDefinitionDeleteArgs>(args: SelectSubset<T, QuestDefinitionDeleteArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one QuestDefinition.
+     * @param {QuestDefinitionUpdateArgs} args - Arguments to update one QuestDefinition.
+     * @example
+     * // Update one QuestDefinition
+     * const questDefinition = await prisma.questDefinition.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends QuestDefinitionUpdateArgs>(args: SelectSubset<T, QuestDefinitionUpdateArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more QuestDefinitions.
+     * @param {QuestDefinitionDeleteManyArgs} args - Arguments to filter QuestDefinitions to delete.
+     * @example
+     * // Delete a few QuestDefinitions
+     * const { count } = await prisma.questDefinition.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends QuestDefinitionDeleteManyArgs>(args?: SelectSubset<T, QuestDefinitionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuestDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many QuestDefinitions
+     * const questDefinition = await prisma.questDefinition.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends QuestDefinitionUpdateManyArgs>(args: SelectSubset<T, QuestDefinitionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more QuestDefinitions and returns the data updated in the database.
+     * @param {QuestDefinitionUpdateManyAndReturnArgs} args - Arguments to update many QuestDefinitions.
+     * @example
+     * // Update many QuestDefinitions
+     * const questDefinition = await prisma.questDefinition.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more QuestDefinitions and only return the `questType`
+     * const questDefinitionWithQuestTypeOnly = await prisma.questDefinition.updateManyAndReturn({
+     *   select: { questType: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends QuestDefinitionUpdateManyAndReturnArgs>(args: SelectSubset<T, QuestDefinitionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one QuestDefinition.
+     * @param {QuestDefinitionUpsertArgs} args - Arguments to update or create a QuestDefinition.
+     * @example
+     * // Update or create a QuestDefinition
+     * const questDefinition = await prisma.questDefinition.upsert({
+     *   create: {
+     *     // ... data to create a QuestDefinition
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the QuestDefinition we want to update
+     *   }
+     * })
+     */
+    upsert<T extends QuestDefinitionUpsertArgs>(args: SelectSubset<T, QuestDefinitionUpsertArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of QuestDefinitions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionCountArgs} args - Arguments to filter QuestDefinitions to count.
+     * @example
+     * // Count the number of QuestDefinitions
+     * const count = await prisma.questDefinition.count({
+     *   where: {
+     *     // ... the filter for the QuestDefinitions we want to count
+     *   }
+     * })
+    **/
+    count<T extends QuestDefinitionCountArgs>(
+      args?: Subset<T, QuestDefinitionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], QuestDefinitionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a QuestDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends QuestDefinitionAggregateArgs>(args: Subset<T, QuestDefinitionAggregateArgs>): Prisma.PrismaPromise<GetQuestDefinitionAggregateType<T>>
+
+    /**
+     * Group by QuestDefinition.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {QuestDefinitionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends QuestDefinitionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: QuestDefinitionGroupByArgs['orderBy'] }
+        : { orderBy?: QuestDefinitionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, QuestDefinitionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuestDefinitionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the QuestDefinition model
+   */
+  readonly fields: QuestDefinitionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for QuestDefinition.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__QuestDefinitionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    userQuests<T extends QuestDefinition$userQuestsArgs<ExtArgs> = {}>(args?: Subset<T, QuestDefinition$userQuestsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the QuestDefinition model
+   */
+  interface QuestDefinitionFieldRefs {
+    readonly questType: FieldRef<"QuestDefinition", 'String'>
+    readonly title: FieldRef<"QuestDefinition", 'String'>
+    readonly description: FieldRef<"QuestDefinition", 'String'>
+    readonly target: FieldRef<"QuestDefinition", 'Int'>
+    readonly rewardStars: FieldRef<"QuestDefinition", 'Int'>
+    readonly isActive: FieldRef<"QuestDefinition", 'Boolean'>
+    readonly createdAt: FieldRef<"QuestDefinition", 'DateTime'>
+    readonly updatedAt: FieldRef<"QuestDefinition", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * QuestDefinition findUnique
+   */
+  export type QuestDefinitionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which QuestDefinition to fetch.
+     */
+    where: QuestDefinitionWhereUniqueInput
+  }
+
+  /**
+   * QuestDefinition findUniqueOrThrow
+   */
+  export type QuestDefinitionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which QuestDefinition to fetch.
+     */
+    where: QuestDefinitionWhereUniqueInput
+  }
+
+  /**
+   * QuestDefinition findFirst
+   */
+  export type QuestDefinitionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which QuestDefinition to fetch.
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuestDefinitions to fetch.
+     */
+    orderBy?: QuestDefinitionOrderByWithRelationInput | QuestDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuestDefinitions.
+     */
+    cursor?: QuestDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuestDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuestDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuestDefinitions.
+     */
+    distinct?: QuestDefinitionScalarFieldEnum | QuestDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * QuestDefinition findFirstOrThrow
+   */
+  export type QuestDefinitionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which QuestDefinition to fetch.
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuestDefinitions to fetch.
+     */
+    orderBy?: QuestDefinitionOrderByWithRelationInput | QuestDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for QuestDefinitions.
+     */
+    cursor?: QuestDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuestDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuestDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuestDefinitions.
+     */
+    distinct?: QuestDefinitionScalarFieldEnum | QuestDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * QuestDefinition findMany
+   */
+  export type QuestDefinitionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter, which QuestDefinitions to fetch.
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of QuestDefinitions to fetch.
+     */
+    orderBy?: QuestDefinitionOrderByWithRelationInput | QuestDefinitionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing QuestDefinitions.
+     */
+    cursor?: QuestDefinitionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` QuestDefinitions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` QuestDefinitions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of QuestDefinitions.
+     */
+    distinct?: QuestDefinitionScalarFieldEnum | QuestDefinitionScalarFieldEnum[]
+  }
+
+  /**
+   * QuestDefinition create
+   */
+  export type QuestDefinitionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a QuestDefinition.
+     */
+    data: XOR<QuestDefinitionCreateInput, QuestDefinitionUncheckedCreateInput>
+  }
+
+  /**
+   * QuestDefinition createMany
+   */
+  export type QuestDefinitionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many QuestDefinitions.
+     */
+    data: QuestDefinitionCreateManyInput | QuestDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuestDefinition createManyAndReturn
+   */
+  export type QuestDefinitionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to create many QuestDefinitions.
+     */
+    data: QuestDefinitionCreateManyInput | QuestDefinitionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * QuestDefinition update
+   */
+  export type QuestDefinitionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a QuestDefinition.
+     */
+    data: XOR<QuestDefinitionUpdateInput, QuestDefinitionUncheckedUpdateInput>
+    /**
+     * Choose, which QuestDefinition to update.
+     */
+    where: QuestDefinitionWhereUniqueInput
+  }
+
+  /**
+   * QuestDefinition updateMany
+   */
+  export type QuestDefinitionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update QuestDefinitions.
+     */
+    data: XOR<QuestDefinitionUpdateManyMutationInput, QuestDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which QuestDefinitions to update
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * Limit how many QuestDefinitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuestDefinition updateManyAndReturn
+   */
+  export type QuestDefinitionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * The data used to update QuestDefinitions.
+     */
+    data: XOR<QuestDefinitionUpdateManyMutationInput, QuestDefinitionUncheckedUpdateManyInput>
+    /**
+     * Filter which QuestDefinitions to update
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * Limit how many QuestDefinitions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuestDefinition upsert
+   */
+  export type QuestDefinitionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the QuestDefinition to update in case it exists.
+     */
+    where: QuestDefinitionWhereUniqueInput
+    /**
+     * In case the QuestDefinition found by the `where` argument doesn't exist, create a new QuestDefinition with this data.
+     */
+    create: XOR<QuestDefinitionCreateInput, QuestDefinitionUncheckedCreateInput>
+    /**
+     * In case the QuestDefinition was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<QuestDefinitionUpdateInput, QuestDefinitionUncheckedUpdateInput>
+  }
+
+  /**
+   * QuestDefinition delete
+   */
+  export type QuestDefinitionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+    /**
+     * Filter which QuestDefinition to delete.
+     */
+    where: QuestDefinitionWhereUniqueInput
+  }
+
+  /**
+   * QuestDefinition deleteMany
+   */
+  export type QuestDefinitionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which QuestDefinitions to delete
+     */
+    where?: QuestDefinitionWhereInput
+    /**
+     * Limit how many QuestDefinitions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * QuestDefinition.userQuests
+   */
+  export type QuestDefinition$userQuestsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    where?: UserQuestWhereInput
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    cursor?: UserQuestWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
+  }
+
+  /**
+   * QuestDefinition without action
+   */
+  export type QuestDefinitionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the QuestDefinition
+     */
+    select?: QuestDefinitionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the QuestDefinition
+     */
+    omit?: QuestDefinitionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: QuestDefinitionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model UserQuest
+   */
+
+  export type AggregateUserQuest = {
+    _count: UserQuestCountAggregateOutputType | null
+    _avg: UserQuestAvgAggregateOutputType | null
+    _sum: UserQuestSumAggregateOutputType | null
+    _min: UserQuestMinAggregateOutputType | null
+    _max: UserQuestMaxAggregateOutputType | null
+  }
+
+  export type UserQuestAvgAggregateOutputType = {
+    progress: number | null
+    target: number | null
+    rewardStars: number | null
+  }
+
+  export type UserQuestSumAggregateOutputType = {
+    progress: number | null
+    target: number | null
+    rewardStars: number | null
+  }
+
+  export type UserQuestMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    questType: string | null
+    progress: number | null
+    target: number | null
+    rewardStars: number | null
+    isCompleted: boolean | null
+    isClaimed: boolean | null
+    date: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserQuestMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    questType: string | null
+    progress: number | null
+    target: number | null
+    rewardStars: number | null
+    isCompleted: boolean | null
+    isClaimed: boolean | null
+    date: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type UserQuestCountAggregateOutputType = {
+    id: number
+    userId: number
+    questType: number
+    progress: number
+    target: number
+    rewardStars: number
+    isCompleted: number
+    isClaimed: number
+    date: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type UserQuestAvgAggregateInputType = {
+    progress?: true
+    target?: true
+    rewardStars?: true
+  }
+
+  export type UserQuestSumAggregateInputType = {
+    progress?: true
+    target?: true
+    rewardStars?: true
+  }
+
+  export type UserQuestMinAggregateInputType = {
+    id?: true
+    userId?: true
+    questType?: true
+    progress?: true
+    target?: true
+    rewardStars?: true
+    isCompleted?: true
+    isClaimed?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserQuestMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    questType?: true
+    progress?: true
+    target?: true
+    rewardStars?: true
+    isCompleted?: true
+    isClaimed?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type UserQuestCountAggregateInputType = {
+    id?: true
+    userId?: true
+    questType?: true
+    progress?: true
+    target?: true
+    rewardStars?: true
+    isCompleted?: true
+    isClaimed?: true
+    date?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type UserQuestAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserQuest to aggregate.
+     */
+    where?: UserQuestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserQuests to fetch.
+     */
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserQuestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserQuests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserQuests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserQuests
+    **/
+    _count?: true | UserQuestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: UserQuestAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: UserQuestSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserQuestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserQuestMaxAggregateInputType
+  }
+
+  export type GetUserQuestAggregateType<T extends UserQuestAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserQuest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserQuest[P]>
+      : GetScalarType<T[P], AggregateUserQuest[P]>
+  }
+
+
+
+
+  export type UserQuestGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserQuestWhereInput
+    orderBy?: UserQuestOrderByWithAggregationInput | UserQuestOrderByWithAggregationInput[]
+    by: UserQuestScalarFieldEnum[] | UserQuestScalarFieldEnum
+    having?: UserQuestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserQuestCountAggregateInputType | true
+    _avg?: UserQuestAvgAggregateInputType
+    _sum?: UserQuestSumAggregateInputType
+    _min?: UserQuestMinAggregateInputType
+    _max?: UserQuestMaxAggregateInputType
+  }
+
+  export type UserQuestGroupByOutputType = {
+    id: string
+    userId: string
+    questType: string
+    progress: number
+    target: number
+    rewardStars: number
+    isCompleted: boolean
+    isClaimed: boolean
+    date: string
+    createdAt: Date
+    updatedAt: Date
+    _count: UserQuestCountAggregateOutputType | null
+    _avg: UserQuestAvgAggregateOutputType | null
+    _sum: UserQuestSumAggregateOutputType | null
+    _min: UserQuestMinAggregateOutputType | null
+    _max: UserQuestMaxAggregateOutputType | null
+  }
+
+  type GetUserQuestGroupByPayload<T extends UserQuestGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserQuestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserQuestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserQuestGroupByOutputType[P]>
+            : GetScalarType<T[P], UserQuestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserQuestSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questType?: boolean
+    progress?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userQuest"]>
+
+  export type UserQuestSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questType?: boolean
+    progress?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userQuest"]>
+
+  export type UserQuestSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    questType?: boolean
+    progress?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["userQuest"]>
+
+  export type UserQuestSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    questType?: boolean
+    progress?: boolean
+    target?: boolean
+    rewardStars?: boolean
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type UserQuestOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "questType" | "progress" | "target" | "rewardStars" | "isCompleted" | "isClaimed" | "date" | "createdAt" | "updatedAt", ExtArgs["result"]["userQuest"]>
+  export type UserQuestInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }
+  export type UserQuestIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }
+  export type UserQuestIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    definition?: boolean | QuestDefinitionDefaultArgs<ExtArgs>
+  }
+
+  export type $UserQuestPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserQuest"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      definition: Prisma.$QuestDefinitionPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      questType: string
+      progress: number
+      target: number
+      rewardStars: number
+      isCompleted: boolean
+      isClaimed: boolean
+      date: string
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["userQuest"]>
+    composites: {}
+  }
+
+  type UserQuestGetPayload<S extends boolean | null | undefined | UserQuestDefaultArgs> = $Result.GetResult<Prisma.$UserQuestPayload, S>
+
+  type UserQuestCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserQuestFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserQuestCountAggregateInputType | true
+    }
+
+  export interface UserQuestDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserQuest'], meta: { name: 'UserQuest' } }
+    /**
+     * Find zero or one UserQuest that matches the filter.
+     * @param {UserQuestFindUniqueArgs} args - Arguments to find a UserQuest
+     * @example
+     * // Get one UserQuest
+     * const userQuest = await prisma.userQuest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserQuestFindUniqueArgs>(args: SelectSubset<T, UserQuestFindUniqueArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserQuest that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserQuestFindUniqueOrThrowArgs} args - Arguments to find a UserQuest
+     * @example
+     * // Get one UserQuest
+     * const userQuest = await prisma.userQuest.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserQuestFindUniqueOrThrowArgs>(args: SelectSubset<T, UserQuestFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserQuest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestFindFirstArgs} args - Arguments to find a UserQuest
+     * @example
+     * // Get one UserQuest
+     * const userQuest = await prisma.userQuest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserQuestFindFirstArgs>(args?: SelectSubset<T, UserQuestFindFirstArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserQuest that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestFindFirstOrThrowArgs} args - Arguments to find a UserQuest
+     * @example
+     * // Get one UserQuest
+     * const userQuest = await prisma.userQuest.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserQuestFindFirstOrThrowArgs>(args?: SelectSubset<T, UserQuestFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserQuests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserQuests
+     * const userQuests = await prisma.userQuest.findMany()
+     * 
+     * // Get first 10 UserQuests
+     * const userQuests = await prisma.userQuest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userQuestWithIdOnly = await prisma.userQuest.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserQuestFindManyArgs>(args?: SelectSubset<T, UserQuestFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserQuest.
+     * @param {UserQuestCreateArgs} args - Arguments to create a UserQuest.
+     * @example
+     * // Create one UserQuest
+     * const UserQuest = await prisma.userQuest.create({
+     *   data: {
+     *     // ... data to create a UserQuest
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserQuestCreateArgs>(args: SelectSubset<T, UserQuestCreateArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserQuests.
+     * @param {UserQuestCreateManyArgs} args - Arguments to create many UserQuests.
+     * @example
+     * // Create many UserQuests
+     * const userQuest = await prisma.userQuest.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserQuestCreateManyArgs>(args?: SelectSubset<T, UserQuestCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserQuests and returns the data saved in the database.
+     * @param {UserQuestCreateManyAndReturnArgs} args - Arguments to create many UserQuests.
+     * @example
+     * // Create many UserQuests
+     * const userQuest = await prisma.userQuest.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserQuests and only return the `id`
+     * const userQuestWithIdOnly = await prisma.userQuest.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserQuestCreateManyAndReturnArgs>(args?: SelectSubset<T, UserQuestCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserQuest.
+     * @param {UserQuestDeleteArgs} args - Arguments to delete one UserQuest.
+     * @example
+     * // Delete one UserQuest
+     * const UserQuest = await prisma.userQuest.delete({
+     *   where: {
+     *     // ... filter to delete one UserQuest
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserQuestDeleteArgs>(args: SelectSubset<T, UserQuestDeleteArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserQuest.
+     * @param {UserQuestUpdateArgs} args - Arguments to update one UserQuest.
+     * @example
+     * // Update one UserQuest
+     * const userQuest = await prisma.userQuest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserQuestUpdateArgs>(args: SelectSubset<T, UserQuestUpdateArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserQuests.
+     * @param {UserQuestDeleteManyArgs} args - Arguments to filter UserQuests to delete.
+     * @example
+     * // Delete a few UserQuests
+     * const { count } = await prisma.userQuest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserQuestDeleteManyArgs>(args?: SelectSubset<T, UserQuestDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserQuests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserQuests
+     * const userQuest = await prisma.userQuest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserQuestUpdateManyArgs>(args: SelectSubset<T, UserQuestUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserQuests and returns the data updated in the database.
+     * @param {UserQuestUpdateManyAndReturnArgs} args - Arguments to update many UserQuests.
+     * @example
+     * // Update many UserQuests
+     * const userQuest = await prisma.userQuest.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserQuests and only return the `id`
+     * const userQuestWithIdOnly = await prisma.userQuest.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserQuestUpdateManyAndReturnArgs>(args: SelectSubset<T, UserQuestUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserQuest.
+     * @param {UserQuestUpsertArgs} args - Arguments to update or create a UserQuest.
+     * @example
+     * // Update or create a UserQuest
+     * const userQuest = await prisma.userQuest.upsert({
+     *   create: {
+     *     // ... data to create a UserQuest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserQuest we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserQuestUpsertArgs>(args: SelectSubset<T, UserQuestUpsertArgs<ExtArgs>>): Prisma__UserQuestClient<$Result.GetResult<Prisma.$UserQuestPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserQuests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestCountArgs} args - Arguments to filter UserQuests to count.
+     * @example
+     * // Count the number of UserQuests
+     * const count = await prisma.userQuest.count({
+     *   where: {
+     *     // ... the filter for the UserQuests we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserQuestCountArgs>(
+      args?: Subset<T, UserQuestCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserQuestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserQuest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserQuestAggregateArgs>(args: Subset<T, UserQuestAggregateArgs>): Prisma.PrismaPromise<GetUserQuestAggregateType<T>>
+
+    /**
+     * Group by UserQuest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserQuestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserQuestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserQuestGroupByArgs['orderBy'] }
+        : { orderBy?: UserQuestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserQuestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserQuestGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserQuest model
+   */
+  readonly fields: UserQuestFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserQuest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserQuestClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    definition<T extends QuestDefinitionDefaultArgs<ExtArgs> = {}>(args?: Subset<T, QuestDefinitionDefaultArgs<ExtArgs>>): Prisma__QuestDefinitionClient<$Result.GetResult<Prisma.$QuestDefinitionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserQuest model
+   */
+  interface UserQuestFieldRefs {
+    readonly id: FieldRef<"UserQuest", 'String'>
+    readonly userId: FieldRef<"UserQuest", 'String'>
+    readonly questType: FieldRef<"UserQuest", 'String'>
+    readonly progress: FieldRef<"UserQuest", 'Int'>
+    readonly target: FieldRef<"UserQuest", 'Int'>
+    readonly rewardStars: FieldRef<"UserQuest", 'Int'>
+    readonly isCompleted: FieldRef<"UserQuest", 'Boolean'>
+    readonly isClaimed: FieldRef<"UserQuest", 'Boolean'>
+    readonly date: FieldRef<"UserQuest", 'String'>
+    readonly createdAt: FieldRef<"UserQuest", 'DateTime'>
+    readonly updatedAt: FieldRef<"UserQuest", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserQuest findUnique
+   */
+  export type UserQuestFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter, which UserQuest to fetch.
+     */
+    where: UserQuestWhereUniqueInput
+  }
+
+  /**
+   * UserQuest findUniqueOrThrow
+   */
+  export type UserQuestFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter, which UserQuest to fetch.
+     */
+    where: UserQuestWhereUniqueInput
+  }
+
+  /**
+   * UserQuest findFirst
+   */
+  export type UserQuestFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter, which UserQuest to fetch.
+     */
+    where?: UserQuestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserQuests to fetch.
+     */
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserQuests.
+     */
+    cursor?: UserQuestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserQuests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserQuests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserQuests.
+     */
+    distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
+  }
+
+  /**
+   * UserQuest findFirstOrThrow
+   */
+  export type UserQuestFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter, which UserQuest to fetch.
+     */
+    where?: UserQuestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserQuests to fetch.
+     */
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserQuests.
+     */
+    cursor?: UserQuestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserQuests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserQuests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserQuests.
+     */
+    distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
+  }
+
+  /**
+   * UserQuest findMany
+   */
+  export type UserQuestFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter, which UserQuests to fetch.
+     */
+    where?: UserQuestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserQuests to fetch.
+     */
+    orderBy?: UserQuestOrderByWithRelationInput | UserQuestOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserQuests.
+     */
+    cursor?: UserQuestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserQuests from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserQuests.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserQuests.
+     */
+    distinct?: UserQuestScalarFieldEnum | UserQuestScalarFieldEnum[]
+  }
+
+  /**
+   * UserQuest create
+   */
+  export type UserQuestCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserQuest.
+     */
+    data: XOR<UserQuestCreateInput, UserQuestUncheckedCreateInput>
+  }
+
+  /**
+   * UserQuest createMany
+   */
+  export type UserQuestCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserQuests.
+     */
+    data: UserQuestCreateManyInput | UserQuestCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserQuest createManyAndReturn
+   */
+  export type UserQuestCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserQuests.
+     */
+    data: UserQuestCreateManyInput | UserQuestCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserQuest update
+   */
+  export type UserQuestUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserQuest.
+     */
+    data: XOR<UserQuestUpdateInput, UserQuestUncheckedUpdateInput>
+    /**
+     * Choose, which UserQuest to update.
+     */
+    where: UserQuestWhereUniqueInput
+  }
+
+  /**
+   * UserQuest updateMany
+   */
+  export type UserQuestUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserQuests.
+     */
+    data: XOR<UserQuestUpdateManyMutationInput, UserQuestUncheckedUpdateManyInput>
+    /**
+     * Filter which UserQuests to update
+     */
+    where?: UserQuestWhereInput
+    /**
+     * Limit how many UserQuests to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserQuest updateManyAndReturn
+   */
+  export type UserQuestUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * The data used to update UserQuests.
+     */
+    data: XOR<UserQuestUpdateManyMutationInput, UserQuestUncheckedUpdateManyInput>
+    /**
+     * Filter which UserQuests to update
+     */
+    where?: UserQuestWhereInput
+    /**
+     * Limit how many UserQuests to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserQuest upsert
+   */
+  export type UserQuestUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserQuest to update in case it exists.
+     */
+    where: UserQuestWhereUniqueInput
+    /**
+     * In case the UserQuest found by the `where` argument doesn't exist, create a new UserQuest with this data.
+     */
+    create: XOR<UserQuestCreateInput, UserQuestUncheckedCreateInput>
+    /**
+     * In case the UserQuest was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserQuestUpdateInput, UserQuestUncheckedUpdateInput>
+  }
+
+  /**
+   * UserQuest delete
+   */
+  export type UserQuestDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+    /**
+     * Filter which UserQuest to delete.
+     */
+    where: UserQuestWhereUniqueInput
+  }
+
+  /**
+   * UserQuest deleteMany
+   */
+  export type UserQuestDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserQuests to delete
+     */
+    where?: UserQuestWhereInput
+    /**
+     * Limit how many UserQuests to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserQuest without action
+   */
+  export type UserQuestDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserQuest
+     */
+    select?: UserQuestSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserQuest
+     */
+    omit?: UserQuestOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserQuestInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -18987,6 +21580,37 @@ export namespace Prisma {
   export type PredictionBetScalarFieldEnum = (typeof PredictionBetScalarFieldEnum)[keyof typeof PredictionBetScalarFieldEnum]
 
 
+  export const QuestDefinitionScalarFieldEnum: {
+    questType: 'questType',
+    title: 'title',
+    description: 'description',
+    target: 'target',
+    rewardStars: 'rewardStars',
+    isActive: 'isActive',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type QuestDefinitionScalarFieldEnum = (typeof QuestDefinitionScalarFieldEnum)[keyof typeof QuestDefinitionScalarFieldEnum]
+
+
+  export const UserQuestScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    questType: 'questType',
+    progress: 'progress',
+    target: 'target',
+    rewardStars: 'rewardStars',
+    isCompleted: 'isCompleted',
+    isClaimed: 'isClaimed',
+    date: 'date',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type UserQuestScalarFieldEnum = (typeof UserQuestScalarFieldEnum)[keyof typeof UserQuestScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -19136,6 +21760,7 @@ export namespace Prisma {
     postLikes?: PostLikeListRelationFilter
     postComments?: PostCommentListRelationFilter
     predictionBets?: PredictionBetListRelationFilter
+    quests?: UserQuestListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -19161,6 +21786,7 @@ export namespace Prisma {
     postLikes?: PostLikeOrderByRelationAggregateInput
     postComments?: PostCommentOrderByRelationAggregateInput
     predictionBets?: PredictionBetOrderByRelationAggregateInput
+    quests?: UserQuestOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -19189,6 +21815,7 @@ export namespace Prisma {
     postLikes?: PostLikeListRelationFilter
     postComments?: PostCommentListRelationFilter
     predictionBets?: PredictionBetListRelationFilter
+    quests?: UserQuestListRelationFilter
   }, "id" | "username" | "email" | "googleId">
 
   export type UserOrderByWithAggregationInput = {
@@ -20176,6 +22803,169 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PredictionBet"> | Date | string
   }
 
+  export type QuestDefinitionWhereInput = {
+    AND?: QuestDefinitionWhereInput | QuestDefinitionWhereInput[]
+    OR?: QuestDefinitionWhereInput[]
+    NOT?: QuestDefinitionWhereInput | QuestDefinitionWhereInput[]
+    questType?: StringFilter<"QuestDefinition"> | string
+    title?: StringFilter<"QuestDefinition"> | string
+    description?: StringNullableFilter<"QuestDefinition"> | string | null
+    target?: IntFilter<"QuestDefinition"> | number
+    rewardStars?: IntFilter<"QuestDefinition"> | number
+    isActive?: BoolFilter<"QuestDefinition"> | boolean
+    createdAt?: DateTimeFilter<"QuestDefinition"> | Date | string
+    updatedAt?: DateTimeFilter<"QuestDefinition"> | Date | string
+    userQuests?: UserQuestListRelationFilter
+  }
+
+  export type QuestDefinitionOrderByWithRelationInput = {
+    questType?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    userQuests?: UserQuestOrderByRelationAggregateInput
+  }
+
+  export type QuestDefinitionWhereUniqueInput = Prisma.AtLeast<{
+    questType?: string
+    AND?: QuestDefinitionWhereInput | QuestDefinitionWhereInput[]
+    OR?: QuestDefinitionWhereInput[]
+    NOT?: QuestDefinitionWhereInput | QuestDefinitionWhereInput[]
+    title?: StringFilter<"QuestDefinition"> | string
+    description?: StringNullableFilter<"QuestDefinition"> | string | null
+    target?: IntFilter<"QuestDefinition"> | number
+    rewardStars?: IntFilter<"QuestDefinition"> | number
+    isActive?: BoolFilter<"QuestDefinition"> | boolean
+    createdAt?: DateTimeFilter<"QuestDefinition"> | Date | string
+    updatedAt?: DateTimeFilter<"QuestDefinition"> | Date | string
+    userQuests?: UserQuestListRelationFilter
+  }, "questType">
+
+  export type QuestDefinitionOrderByWithAggregationInput = {
+    questType?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: QuestDefinitionCountOrderByAggregateInput
+    _avg?: QuestDefinitionAvgOrderByAggregateInput
+    _max?: QuestDefinitionMaxOrderByAggregateInput
+    _min?: QuestDefinitionMinOrderByAggregateInput
+    _sum?: QuestDefinitionSumOrderByAggregateInput
+  }
+
+  export type QuestDefinitionScalarWhereWithAggregatesInput = {
+    AND?: QuestDefinitionScalarWhereWithAggregatesInput | QuestDefinitionScalarWhereWithAggregatesInput[]
+    OR?: QuestDefinitionScalarWhereWithAggregatesInput[]
+    NOT?: QuestDefinitionScalarWhereWithAggregatesInput | QuestDefinitionScalarWhereWithAggregatesInput[]
+    questType?: StringWithAggregatesFilter<"QuestDefinition"> | string
+    title?: StringWithAggregatesFilter<"QuestDefinition"> | string
+    description?: StringNullableWithAggregatesFilter<"QuestDefinition"> | string | null
+    target?: IntWithAggregatesFilter<"QuestDefinition"> | number
+    rewardStars?: IntWithAggregatesFilter<"QuestDefinition"> | number
+    isActive?: BoolWithAggregatesFilter<"QuestDefinition"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"QuestDefinition"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"QuestDefinition"> | Date | string
+  }
+
+  export type UserQuestWhereInput = {
+    AND?: UserQuestWhereInput | UserQuestWhereInput[]
+    OR?: UserQuestWhereInput[]
+    NOT?: UserQuestWhereInput | UserQuestWhereInput[]
+    id?: StringFilter<"UserQuest"> | string
+    userId?: StringFilter<"UserQuest"> | string
+    questType?: StringFilter<"UserQuest"> | string
+    progress?: IntFilter<"UserQuest"> | number
+    target?: IntFilter<"UserQuest"> | number
+    rewardStars?: IntFilter<"UserQuest"> | number
+    isCompleted?: BoolFilter<"UserQuest"> | boolean
+    isClaimed?: BoolFilter<"UserQuest"> | boolean
+    date?: StringFilter<"UserQuest"> | string
+    createdAt?: DateTimeFilter<"UserQuest"> | Date | string
+    updatedAt?: DateTimeFilter<"UserQuest"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    definition?: XOR<QuestDefinitionScalarRelationFilter, QuestDefinitionWhereInput>
+  }
+
+  export type UserQuestOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questType?: SortOrder
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isCompleted?: SortOrder
+    isClaimed?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    definition?: QuestDefinitionOrderByWithRelationInput
+  }
+
+  export type UserQuestWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_questType_date?: UserQuestUserIdQuestTypeDateCompoundUniqueInput
+    AND?: UserQuestWhereInput | UserQuestWhereInput[]
+    OR?: UserQuestWhereInput[]
+    NOT?: UserQuestWhereInput | UserQuestWhereInput[]
+    userId?: StringFilter<"UserQuest"> | string
+    questType?: StringFilter<"UserQuest"> | string
+    progress?: IntFilter<"UserQuest"> | number
+    target?: IntFilter<"UserQuest"> | number
+    rewardStars?: IntFilter<"UserQuest"> | number
+    isCompleted?: BoolFilter<"UserQuest"> | boolean
+    isClaimed?: BoolFilter<"UserQuest"> | boolean
+    date?: StringFilter<"UserQuest"> | string
+    createdAt?: DateTimeFilter<"UserQuest"> | Date | string
+    updatedAt?: DateTimeFilter<"UserQuest"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    definition?: XOR<QuestDefinitionScalarRelationFilter, QuestDefinitionWhereInput>
+  }, "id" | "userId_questType_date">
+
+  export type UserQuestOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questType?: SortOrder
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isCompleted?: SortOrder
+    isClaimed?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: UserQuestCountOrderByAggregateInput
+    _avg?: UserQuestAvgOrderByAggregateInput
+    _max?: UserQuestMaxOrderByAggregateInput
+    _min?: UserQuestMinOrderByAggregateInput
+    _sum?: UserQuestSumOrderByAggregateInput
+  }
+
+  export type UserQuestScalarWhereWithAggregatesInput = {
+    AND?: UserQuestScalarWhereWithAggregatesInput | UserQuestScalarWhereWithAggregatesInput[]
+    OR?: UserQuestScalarWhereWithAggregatesInput[]
+    NOT?: UserQuestScalarWhereWithAggregatesInput | UserQuestScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserQuest"> | string
+    userId?: StringWithAggregatesFilter<"UserQuest"> | string
+    questType?: StringWithAggregatesFilter<"UserQuest"> | string
+    progress?: IntWithAggregatesFilter<"UserQuest"> | number
+    target?: IntWithAggregatesFilter<"UserQuest"> | number
+    rewardStars?: IntWithAggregatesFilter<"UserQuest"> | number
+    isCompleted?: BoolWithAggregatesFilter<"UserQuest"> | boolean
+    isClaimed?: BoolWithAggregatesFilter<"UserQuest"> | boolean
+    date?: StringWithAggregatesFilter<"UserQuest"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"UserQuest"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"UserQuest"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     username: string
@@ -20199,6 +22989,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -20224,6 +23015,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -20249,6 +23041,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -20274,6 +23067,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -21293,6 +24087,183 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type QuestDefinitionCreateInput = {
+    questType: string
+    title: string
+    description?: string | null
+    target: number
+    rewardStars: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userQuests?: UserQuestCreateNestedManyWithoutDefinitionInput
+  }
+
+  export type QuestDefinitionUncheckedCreateInput = {
+    questType: string
+    title: string
+    description?: string | null
+    target: number
+    rewardStars: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    userQuests?: UserQuestUncheckedCreateNestedManyWithoutDefinitionInput
+  }
+
+  export type QuestDefinitionUpdateInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userQuests?: UserQuestUpdateManyWithoutDefinitionNestedInput
+  }
+
+  export type QuestDefinitionUncheckedUpdateInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    userQuests?: UserQuestUncheckedUpdateManyWithoutDefinitionNestedInput
+  }
+
+  export type QuestDefinitionCreateManyInput = {
+    questType: string
+    title: string
+    description?: string | null
+    target: number
+    rewardStars: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuestDefinitionUpdateManyMutationInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuestDefinitionUncheckedUpdateManyInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestCreateInput = {
+    id?: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutQuestsInput
+    definition: QuestDefinitionCreateNestedOneWithoutUserQuestsInput
+  }
+
+  export type UserQuestUncheckedCreateInput = {
+    id?: string
+    userId: string
+    questType: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserQuestUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutQuestsNestedInput
+    definition?: QuestDefinitionUpdateOneRequiredWithoutUserQuestsNestedInput
+  }
+
+  export type UserQuestUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    questType?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestCreateManyInput = {
+    id?: string
+    userId: string
+    questType: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserQuestUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    questType?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21400,6 +24371,12 @@ export namespace Prisma {
     none?: PredictionBetWhereInput
   }
 
+  export type UserQuestListRelationFilter = {
+    every?: UserQuestWhereInput
+    some?: UserQuestWhereInput
+    none?: UserQuestWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -21434,6 +24411,10 @@ export namespace Prisma {
   }
 
   export type PredictionBetOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserQuestOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -22236,6 +25217,114 @@ export namespace Prisma {
     starAmount?: SortOrder
   }
 
+  export type QuestDefinitionCountOrderByAggregateInput = {
+    questType?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuestDefinitionAvgOrderByAggregateInput = {
+    target?: SortOrder
+    rewardStars?: SortOrder
+  }
+
+  export type QuestDefinitionMaxOrderByAggregateInput = {
+    questType?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuestDefinitionMinOrderByAggregateInput = {
+    questType?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type QuestDefinitionSumOrderByAggregateInput = {
+    target?: SortOrder
+    rewardStars?: SortOrder
+  }
+
+  export type QuestDefinitionScalarRelationFilter = {
+    is?: QuestDefinitionWhereInput
+    isNot?: QuestDefinitionWhereInput
+  }
+
+  export type UserQuestUserIdQuestTypeDateCompoundUniqueInput = {
+    userId: string
+    questType: string
+    date: string
+  }
+
+  export type UserQuestCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questType?: SortOrder
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isCompleted?: SortOrder
+    isClaimed?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserQuestAvgOrderByAggregateInput = {
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+  }
+
+  export type UserQuestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questType?: SortOrder
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isCompleted?: SortOrder
+    isClaimed?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserQuestMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    questType?: SortOrder
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+    isCompleted?: SortOrder
+    isClaimed?: SortOrder
+    date?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type UserQuestSumOrderByAggregateInput = {
+    progress?: SortOrder
+    target?: SortOrder
+    rewardStars?: SortOrder
+  }
+
   export type StreamCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -22299,6 +25388,13 @@ export namespace Prisma {
     connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
   }
 
+  export type UserQuestCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput> | UserQuestCreateWithoutUserInput[] | UserQuestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutUserInput | UserQuestCreateOrConnectWithoutUserInput[]
+    createMany?: UserQuestCreateManyUserInputEnvelope
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+  }
+
   export type StreamUncheckedCreateNestedManyWithoutStreamerInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -22360,6 +25456,13 @@ export namespace Prisma {
     connectOrCreate?: PredictionBetCreateOrConnectWithoutUserInput | PredictionBetCreateOrConnectWithoutUserInput[]
     createMany?: PredictionBetCreateManyUserInputEnvelope
     connect?: PredictionBetWhereUniqueInput | PredictionBetWhereUniqueInput[]
+  }
+
+  export type UserQuestUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput> | UserQuestCreateWithoutUserInput[] | UserQuestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutUserInput | UserQuestCreateOrConnectWithoutUserInput[]
+    createMany?: UserQuestCreateManyUserInputEnvelope
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -22512,6 +25615,20 @@ export namespace Prisma {
     deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
   }
 
+  export type UserQuestUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput> | UserQuestCreateWithoutUserInput[] | UserQuestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutUserInput | UserQuestCreateOrConnectWithoutUserInput[]
+    upsert?: UserQuestUpsertWithWhereUniqueWithoutUserInput | UserQuestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserQuestCreateManyUserInputEnvelope
+    set?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    disconnect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    delete?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    update?: UserQuestUpdateWithWhereUniqueWithoutUserInput | UserQuestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserQuestUpdateManyWithWhereWithoutUserInput | UserQuestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+  }
+
   export type StreamUncheckedUpdateManyWithoutStreamerNestedInput = {
     create?: XOR<StreamCreateWithoutStreamerInput, StreamUncheckedCreateWithoutStreamerInput> | StreamCreateWithoutStreamerInput[] | StreamUncheckedCreateWithoutStreamerInput[]
     connectOrCreate?: StreamCreateOrConnectWithoutStreamerInput | StreamCreateOrConnectWithoutStreamerInput[]
@@ -22636,6 +25753,20 @@ export namespace Prisma {
     update?: PredictionBetUpdateWithWhereUniqueWithoutUserInput | PredictionBetUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: PredictionBetUpdateManyWithWhereWithoutUserInput | PredictionBetUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: PredictionBetScalarWhereInput | PredictionBetScalarWhereInput[]
+  }
+
+  export type UserQuestUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput> | UserQuestCreateWithoutUserInput[] | UserQuestUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutUserInput | UserQuestCreateOrConnectWithoutUserInput[]
+    upsert?: UserQuestUpsertWithWhereUniqueWithoutUserInput | UserQuestUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserQuestCreateManyUserInputEnvelope
+    set?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    disconnect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    delete?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    update?: UserQuestUpdateWithWhereUniqueWithoutUserInput | UserQuestUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserQuestUpdateManyWithWhereWithoutUserInput | UserQuestUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutStreamsInput = {
@@ -23400,6 +26531,76 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPredictionBetsInput, UserUpdateWithoutPredictionBetsInput>, UserUncheckedUpdateWithoutPredictionBetsInput>
   }
 
+  export type UserQuestCreateNestedManyWithoutDefinitionInput = {
+    create?: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput> | UserQuestCreateWithoutDefinitionInput[] | UserQuestUncheckedCreateWithoutDefinitionInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutDefinitionInput | UserQuestCreateOrConnectWithoutDefinitionInput[]
+    createMany?: UserQuestCreateManyDefinitionInputEnvelope
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+  }
+
+  export type UserQuestUncheckedCreateNestedManyWithoutDefinitionInput = {
+    create?: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput> | UserQuestCreateWithoutDefinitionInput[] | UserQuestUncheckedCreateWithoutDefinitionInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutDefinitionInput | UserQuestCreateOrConnectWithoutDefinitionInput[]
+    createMany?: UserQuestCreateManyDefinitionInputEnvelope
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+  }
+
+  export type UserQuestUpdateManyWithoutDefinitionNestedInput = {
+    create?: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput> | UserQuestCreateWithoutDefinitionInput[] | UserQuestUncheckedCreateWithoutDefinitionInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutDefinitionInput | UserQuestCreateOrConnectWithoutDefinitionInput[]
+    upsert?: UserQuestUpsertWithWhereUniqueWithoutDefinitionInput | UserQuestUpsertWithWhereUniqueWithoutDefinitionInput[]
+    createMany?: UserQuestCreateManyDefinitionInputEnvelope
+    set?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    disconnect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    delete?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    update?: UserQuestUpdateWithWhereUniqueWithoutDefinitionInput | UserQuestUpdateWithWhereUniqueWithoutDefinitionInput[]
+    updateMany?: UserQuestUpdateManyWithWhereWithoutDefinitionInput | UserQuestUpdateManyWithWhereWithoutDefinitionInput[]
+    deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+  }
+
+  export type UserQuestUncheckedUpdateManyWithoutDefinitionNestedInput = {
+    create?: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput> | UserQuestCreateWithoutDefinitionInput[] | UserQuestUncheckedCreateWithoutDefinitionInput[]
+    connectOrCreate?: UserQuestCreateOrConnectWithoutDefinitionInput | UserQuestCreateOrConnectWithoutDefinitionInput[]
+    upsert?: UserQuestUpsertWithWhereUniqueWithoutDefinitionInput | UserQuestUpsertWithWhereUniqueWithoutDefinitionInput[]
+    createMany?: UserQuestCreateManyDefinitionInputEnvelope
+    set?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    disconnect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    delete?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    connect?: UserQuestWhereUniqueInput | UserQuestWhereUniqueInput[]
+    update?: UserQuestUpdateWithWhereUniqueWithoutDefinitionInput | UserQuestUpdateWithWhereUniqueWithoutDefinitionInput[]
+    updateMany?: UserQuestUpdateManyWithWhereWithoutDefinitionInput | UserQuestUpdateManyWithWhereWithoutDefinitionInput[]
+    deleteMany?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutQuestsInput = {
+    create?: XOR<UserCreateWithoutQuestsInput, UserUncheckedCreateWithoutQuestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuestsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type QuestDefinitionCreateNestedOneWithoutUserQuestsInput = {
+    create?: XOR<QuestDefinitionCreateWithoutUserQuestsInput, QuestDefinitionUncheckedCreateWithoutUserQuestsInput>
+    connectOrCreate?: QuestDefinitionCreateOrConnectWithoutUserQuestsInput
+    connect?: QuestDefinitionWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutQuestsNestedInput = {
+    create?: XOR<UserCreateWithoutQuestsInput, UserUncheckedCreateWithoutQuestsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutQuestsInput
+    upsert?: UserUpsertWithoutQuestsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuestsInput, UserUpdateWithoutQuestsInput>, UserUncheckedUpdateWithoutQuestsInput>
+  }
+
+  export type QuestDefinitionUpdateOneRequiredWithoutUserQuestsNestedInput = {
+    create?: XOR<QuestDefinitionCreateWithoutUserQuestsInput, QuestDefinitionUncheckedCreateWithoutUserQuestsInput>
+    connectOrCreate?: QuestDefinitionCreateOrConnectWithoutUserQuestsInput
+    upsert?: QuestDefinitionUpsertWithoutUserQuestsInput
+    connect?: QuestDefinitionWhereUniqueInput
+    update?: XOR<XOR<QuestDefinitionUpdateToOneWithWhereWithoutUserQuestsInput, QuestDefinitionUpdateWithoutUserQuestsInput>, QuestDefinitionUncheckedUpdateWithoutUserQuestsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -23899,6 +27100,42 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserQuestCreateWithoutUserInput = {
+    id?: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    definition: QuestDefinitionCreateNestedOneWithoutUserQuestsInput
+  }
+
+  export type UserQuestUncheckedCreateWithoutUserInput = {
+    id?: string
+    questType: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserQuestCreateOrConnectWithoutUserInput = {
+    where: UserQuestWhereUniqueInput
+    create: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserQuestCreateManyUserInputEnvelope = {
+    data: UserQuestCreateManyUserInput | UserQuestCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type StreamUpsertWithWhereUniqueWithoutStreamerInput = {
     where: StreamWhereUniqueInput
     update: XOR<StreamUpdateWithoutStreamerInput, StreamUncheckedUpdateWithoutStreamerInput>
@@ -24144,6 +27381,39 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PredictionBet"> | Date | string
   }
 
+  export type UserQuestUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserQuestWhereUniqueInput
+    update: XOR<UserQuestUpdateWithoutUserInput, UserQuestUncheckedUpdateWithoutUserInput>
+    create: XOR<UserQuestCreateWithoutUserInput, UserQuestUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserQuestUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserQuestWhereUniqueInput
+    data: XOR<UserQuestUpdateWithoutUserInput, UserQuestUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserQuestUpdateManyWithWhereWithoutUserInput = {
+    where: UserQuestScalarWhereInput
+    data: XOR<UserQuestUpdateManyMutationInput, UserQuestUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserQuestScalarWhereInput = {
+    AND?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+    OR?: UserQuestScalarWhereInput[]
+    NOT?: UserQuestScalarWhereInput | UserQuestScalarWhereInput[]
+    id?: StringFilter<"UserQuest"> | string
+    userId?: StringFilter<"UserQuest"> | string
+    questType?: StringFilter<"UserQuest"> | string
+    progress?: IntFilter<"UserQuest"> | number
+    target?: IntFilter<"UserQuest"> | number
+    rewardStars?: IntFilter<"UserQuest"> | number
+    isCompleted?: BoolFilter<"UserQuest"> | boolean
+    isClaimed?: BoolFilter<"UserQuest"> | boolean
+    date?: StringFilter<"UserQuest"> | string
+    createdAt?: DateTimeFilter<"UserQuest"> | Date | string
+    updatedAt?: DateTimeFilter<"UserQuest"> | Date | string
+  }
+
   export type UserCreateWithoutStreamsInput = {
     id?: string
     username: string
@@ -24166,6 +27436,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutStreamsInput = {
@@ -24190,6 +27461,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutStreamsInput = {
@@ -24456,6 +27728,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutStreamsInput = {
@@ -24480,6 +27753,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamGoalUpsertWithWhereUniqueWithoutStreamInput = {
@@ -24721,6 +27995,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSentGiftsInput = {
@@ -24745,6 +28020,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSentGiftsInput = {
@@ -24774,6 +28050,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReceivedGiftsInput = {
@@ -24798,6 +28075,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReceivedGiftsInput = {
@@ -24887,6 +28165,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSentGiftsInput = {
@@ -24911,6 +28190,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReceivedGiftsInput = {
@@ -24946,6 +28226,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReceivedGiftsInput = {
@@ -24970,6 +28251,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutCommentsInput = {
@@ -25037,6 +28319,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommentsInput = {
@@ -25061,6 +28344,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommentsInput = {
@@ -25150,6 +28434,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -25174,6 +28459,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -25198,6 +28484,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -25222,6 +28509,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -25262,6 +28550,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -25286,6 +28575,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutGoalsInput = {
@@ -25793,6 +29083,7 @@ export namespace Prisma {
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -25817,6 +29108,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -25905,6 +29197,7 @@ export namespace Prisma {
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -25929,6 +29222,7 @@ export namespace Prisma {
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostLikeUpsertWithWhereUniqueWithoutPostInput = {
@@ -26016,6 +29310,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostLikesInput = {
@@ -26040,6 +29335,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostLikesInput = {
@@ -26117,6 +29413,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostLikesInput = {
@@ -26141,6 +29438,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostCreateWithoutCommentsInput = {
@@ -26196,6 +29494,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostCommentsInput = {
@@ -26220,6 +29519,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostCommentsInput = {
@@ -26297,6 +29597,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostCommentsInput = {
@@ -26321,6 +29622,7 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type StreamCreateWithoutPredictionsInput = {
@@ -26514,6 +29816,7 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeCreateNestedManyWithoutUserInput
     postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    quests?: UserQuestCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPredictionBetsInput = {
@@ -26538,6 +29841,7 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
     postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    quests?: UserQuestUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPredictionBetsInput = {
@@ -26619,6 +29923,7 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    quests?: UserQuestUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPredictionBetsInput = {
@@ -26643,6 +29948,235 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
     postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    quests?: UserQuestUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserQuestCreateWithoutDefinitionInput = {
+    id?: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutQuestsInput
+  }
+
+  export type UserQuestUncheckedCreateWithoutDefinitionInput = {
+    id?: string
+    userId: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserQuestCreateOrConnectWithoutDefinitionInput = {
+    where: UserQuestWhereUniqueInput
+    create: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput>
+  }
+
+  export type UserQuestCreateManyDefinitionInputEnvelope = {
+    data: UserQuestCreateManyDefinitionInput | UserQuestCreateManyDefinitionInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserQuestUpsertWithWhereUniqueWithoutDefinitionInput = {
+    where: UserQuestWhereUniqueInput
+    update: XOR<UserQuestUpdateWithoutDefinitionInput, UserQuestUncheckedUpdateWithoutDefinitionInput>
+    create: XOR<UserQuestCreateWithoutDefinitionInput, UserQuestUncheckedCreateWithoutDefinitionInput>
+  }
+
+  export type UserQuestUpdateWithWhereUniqueWithoutDefinitionInput = {
+    where: UserQuestWhereUniqueInput
+    data: XOR<UserQuestUpdateWithoutDefinitionInput, UserQuestUncheckedUpdateWithoutDefinitionInput>
+  }
+
+  export type UserQuestUpdateManyWithWhereWithoutDefinitionInput = {
+    where: UserQuestScalarWhereInput
+    data: XOR<UserQuestUpdateManyMutationInput, UserQuestUncheckedUpdateManyWithoutDefinitionInput>
+  }
+
+  export type UserCreateWithoutQuestsInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionCreateNestedManyWithoutReceiverInput
+    comments?: CommentCreateNestedManyWithoutSenderInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeCreateNestedManyWithoutUserInput
+    postComments?: PostCommentCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutQuestsInput = {
+    id?: string
+    username: string
+    passwordHash?: string | null
+    displayName: string
+    avatarUrl: string
+    email?: string | null
+    googleId?: string | null
+    role?: $Enums.UserRole
+    starBalance?: number
+    starsGifted?: number
+    starsEarned?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    streams?: StreamUncheckedCreateNestedManyWithoutStreamerInput
+    sentGifts?: GiftTransactionUncheckedCreateNestedManyWithoutSenderInput
+    receivedGifts?: GiftTransactionUncheckedCreateNestedManyWithoutReceiverInput
+    comments?: CommentUncheckedCreateNestedManyWithoutSenderInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postLikes?: PostLikeUncheckedCreateNestedManyWithoutUserInput
+    postComments?: PostCommentUncheckedCreateNestedManyWithoutAuthorInput
+    predictionBets?: PredictionBetUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutQuestsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutQuestsInput, UserUncheckedCreateWithoutQuestsInput>
+  }
+
+  export type QuestDefinitionCreateWithoutUserQuestsInput = {
+    questType: string
+    title: string
+    description?: string | null
+    target: number
+    rewardStars: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuestDefinitionUncheckedCreateWithoutUserQuestsInput = {
+    questType: string
+    title: string
+    description?: string | null
+    target: number
+    rewardStars: number
+    isActive?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type QuestDefinitionCreateOrConnectWithoutUserQuestsInput = {
+    where: QuestDefinitionWhereUniqueInput
+    create: XOR<QuestDefinitionCreateWithoutUserQuestsInput, QuestDefinitionUncheckedCreateWithoutUserQuestsInput>
+  }
+
+  export type UserUpsertWithoutQuestsInput = {
+    update: XOR<UserUpdateWithoutQuestsInput, UserUncheckedUpdateWithoutQuestsInput>
+    create: XOR<UserCreateWithoutQuestsInput, UserUncheckedCreateWithoutQuestsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutQuestsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutQuestsInput, UserUncheckedUpdateWithoutQuestsInput>
+  }
+
+  export type UserUpdateWithoutQuestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutQuestsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    displayName?: StringFieldUpdateOperationsInput | string
+    avatarUrl?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    googleId?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    starBalance?: IntFieldUpdateOperationsInput | number
+    starsGifted?: IntFieldUpdateOperationsInput | number
+    starsEarned?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    streams?: StreamUncheckedUpdateManyWithoutStreamerNestedInput
+    sentGifts?: GiftTransactionUncheckedUpdateManyWithoutSenderNestedInput
+    receivedGifts?: GiftTransactionUncheckedUpdateManyWithoutReceiverNestedInput
+    comments?: CommentUncheckedUpdateManyWithoutSenderNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postLikes?: PostLikeUncheckedUpdateManyWithoutUserNestedInput
+    postComments?: PostCommentUncheckedUpdateManyWithoutAuthorNestedInput
+    predictionBets?: PredictionBetUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type QuestDefinitionUpsertWithoutUserQuestsInput = {
+    update: XOR<QuestDefinitionUpdateWithoutUserQuestsInput, QuestDefinitionUncheckedUpdateWithoutUserQuestsInput>
+    create: XOR<QuestDefinitionCreateWithoutUserQuestsInput, QuestDefinitionUncheckedCreateWithoutUserQuestsInput>
+    where?: QuestDefinitionWhereInput
+  }
+
+  export type QuestDefinitionUpdateToOneWithWhereWithoutUserQuestsInput = {
+    where?: QuestDefinitionWhereInput
+    data: XOR<QuestDefinitionUpdateWithoutUserQuestsInput, QuestDefinitionUncheckedUpdateWithoutUserQuestsInput>
+  }
+
+  export type QuestDefinitionUpdateWithoutUserQuestsInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type QuestDefinitionUncheckedUpdateWithoutUserQuestsInput = {
+    questType?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StreamCreateManyStreamerInput = {
@@ -26721,6 +30255,19 @@ export namespace Prisma {
     option: string
     starAmount: number
     createdAt?: Date | string
+  }
+
+  export type UserQuestCreateManyUserInput = {
+    id?: string
+    questType: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type StreamUpdateWithoutStreamerInput = {
@@ -26973,6 +30520,45 @@ export namespace Prisma {
     option?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    definition?: QuestDefinitionUpdateOneRequiredWithoutUserQuestsNestedInput
+  }
+
+  export type UserQuestUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questType?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    questType?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StreamGoalCreateManyStreamInput = {
@@ -27397,6 +30983,58 @@ export namespace Prisma {
     option?: StringFieldUpdateOperationsInput | string
     starAmount?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestCreateManyDefinitionInput = {
+    id?: string
+    userId: string
+    progress?: number
+    target: number
+    rewardStars: number
+    isCompleted?: boolean
+    isClaimed?: boolean
+    date: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type UserQuestUpdateWithoutDefinitionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutQuestsNestedInput
+  }
+
+  export type UserQuestUncheckedUpdateWithoutDefinitionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserQuestUncheckedUpdateManyWithoutDefinitionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    target?: IntFieldUpdateOperationsInput | number
+    rewardStars?: IntFieldUpdateOperationsInput | number
+    isCompleted?: BoolFieldUpdateOperationsInput | boolean
+    isClaimed?: BoolFieldUpdateOperationsInput | boolean
+    date?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

@@ -8,6 +8,21 @@ import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { getStreamerLevel } from "@/lib/level";
 import PostList from "@/features/profile/components/PostList";
+import QuestDrawer from "@/components/QuestDrawer";
+import { 
+  HomeIcon, 
+  LiveIcon, 
+  GameIcon, 
+  ProfileIcon, 
+  SettingsIcon, 
+  LogoutIcon, 
+  SearchIcon, 
+  CoinIcon, 
+  CompassIcon, 
+  StarIcon, 
+  TrophysIcon,
+  PlusIcon
+} from "@/components/Icons";
 
 // Khai báo kiểu dữ liệu cho User và Stream (Đồng bộ với Prisma Schema)
 interface User {
@@ -71,6 +86,7 @@ export default function HomePage() {
   const [submitting, setSubmitting] = useState(false);
   const [sandboxUser, setSandboxUser] = useState("bob");
   const [activeTab, setActiveTab] = useState<"feed" | "live">("feed");
+  const [feedType, setFeedType] = useState<"explore" | "global">("explore");
 
   // Trạng thái Modal Đăng nhập / Đăng ký bằng Username & Password
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -83,6 +99,9 @@ export default function HomePage() {
 
   // Trạng thái tìm kiếm phòng live, streamer
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Trạng thái hiển thị ngăn kéo Nhiệm vụ
+  const [showQuests, setShowQuests] = useState(false);
 
   // 1. Tải thông tin người dùng bằng Cookie và tải danh sách phòng
   useEffect(() => {
@@ -355,13 +374,13 @@ export default function HomePage() {
       {/* Header chính */}
       <header className={styles.header}>
         <div className={styles.logo} onClick={() => router.push("/")} style={{ cursor: "pointer" }}>
-          <span className={styles.logoIcon}>⭐</span>
+          <StarIcon size={24} fill="var(--color-secondary)" className={styles.logoIconSvg} />
           <span>LiveStar</span>
         </div>
 
         {/* Ô Tìm kiếm Hoạt động Thực tế */}
         <div className={styles.searchBar}>
-          <span className={styles.searchIcon}>🔍</span>
+          <SearchIcon size={18} className={styles.searchIconSvg} />
           <input 
             type="text" 
             placeholder="Tìm phòng live, tên idol..." 
@@ -387,13 +406,14 @@ export default function HomePage() {
             >
               <span className={styles.username}>{currentUser.displayName}</span>
               <span className={styles.balance}>
-                🪙 {currentUser.starBalance.toLocaleString()} sao
+                <CoinIcon size={14} className={styles.coinIconSvg} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '2px' }} /> {currentUser.starBalance.toLocaleString()} sao
               </span>
             </div>
             <button className={styles.rechargeBtn} onClick={handleRecharge}>
-              + Nạp Sao
+              <PlusIcon size={12} style={{ marginRight: '2px' }} /> Nạp Sao
             </button>
-            <button className="glow-btn-secondary" onClick={handleLogout} style={{ padding: "6px 12px", fontSize: "0.8rem", marginLeft: "10px" }}>
+            <button className="glow-btn-secondary" onClick={handleLogout} style={{ padding: "6px 12px", fontSize: "0.8rem", marginLeft: "10px", display: "inline-flex", alignItems: "center", gap: "4px" }}>
+              <LogoutIcon size={14} />
               Đăng xuất
             </button>
           </div>
@@ -427,7 +447,7 @@ export default function HomePage() {
               onClick={() => setActiveTab('feed')}
               type="button"
             >
-              <span className={styles.menuIcon}>🏠</span>
+              <HomeIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Bảng tin chung</span>
             </button>
             <button 
@@ -435,11 +455,11 @@ export default function HomePage() {
               onClick={() => setActiveTab('live')}
               type="button"
             >
-              <span className={styles.menuIcon}>🎥</span>
+              <LiveIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Xem Livestream</span>
             </button>
             <button className={styles.menuItem} onClick={() => alert("Tính năng Game Center đang phát triển!")} type="button">
-              <span className={styles.menuIcon}>🎮</span>
+              <GameIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Game Center</span>
             </button>
             <button className={styles.menuItem} onClick={() => {
@@ -449,7 +469,7 @@ export default function HomePage() {
                 router.push(`/profile/${currentUser.username}`);
               }
             }} type="button">
-              <span className={styles.menuIcon}>👤</span>
+              <ProfileIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Trang cá nhân</span>
             </button>
           </div>
@@ -462,7 +482,7 @@ export default function HomePage() {
                 router.push(`/streamer/setup`);
               }
             }} type="button">
-              <span className={styles.menuIcon}>⚙️</span>
+              <SettingsIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Thiết lập Live</span>
             </button>
           </div>
@@ -598,31 +618,35 @@ export default function HomePage() {
             <div className={styles.streamsContainer}>
               {activeTab === "feed" ? (
                 <>
-                  {/* Bong bóng Streamer Đang Live (Live Carousel) */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'rgba(255, 255, 255, 0.02)', padding: '20px', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
-                    <h3 style={{ fontSize: '0.95rem', fontWeight: '800', color: 'var(--color-primary)', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span className="live-dot" style={{ display: 'inline-block', width: '8px', height: '8px', background: '#ef4444', borderRadius: '50%' }}></span>
-                      🔴 STREAMERS ĐANG PHÁT LIVE
+                  {/* Bong bóng Streamer Đang Live (Live Stories style) */}
+                  <div className={styles.storiesContainer}>
+                    <h3 className={styles.storiesHeader}>
+                      <span className={styles.livePulseDot}></span>
+                      STREAMERS ĐANG LIVE
                     </h3>
-                    <div style={{ display: 'flex', gap: '16px', overflowX: 'auto', padding: '10px 0' }}>
+                    <div className={styles.storiesList}>
                       {streams.filter(s => s.status === 'LIVE').length === 0 ? (
-                        <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Chưa có ai lên sóng. Hãy bắt đầu live đầu tiên! 🎙️</span>
+                        <div className={styles.emptyStories}>
+                          Chưa có ai lên sóng. Hãy bắt đầu live đầu tiên! 🎙️
+                        </div>
                       ) : (
                         streams.filter(s => s.status === 'LIVE').map((stream) => (
                           <div 
                             key={stream.id} 
                             onClick={() => router.push(`/viewer/${stream.id}`)}
-                            style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px', cursor: 'pointer', flexShrink: 0 }}
+                            className={styles.storyCard}
                           >
-                            <div style={{ position: 'relative' }}>
-                              <img 
-                                src={stream.streamer.avatarUrl} 
-                                alt={stream.streamer.displayName} 
-                                style={{ width: '56px', height: '56px', borderRadius: '50%', border: '2px solid #a855f7', padding: '2px', objectFit: 'cover' }}
-                              />
-                              <span style={{ position: 'absolute', bottom: 0, right: 0, width: '12px', height: '12px', background: '#ef4444', borderRadius: '50%', border: '2px solid #0f0f15' }} />
+                            <div className={styles.storyAvatarOuter}>
+                              <div className={styles.storyAvatarInner}>
+                                <img 
+                                  src={stream.streamer.avatarUrl} 
+                                  alt={stream.streamer.displayName} 
+                                  className={styles.storyAvatarImg}
+                                />
+                              </div>
+                              <span className={styles.storyLiveDot}></span>
                             </div>
-                            <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#fff', maxWidth: '70px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                            <span className={styles.storyName}>
                               {stream.streamer.displayName}
                             </span>
                           </div>
@@ -631,8 +655,26 @@ export default function HomePage() {
                     </div>
                   </div>
 
+                  {/* Thanh tab chọn loại Feed (Mạng xã hội style) */}
+                  <div className={styles.feedTabs}>
+                    <button
+                      className={`${styles.feedTab} ${feedType === 'explore' ? styles.feedTabActive : ''}`}
+                      onClick={() => setFeedType('explore')}
+                    >
+                      <CompassIcon size={18} />
+                      <span>Dành cho bạn</span>
+                    </button>
+                    <button
+                      className={`${styles.feedTab} ${feedType === 'global' ? styles.feedTabActive : ''}`}
+                      onClick={() => setFeedType('global')}
+                    >
+                      <HomeIcon size={18} />
+                      <span>Mới nhất</span>
+                    </button>
+                  </div>
+
                   {/* Bảng tin chung */}
-                  <PostList global={true} currentUserId={currentUser?.id} />
+                  <PostList feedType={feedType} currentUserId={currentUser?.id} />
                 </>
               ) : (
                 <>
@@ -757,8 +799,9 @@ export default function HomePage() {
             {/* Sidebar Bảng xếp hạng bên phải (Top KOLs Sidebar) */}
             <aside className={styles.topKOLsSidebar}>
               <div className="premium-card" style={{ background: "linear-gradient(180deg, var(--bg-surface) 0%, rgba(20, 20, 28, 0.4) 100%)" }}>
-                <h3 style={{ fontSize: "1.15rem", fontWeight: "800", marginBottom: "15px", display: "flex", alignItems: "center", gap: "8px", color: "var(--color-accent)" }}>
-                  <span>🏆</span> SIÊU SAO KOL TUẦN NÀY
+                <h3 style={{ fontSize: "1.1rem", fontWeight: "800", marginBottom: "15px", display: "flex", alignItems: "center", gap: "8px", color: "var(--color-accent)" }}>
+                  <TrophysIcon size={20} style={{ color: "var(--color-accent)" }} />
+                  <span>SIÊU SAO KOL TUẦN NÀY</span>
                 </h3>
                 <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", marginBottom: "15px", lineHeight: "1.4" }}>
                   Bảng vinh danh 5 KOL nhận được nhiều sao nhất trên hệ thống LiveStar.
@@ -795,7 +838,7 @@ export default function HomePage() {
                             </div>
                           </div>
                           <span className={styles.kolStars}>
-                            🪙 {kol.starsEarned.toLocaleString()}
+                            <CoinIcon size={12} style={{ display: 'inline', verticalAlign: 'middle', marginRight: '2px', color: 'var(--color-accent)' }} /> {kol.starsEarned.toLocaleString()}
                           </span>
                         </div>
                       );
@@ -1021,18 +1064,18 @@ export default function HomePage() {
       {/* Mobile Bottom Navigation Bar */}
       <nav className={styles.bottomNav}>
         <button className={`${styles.bottomNavItem} ${styles.bottomNavItemActive}`} type="button">
-          <span className={styles.bottomNavIcon}>🏠</span>
+          <HomeIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Trang chủ</span>
         </button>
         <button className={styles.bottomNavItem} onClick={() => alert("Tính năng Game Center đang phát triển!")} type="button">
-          <span className={styles.bottomNavIcon}>🎮</span>
+          <GameIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Games</span>
         </button>
         <button className={styles.bottomNavItem} onClick={() => {
           const el = document.getElementById("top-kols-section");
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }} type="button">
-          <span className={styles.bottomNavIcon}>🏆</span>
+          <TrophysIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Siêu sao</span>
         </button>
         <button className={styles.bottomNavItem} onClick={() => {
@@ -1042,10 +1085,66 @@ export default function HomePage() {
             router.push(`/streamer/setup`);
           }
         }} type="button">
-          <span className={styles.bottomNavIcon}>👤</span>
+          <ProfileIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Kênh</span>
         </button>
       </nav>
+
+      {/* Floating Quest Button */}
+      {currentUser && (
+        <button
+          onClick={() => setShowQuests(true)}
+          style={{
+            position: "fixed",
+            bottom: "80px",
+            right: "24px",
+            width: "56px",
+            height: "56px",
+            borderRadius: "50%",
+            background: "linear-gradient(135deg, #f43f5e 0%, #2563eb 100%)",
+            color: "#ffffff",
+            border: "none",
+            cursor: "pointer",
+            boxShadow: "0 4px 15px rgba(244, 63, 94, 0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 900,
+            transition: "all 0.2s",
+          }}
+          onMouseOver={(e) => {
+            e.currentTarget.style.transform = "scale(1.1) rotate(5deg)";
+          }}
+          onMouseOut={(e) => {
+            e.currentTarget.style.transform = "scale(1) rotate(0deg)";
+          }}
+          title="Nhiệm vụ hàng ngày"
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+          </svg>
+        </button>
+      )}
+
+      {/* Quest Drawer Panel */}
+      {currentUser && (
+        <QuestDrawer
+          isOpen={showQuests}
+          onClose={() => setShowQuests(false)}
+          onBalanceUpdate={(newBalance) => {
+            setCurrentUser({ ...currentUser, starBalance: newBalance });
+          }}
+        />
+      )}
     </div>
   );
 }

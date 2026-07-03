@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from './ProfileFeed.module.css';
 import CommentSection from './CommentSection';
+import { HeartIcon, CommentIcon, TrashIcon } from '@/components/Icons';
 
 export interface Post {
   id: string;
@@ -120,7 +121,7 @@ export default function PostCard({ post, currentUserId, onDelete }: PostCardProp
         {/* Nút xóa bài đăng */}
         {isAuthor && (
           <button className={styles.deletePostBtn} onClick={handleDelete} title="Xóa bài viết">
-            🗑️
+            <TrashIcon size={16} />
           </button>
         )}
       </div>
@@ -145,12 +146,12 @@ export default function PostCard({ post, currentUserId, onDelete }: PostCardProp
           className={`${styles.actionBtn} ${isLiked ? styles.liked : ''}`}
           onClick={handleLike}
         >
-          <span className={styles.actionIcon}>{isLiked ? '❤️' : '🤍'}</span>
+          <HeartIcon size={18} fill={isLiked ? "var(--color-secondary)" : "none"} className={`${styles.actionIconSvg} ${isLiked ? styles.likedIcon : ''}`} />
           <span>{likesCount} Likes</span>
         </button>
 
         <button className={styles.actionBtn} onClick={() => setShowComments(!showComments)}>
-          <span className={styles.actionIcon}>💬</span>
+          <CommentIcon size={18} className={styles.actionIconSvg} />
           <span>{commentsCount} Phản hồi</span>
         </button>
       </div>

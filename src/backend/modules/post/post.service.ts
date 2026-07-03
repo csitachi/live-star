@@ -236,6 +236,123 @@ export class PostService {
       hasNextPage,
     };
   }
+
+  /**
+   * Lấy feed bài viết khám phá (Explore Feed) đan xen ngẫu nhiên giữa các creators
+   */
+  async getExplorePosts(limit = 10, cursor?: string, currentUserId?: string) {
+    // 1. Lấy toàn bộ bài viết mới nhất (tối đa 150 bài) để trộn và phân trang
+    const POOL_SIZE = 150;
+    const posts = await prisma.post.findMany({
+      take: POOL_SIZE,
+      orderBy: [
+        { createdAt: 'desc' },
+        { id: 'desc' },
+      ],
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            displayName: true,
+            avatarUrl: true,
+          },
+        },
+        likes: currentUserId ? {
+          where: { userId: currentUserId },
+          select: { userId: true },
+        } : false,
+      },
+    });
+
+    if (posts.length === 0) {
+      return {
+        posts: [],
+        nextCursor: undefined,
+        hasNextPage: false,
+      };
+    }
+
+    // 2. Phân chia bài viết theo tác giả để đan xen tránh một người chiếm sóng liên tục
+    const postsByAuthor: { [authorId: string]: typeof posts } = {};
+    for (const post of posts) {
+      if (!postsByAuthor[post.authorId]) {
+        postsByAuthor[post.authorId] = [];
+      }
+      postsByAuthor[post.authorId].push(post);
+    }
+
+    // 3. Trộn đan xen: lấy lần lượt 1 bài của mỗi tác giả cho đến khi hết
+    const authorIds = Object.keys(postsByAuthor);
+    
+    // Sử dụng ngày hiện tại làm hạt giống để thứ tự ngẫu nhiên được nhất quán trong ngày khi phân trang
+    const today = new Date();
+    const seed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    
+    const seededRandom = (s: number) => {
+      const x = Math.sin(s) * 10000;
+      return x - Math.floor(x);
+    };
+
+    // Shuffle authorIds
+    let m = authorIds.length;
+    let currentSeed = seed;
+    while (m) {
+      const i = Math.floor(seededRandom(currentSeed++) * m--);
+      const t = authorIds[m];
+      authorIds[m] = authorIds[i];
+      authorIds[i] = t;
+    }
+
+    const interleavedPosts: typeof posts = [];
+    let hasMore = true;
+    let round = 0;
+    
+    while (hasMore) {
+      hasMore = false;
+      for (const authorId of authorIds) {
+        const authorPosts = postsByAuthor[authorId];
+        if (authorPosts && authorPosts[round]) {
+          interleavedPosts.push(authorPosts[round]);
+          hasMore = true;
+        }
+      }
+      round++;
+    }
+
+    // 4. Phân trang dựa trên mảng đã được trộn đan xen
+    let startIndex = 0;
+    if (cursor) {
+      // Tìm vị trí của cursor (postId) trong mảng đã đan xen
+      const cursorIndex = interleavedPosts.findIndex(p => p.id === cursor);
+      if (cursorIndex !== -1) {
+        startIndex = cursorIndex + 1;
+      }
+    }
+
+    const paginatedPosts = interleavedPosts.slice(startIndex, startIndex + limit);
+    
+    const hasNextPage = startIndex + limit < interleavedPosts.length;
+    const nextCursor = hasNextPage && paginatedPosts.length > 0
+      ? paginatedPosts[paginatedPosts.length - 1].id
+      : undefined;
+
+    // 5. Định dạng kết quả (giống getGlobalPosts)
+    const formattedPosts = paginatedPosts.map(p => {
+      const isLiked = p.likes && p.likes.length > 0;
+      const { likes, ...rest } = p as any;
+      return {
+        ...rest,
+        isLiked,
+      };
+    });
+
+    return {
+      posts: formattedPosts,
+      nextCursor,
+      hasNextPage,
+    };
+  }
 }
 
 export const postService = new PostService();

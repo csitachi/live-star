@@ -67,6 +67,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const limitStr = searchParams.get('limit') || '10';
     const cursor = searchParams.get('cursor') || undefined;
+    const feedType = searchParams.get('feedType') || 'global';
 
     const limit = parseInt(limitStr, 10);
     if (isNaN(limit) || limit <= 0) {
@@ -79,7 +80,12 @@ export async function GET(request: Request) {
     const currentUser = await getSessionUser();
     const currentUserId = currentUser?.id;
 
-    const result = await postService.getGlobalPosts(limit, cursor, currentUserId);
+    let result;
+    if (feedType === 'explore') {
+      result = await postService.getExplorePosts(limit, cursor, currentUserId);
+    } else {
+      result = await postService.getGlobalPosts(limit, cursor, currentUserId);
+    }
 
     return NextResponse.json({
       success: true,

@@ -304,8 +304,21 @@
   transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.actionBtn:active .actionIcon {
-  transform: scale(1.4);
+.actionIconSvg {
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), fill 0.15s ease;
+}
+
+.actionBtn:hover .actionIconSvg {
+  transform: scale(1.1);
+}
+
+.actionBtn:active .actionIconSvg {
+  transform: scale(1.35);
+}
+
+.likedIcon {
+  color: #ec4899;
+  filter: drop-shadow(0 0 4px rgba(236, 72, 153, 0.4));
 }
 
 .liked {

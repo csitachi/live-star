@@ -271,6 +271,31 @@ exports.Prisma.PredictionBetScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.QuestDefinitionScalarFieldEnum = {
+  questType: 'questType',
+  title: 'title',
+  description: 'description',
+  target: 'target',
+  rewardStars: 'rewardStars',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.UserQuestScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  questType: 'questType',
+  progress: 'progress',
+  target: 'target',
+  rewardStars: 'rewardStars',
+  isCompleted: 'isCompleted',
+  isClaimed: 'isClaimed',
+  date: 'date',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -311,7 +336,9 @@ exports.Prisma.ModelName = {
   PostLike: 'PostLike',
   PostComment: 'PostComment',
   Prediction: 'Prediction',
-  PredictionBet: 'PredictionBet'
+  PredictionBet: 'PredictionBet',
+  QuestDefinition: 'QuestDefinition',
+  UserQuest: 'UserQuest'
 };
 
 /**

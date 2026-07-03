@@ -892,4 +892,207 @@
   gap: 3px;
 }
 
+/* SVG Icon & UI/UX Pro Max Refactoring Styles */
+.logoIconSvg {
+  color: var(--color-secondary);
+  filter: drop-shadow(0 0 8px var(--color-secondary-glow));
+}
+
+.searchIconSvg {
+  color: var(--text-muted);
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+.coinIconSvg {
+  color: var(--color-accent);
+  filter: drop-shadow(0 0 4px var(--color-accent-glow));
+}
+
+.menuIconSvg {
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+  margin-right: 12px;
+}
+
+.menuItemActive .menuIconSvg {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 6px var(--color-primary-glow));
+  transform: scale(1.1);
+}
+
+.bottomNavIconSvg {
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.bottomNavItemActive .bottomNavIconSvg {
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 4px var(--color-primary-glow));
+}
+
+/* Live Stories (Instagram Carousel Style) */
+.storiesContainer {
+  background: rgba(20, 20, 28, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-premium);
+}
+
+.storiesHeader {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--text-secondary);
+  letter-spacing: 1.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.livePulseDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--live-red);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.storiesList {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 4px 0;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.storiesList::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
+}
+
+.emptyStories {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 10px 0;
+}
+
+.storyCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.storyCard:hover {
+  transform: scale(1.05);
+}
+
+.storyAvatarOuter {
+  position: relative;
+  padding: 2.5px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+  box-shadow: 0 0 10px rgba(157, 78, 221, 0.3);
+  transition: box-shadow 0.3s ease;
+}
+
+.storyCard:hover .storyAvatarOuter {
+  box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+}
+
+.storyAvatarInner {
+  border-radius: 50%;
+  padding: 2px;
+  background: #0b0b0f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.storyAvatarImg {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.storyLiveDot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background: var(--live-red);
+  border-radius: 50%;
+  border: 2.5px solid #0b0b0f;
+}
+
+.storyName {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  max-width: 68px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Feed Selection Tabs (Social Network style) */
+.feedTabs {
+  display: flex;
+  background: rgba(20, 20, 28, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-subtle);
+  border-radius: 14px;
+  padding: 6px;
+  margin-bottom: 20px;
+  gap: 8px;
+  box-shadow: var(--shadow-premium);
+}
+
+.feedTab {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-secondary);
+  padding: 10px 16px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: var(--font-family);
+}
+
+.feedTab:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.feedTabActive {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(157, 78, 221, 0.15) 0%, rgba(255, 0, 127, 0.08) 100%);
+  border: 1px solid rgba(157, 78, 221, 0.25);
+  box-shadow: 0 4px 15px -3px rgba(157, 78, 221, 0.15);
+}
+
 
