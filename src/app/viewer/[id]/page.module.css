@@ -9,6 +9,9 @@
   min-height: 600px;
 }
 
+/* =====================================================
+   RESPONSIVE — DESKTOP → TABLET (≤1024px)
+   ===================================================== */
 @media (max-width: 1024px) {
   .container {
     grid-template-columns: 1fr;
@@ -17,21 +20,230 @@
     gap: 16px;
   }
   .sidebar {
-    height: 550px;
+    height: 520px;
     margin-top: 10px;
   }
   .videoSection {
     aspect-ratio: 16 / 9;
     flex: none;
     height: auto;
+    min-height: 220px;
   }
 }
 
+/* =====================================================
+   RESPONSIVE — TABLET → MOBILE (≤768px)
+   ===================================================== */
+@media (max-width: 768px) {
+  .container {
+    padding: 8px;
+    gap: 12px;
+  }
+
+  /* FIX #3: streamHeader overflow ngang */
+  .streamHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 10px 12px;
+    overflow: hidden;
+  }
+
+  .streamerDetail {
+    min-width: 0;       /* cho phép co lại */
+    overflow: hidden;
+  }
+
+  .streamInfoText {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .streamTitle {
+    max-width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* FIX #1: viewerUserPanel — 2 hàng trên mobile */
+  .viewerUserPanel {
+    display: grid;
+    grid-template-columns: auto 1fr; /* cột 1: badge level, cột 2: balance */
+    gap: 8px;
+    width: 100%;
+  }
+
+  .viewerBalance {
+    font-size: 0.82rem;
+  }
+
+  /* FIX #2: sidebar — không dùng height cứng */
+  .sidebar {
+    height: auto;
+    min-height: 380px;
+    grid-template-rows: 1fr auto;
+  }
+
+  .chatSection {
+    min-height: 280px;
+  }
+
+  /* FIX #4: videoSection min-height trên mobile */
+  .videoSection {
+    min-height: 200px;
+    border-radius: 12px;
+  }
+
+  /* FIX #5: iOS touch scroll cho gift tiers */
+  .giftTiersList {
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+  }
+
+  .giftTierCard {
+    scroll-snap-align: start;
+    flex: 0 0 88px;
+  }
+
+  /* Gift form stack vertical */
+  .giftForm {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .giftForm button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Action buttons trong viewerUserPanel — row 2 */
+  .luckyWheelBtn, .rechargeBtn, .dropChestBtn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    font-size: 0.73rem;
+    padding: 7px 8px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* giftPanel padding nhỏ hơn */
+  .giftPanel {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+
+  /* overlayTop chật hơn */
+  .overlayTop {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+  }
+
+  .statBadge {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE — SMALL MOBILE (≤480px)
+   ===================================================== */
+@media (max-width: 480px) {
+  .container {
+    padding: 6px;
+    gap: 10px;
+  }
+
+  .streamerAvatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .streamTitle {
+    font-size: 0.95rem;
+  }
+
+  .sidebar {
+    min-height: 340px;
+  }
+
+  .chatSection {
+    min-height: 240px;
+  }
+
+  .chatMessages {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
+  /* FIX #6: Filter Bomb panel — 2 cột trên màn nhỏ */
+  .filterBombGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .giftTierCard {
+    flex: 0 0 80px;
+    padding: 10px 6px;
+  }
+
+  .giftTierIcon {
+    font-size: 1.3rem;
+  }
+
+  .giftTierAmount {
+    font-size: 0.82rem;
+  }
+
+  .viewerBalance {
+    font-size: 0.78rem;
+  }
+
+  .statBadge {
+    font-size: 0.72rem;
+    padding: 4px 8px;
+    gap: 4px;
+  }
+}
+
+/* =====================================================
+   RESPONSIVE — EXTRA SMALL (≤360px — Galaxy Fold v.v.)
+   ===================================================== */
+@media (max-width: 360px) {
+  .wheelModalContent {
+    padding: 14px;
+    gap: 12px;
+  }
+  .wheelContainer {
+    width: 250px;
+    height: 250px;
+  }
+  .svgWheel {
+    width: 250px;
+    height: 250px;
+  }
+  .filterBombGrid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .luckyWheelBtn, .rechargeBtn, .dropChestBtn {
+    font-size: 0.68rem;
+    padding: 6px 6px !important;
+  }
+}
+
+
+/* =====================================================
+   MAIN CONTENT — cần min-width: 0 để không overflow trong CSS Grid
+   ===================================================== */
 .mainContent {
   display: flex;
   flex-direction: column;
   gap: 20px;
   height: 100%;
+  min-width: 0; /* quan trọng: ngăn overflow ngang trong grid layout */
 }
 
 .streamHeader {
@@ -75,7 +287,8 @@
 .viewerUserPanel {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
 .viewerBalance {
@@ -232,12 +445,16 @@
   gap: 8px;
 }
 
+/* FIX #5: iOS smooth scroll cho giftTiersList */
 .giftTiersList {
   display: flex;
   gap: 12px;
   overflow-x: auto;
   padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
 }
+
 
 .giftTierCard {
   flex: 0 0 100px;
@@ -546,16 +763,19 @@
 
 .endedStats {
   display: flex;
-  gap: 24px;
+  gap: 16px;
   margin: 10px 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .endedStatCard {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 16px;
-  padding: 16px 24px;
-  min-width: 140px;
+  padding: 14px 20px;
+  min-width: 120px;
+  flex: 1;
 }
 
 .endedStatVal {
@@ -753,39 +973,8 @@
   }
 }
 
-@media (max-width: 768px) {
-  .giftForm {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  .giftForm button {
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .streamHeader {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    padding: 12px;
-  }
-  
-  .viewerUserPanel {
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    width: 100%;
-  }
+/* (breakpoints đã chuyển lên trên, gộp vào media query tổng thể) */
 
-  .luckyWheelBtn, .rechargeBtn, .dropChestBtn {
-    flex: 1;
-    min-width: 90px;
-    justify-content: center;
-    font-size: 0.75rem;
-    padding: 8px 10px !important;
-  }
-}
 
 /* Premium Buttons & Badges in Header */
 .rechargeBtn {
@@ -869,12 +1058,8 @@
   max-width: 320px;
 }
 
-@media (max-width: 768px) {
-  .streamTitle {
-    max-width: 100%;
-    white-space: normal;
-  }
-}
+/* (streamTitle responsive đã gộp vào media query ở trên) */
+
 
 /* Group Goals HUD */
 .goalContainer {
@@ -1099,4 +1284,11 @@
   border-color: var(--color-accent);
   background: linear-gradient(135deg, rgba(255, 183, 3, 0.2), rgba(157, 78, 221, 0.12));
   box-shadow: 0 0 16px rgba(255, 183, 3, 0.3);
+}
+
+/* === FILTER BOMB GRID — base rule (responsive override ở media queries trên) === */
+.filterBombGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
 }

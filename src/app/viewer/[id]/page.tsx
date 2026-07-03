@@ -1315,12 +1315,13 @@ export default function ViewerPage() {
 
           {currentUser && (
             <div className={styles.viewerUserPanel}>
-              {/* Huy hiệu Cấp độ của Viewer */}
+              {/* Hàng 1: Level badge + Số dư */}
               <span
                 className={styles.viewerLevelBadge}
                 style={{
                   backgroundColor: viewerLevel.color,
-                  boxShadow: `0 0 8px ${viewerLevel.color}33`
+                  boxShadow: `0 0 8px ${viewerLevel.color}33`,
+                  whiteSpace: "nowrap",
                 }}
                 title={viewerLevel.title}
               >
@@ -1328,37 +1329,39 @@ export default function ViewerPage() {
               </span>
 
               <div className={styles.viewerBalance}>
-                🪙 {currentUser.starBalance.toLocaleString()} sao khả dụng
+                🪙 {currentUser.starBalance.toLocaleString()} sao
               </div>
-              
-              <button className={styles.rechargeBtn} onClick={handleRecharge}>
-                + Nạp Sao
-              </button>
-              
-              {/* Nút mở Vòng quay may mắn */}
-              <button className={styles.luckyWheelBtn} onClick={() => setShowWheel(true)}>
-                🎰 Minigame
-              </button>
 
-              {/* Nút thả rương quà */}
-              <button
-                onClick={handleDropChest}
-                className={styles.dropChestBtn}
-              >
-                🎁 Thả Rương
-              </button>
+              {/* Hàng 2: Action buttons — span toàn bộ 2 cột trên mobile */}
+              <div style={{
+                gridColumn: "1 / -1",    /* full width on mobile grid */
+                display: "flex",
+                gap: "6px",
+                flexWrap: "wrap",
+              }}>
+                <button className={styles.rechargeBtn} onClick={handleRecharge}>
+                  + Nạp Sao
+                </button>
 
-              {/* Nút mở bảng nhiệm vụ */}
-              <button
-                onClick={() => setShowQuests(true)}
-                className={styles.luckyWheelBtn}
-                style={{
-                  background: "linear-gradient(135deg, #f43f5e 0%, #d946ef 100%)",
-                  boxShadow: "0 4px 10px rgba(244, 63, 94, 0.2)"
-                }}
-              >
-                🏆 Nhiệm vụ
-              </button>
+                <button className={styles.luckyWheelBtn} onClick={() => setShowWheel(true)}>
+                  🎰 Minigame
+                </button>
+
+                <button onClick={handleDropChest} className={styles.dropChestBtn}>
+                  🎁 Thả Rương
+                </button>
+
+                <button
+                  onClick={() => setShowQuests(true)}
+                  className={styles.luckyWheelBtn}
+                  style={{
+                    background: "linear-gradient(135deg, #f43f5e 0%, #d946ef 100%)",
+                    boxShadow: "0 4px 10px rgba(244, 63, 94, 0.2)"
+                  }}
+                >
+                  🏆 Nhiệm vụ
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -1581,7 +1584,7 @@ export default function ViewerPage() {
             <div style={{ fontSize: "0.8rem", fontWeight: "800", color: "var(--color-accent)", marginBottom: "12px", display: "flex", alignItems: "center", gap: "6px", letterSpacing: "0.5px" }}>
               ✨ FILTER BOMB — Biến màu video toàn phòng!
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "8px" }}>
+            <div className={styles.filterBombGrid}>
               {FILTER_GIFT_TIERS.map((fg) => (
                 <button
                   key={fg.filterEffect}
