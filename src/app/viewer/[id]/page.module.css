@@ -364,6 +364,12 @@
   border-radius: 50%;
   object-fit: cover;
   margin-top: 2px;
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.msgAvatar:hover {
+  filter: brightness(1.15);
 }
 
 .msgContent {
@@ -376,6 +382,12 @@
   font-weight: 700;
   color: var(--text-secondary);
   margin-right: 6px;
+  cursor: pointer;
+}
+
+.msgSender:hover {
+  text-decoration: underline;
+  color: #fff;
 }
 
 .msgGiftRow {

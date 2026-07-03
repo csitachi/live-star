@@ -8,6 +8,7 @@ import { useRouter, useParams } from "next/navigation";
 import styles from "../../page.module.css";
 import LiveChat from "@/features/stream/components/LiveChat";
 import { getStreamerLevel } from "@/lib/level";
+import { useToast } from "@/components/Toast/ToastContext";
 
 interface User {
   id: string;
@@ -62,6 +63,7 @@ function StreamerContent() {
   const router = useRouter();
   const params = useParams();
   const streamId = params.id as string;
+  const toast = useToast();
 
   // State thông tin chung
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -178,7 +180,7 @@ function StreamerContent() {
       });
       const data = await res.json();
       if (res.ok) {
-        alert("Đã gửi lời mời PK thành công!");
+        toast.success("Đã gửi lời mời PK thành công!");
         setShowInviteModal(false);
         // Gửi qua WebSocket
         if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
@@ -191,7 +193,7 @@ function StreamerContent() {
           }));
         }
       } else {
-        alert(data.error || "Không thể mời PK!");
+        toast.error(data.error || "Không thể mời PK!");
       }
     } catch (err) {
       console.error("Lỗi mời PK:", err);
@@ -232,7 +234,7 @@ function StreamerContent() {
           }
         }
       } else {
-        alert(data.error || "Lỗi xử lý phản hồi PK!");
+        toast.error(data.error || "Lỗi xử lý phản hồi PK!");
       }
     } catch (err) {
       console.error("Lỗi phản hồi PK:", err);
@@ -243,7 +245,7 @@ function StreamerContent() {
     if (!stream) return;
     const targetVal = parseInt(goalTargetInput);
     if (isNaN(targetVal) || targetVal < 0) {
-      alert("Mục tiêu phải là số nguyên không âm!");
+      toast.warning("Mục tiêu phải là số nguyên không âm!");
       return;
     }
     try {
@@ -273,7 +275,7 @@ function StreamerContent() {
           }));
         }
       } else {
-        alert(data.error || "Không thể thiết lập mục tiêu!");
+        toast.error(data.error || "Không thể thiết lập mục tiêu!");
       }
     } catch (err) {
       console.error("Lỗi lưu mục tiêu:", err);
@@ -285,7 +287,7 @@ function StreamerContent() {
     e.preventDefault();
     if (!currentUser || !stream) return;
     if (!predTitleInput.trim() || !predOptionAInput.trim() || !predOptionBInput.trim()) {
-      alert("Vui lòng điền đầy đủ thông tin kèo dự đoán!");
+      toast.warning("Vui lòng điền đầy đủ thông tin kèo dự đoán!");
       return;
     }
     setPredSubmitting(true);
@@ -309,11 +311,11 @@ function StreamerContent() {
         setPredOptionAInput("");
         setPredOptionBInput("");
       } else {
-        alert(data.error || "Không thể tạo kèo dự đoán!");
+        toast.error(data.error || "Không thể tạo kèo dự đoán!");
       }
     } catch (err) {
       console.error("Lỗi tạo dự đoán:", err);
-      alert("Lỗi hệ thống khi tạo dự đoán!");
+      toast.error("Lỗi hệ thống khi tạo dự đoán!");
     } finally {
       setPredSubmitting(false);
     }
@@ -335,7 +337,7 @@ function StreamerContent() {
       if (res.ok && data.success) {
         setActivePrediction(data.prediction);
       } else {
-        alert(data.error || "Không thể khóa kèo dự đoán!");
+        toast.error(data.error || "Không thể khóa kèo dự đoán!");
       }
     } catch (err) {
       console.error("Lỗi khóa cược:", err);
@@ -365,9 +367,9 @@ function StreamerContent() {
       if (res.ok && data.success) {
         setActivePrediction(null);
         setShowPredictionModal(false);
-        alert(outcome === "CANCELLED" ? "Đã hủy kèo và hoàn tiền thành công!" : "Đã công bố kết quả và phát thưởng thành công!");
+        toast.success(outcome === "CANCELLED" ? "Đã hủy kèo và hoàn tiền thành công!" : "Đã công bố kết quả và phát thưởng thành công!");
       } else {
-        alert(data.error || "Không thể giải quyết kèo dự đoán!");
+        toast.error(data.error || "Không thể giải quyết kèo dự đoán!");
       }
     } catch (err) {
       console.error("Lỗi cập nhật kết quả dự đoán:", err);
@@ -377,7 +379,7 @@ function StreamerContent() {
   // 1. Tải thông tin người dùng bằng Cookie và kiểm tra tính hợp lệ của luồng stream
   useEffect(() => {
     if (!streamId) {
-      alert("Không tìm thấy ID phòng phát sóng!");
+      toast.error("Không tìm thấy ID phòng phát sóng!");
       router.push("/");
       return;
     }
@@ -390,7 +392,7 @@ function StreamerContent() {
         const authData = await authRes.json();
         
         if (!authData.authenticated || !authData.user) {
-          alert("Vui lòng đăng nhập tại Trang chủ trước!");
+          toast.warning("Vui lòng đăng nhập tại Trang chủ trước!");
           router.push("/");
           return;
         }
@@ -404,19 +406,19 @@ function StreamerContent() {
         const activeStream = allStreams.find((s) => s.id === streamId);
 
         if (!activeStream) {
-          alert("Không tìm thấy thông tin phòng livestream!");
+          toast.error("Không tìm thấy thông tin phòng livestream!");
           router.push("/");
           return;
         }
 
         if (activeStream.streamerId !== userData.id) {
-          alert("Bạn không phải chủ sở hữu của phòng livestream này!");
+          toast.error("Bạn không phải chủ sở hữu của phòng livestream này!");
           router.push("/");
           return;
         }
 
         if (activeStream.status !== "LIVE") {
-          alert("Livestream này đã kết thúc.");
+          toast.info("Livestream này đã kết thúc.");
           router.push("/");
           return;
         }
@@ -637,7 +639,7 @@ function StreamerContent() {
             break;
 
           case "pk-invite-error":
-            alert(payload.error || "Không thể gửi lời mời PK!");
+            toast.error(payload.error || "Không thể gửi lời mời PK!");
             break;
 
           case "pk-forfeit-broadcast": {
@@ -646,10 +648,10 @@ function StreamerContent() {
             const reasonText = reason === "DISCONNECT" ? "mất kết nối" : "tự ý rời khỏi";
             if (isOpponentForfeit) {
               // Đối thủ bỏ cuộc -> mình thắng!
-              alert(`❤️ Bạn đã THẪMG trận PK! ${forfeitedByUser?.displayName || "Đối thủ"} đã ${reasonText} trước khi hết giờ.`);
+              toast.success(`Bạn đã THẮNG trận PK! ${forfeitedByUser?.displayName || "Đối thủ"} đã ${reasonText} trước khi hết giờ.`);
             } else {
               // Mình bỏ cuộc (do tắc mạng, ...) -> đối thủ thắng
-              alert(`❌ Phiên PK đã kết thúc do kết nối bị gián đoạn!`);
+              toast.error(`Phiên PK đã kết thúc do kết nối bị gián đoạn!`);
             }
             setPkBattle(null);
             setPkTimeLeft(null);

@@ -192,6 +192,16 @@
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+}
+
+.authorMeta:hover {
+  opacity: 0.85;
+}
+
+.authorMeta:hover .displayName {
+  text-decoration: underline;
 }
 
 .avatar {
@@ -378,6 +388,12 @@
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid rgba(168, 85, 247, 0.2);
+  cursor: pointer;
+  transition: filter 0.15s ease;
+}
+
+.commentAvatar:hover {
+  filter: brightness(1.15);
 }
 
 .commentBody {
@@ -391,6 +407,12 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.commentHeader:hover .commentAuthor {
+  text-decoration: underline;
+  color: #fff;
 }
 
 .commentAuthor {

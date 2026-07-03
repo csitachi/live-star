@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { useToast } from "@/components/Toast/ToastContext";
 
 interface User {
   id: string;
@@ -16,6 +17,7 @@ interface User {
 
 export default function StreamerSetupPage() {
   const router = useRouter();
+  const toast = useToast();
 
   // State thông tin chung
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -161,14 +163,14 @@ export default function StreamerSetupPage() {
       if (res.ok) {
         setShowActivePrompt(false);
         setActiveStreamId(null);
-        alert("Đã kết thúc phiên livestream cũ thành công! Bây giờ bạn có thể thiết lập phòng mới.");
+        toast.success("Đã kết thúc phiên livestream cũ thành công! Bây giờ bạn có thể thiết lập phòng mới.");
       } else {
         const err = await res.json();
-        alert(err.error || "Không thể kết thúc phiên livestream cũ!");
+        toast.error(err.error || "Không thể kết thúc phiên livestream cũ!");
       }
     } catch (err) {
       console.error("Lỗi kết thúc stream:", err);
-      alert("Đã xảy ra lỗi hệ thống!");
+      toast.error("Đã xảy ra lỗi hệ thống!");
     } finally {
       setLoading(false);
     }
@@ -179,7 +181,7 @@ export default function StreamerSetupPage() {
     e.preventDefault();
     if (!currentUser) return;
     if (!title.trim()) {
-      alert("Vui lòng điền tiêu đề phòng livestream!");
+      toast.warning("Vui lòng điền tiêu đề phòng livestream!");
       return;
     }
 
@@ -228,7 +230,7 @@ export default function StreamerSetupPage() {
       // Bước C: Chuyển hướng đến phòng live
       router.push(`/streamer/live/${streamData.id}`);
     } catch (err: any) {
-      alert(err.message || "Đã xảy ra lỗi khi tạo phòng!");
+      toast.error(err.message || "Đã xảy ra lỗi khi tạo phòng!");
       setLoading(false);
     }
   };

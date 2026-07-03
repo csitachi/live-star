@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Script from "next/script";
 import "./globals.css";
+import { ToastProvider } from "@/components/Toast/ToastContext";
 
 export const metadata: Metadata = {
   title: "LiveStar - Nền tảng Live Stream & Tặng Sao Thời Gian Thực",
@@ -15,9 +16,12 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body>
-        {children}
+        <ToastProvider>
+          {children}
+        </ToastProvider>
         <Script src="https://accounts.google.com/gsi/client" strategy="afterInteractive" />
       </body>
     </html>
   );
 }
+

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ProfileFeed.module.css';
 import CommentSection from './CommentSection';
 import { HeartIcon, CommentIcon, TrashIcon } from '@/components/Icons';
@@ -27,6 +28,7 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post, currentUserId, onDelete }: PostCardProps) {
+  const router = useRouter();
   const [isLiked, setIsLiked] = useState(post.isLiked);
   const [likesCount, setLikesCount] = useState(post.likesCount);
   const [commentsCount, setCommentsCount] = useState(post.commentsCount);
@@ -97,7 +99,7 @@ export default function PostCard({ post, currentUserId, onDelete }: PostCardProp
     <div className={styles.card}>
       {/* Header bài đăng */}
       <div className={styles.postHeader}>
-        <div className={styles.authorMeta}>
+        <div className={styles.authorMeta} onClick={() => router.push(`/profile/${post.author.username}`)}>
           <img
             src={post.author.avatarUrl || '/avatars/default.png'}
             alt={post.author.displayName}

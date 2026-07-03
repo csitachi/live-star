@@ -9,6 +9,7 @@ import styles from "./page.module.css";
 import { getStreamerLevel } from "@/lib/level";
 import PostList from "@/features/profile/components/PostList";
 import QuestDrawer from "@/components/QuestDrawer";
+import { useToast } from "@/components/Toast/ToastContext";
 import { 
   HomeIcon, 
   LiveIcon, 
@@ -64,6 +65,7 @@ const CATEGORIES = [
 
 export default function HomePage() {
   const router = useRouter();
+  const toast = useToast();
   
   // Trạng thái danh sách stream và thông tin tải dữ liệu
   const [streams, setStreams] = useState<Stream[]>([]);
@@ -169,12 +171,12 @@ export default function HomePage() {
       if (res.ok) {
         const data = await res.json();
         setCurrentUser(data.user);
-        alert(`🎉 Đăng nhập Google thành công! Chào mừng ${data.user.displayName}`);
+        toast.success(`Chào mừng ${data.user.displayName}`, "Đăng nhập Google thành công");
         fetchStreams(selectedCategory);
         fetchTopKOLs();
       } else {
         const err = await res.json();
-        alert(err.error || "Xác thực Google thất bại!");
+        toast.error(err.error || "Xác thực Google thất bại!");
       }
     } catch (e) {
       console.error("Lỗi đăng nhập Google:", e);
@@ -192,11 +194,11 @@ export default function HomePage() {
       if (res.ok) {
         const data = await res.json();
         setCurrentUser(data.user);
-        alert(`🚀 Đăng nhập Sandbox thành công! Chào mừng ${data.user.displayName}`);
+        toast.success(`Chào mừng ${data.user.displayName}`, "Đăng nhập Sandbox thành công");
         fetchStreams(selectedCategory);
         fetchTopKOLs();
       } else {
-        alert("Đăng nhập Sandbox thất bại!");
+        toast.error("Đăng nhập Sandbox thất bại!");
       }
     } catch (e) {
       console.error(e);
@@ -214,16 +216,16 @@ export default function HomePage() {
       if (res.ok) {
         const user = await res.json();
         setCurrentUser(user);
-        alert(`🚀 Đăng nhập Sandbox thành công! Chào mừng ${user.displayName}`);
+        toast.success(`Chào mừng ${user.displayName}`, "Đăng nhập Sandbox thành công");
         fetchStreams(selectedCategory);
         fetchTopKOLs();
       } else {
         const err = await res.json();
-        alert(err.error || "Đăng nhập Sandbox thất bại!");
+        toast.error(err.error || "Đăng nhập Sandbox thất bại!");
       }
     } catch (e) {
       console.error("Lỗi đăng nhập sandbox:", e);
-      alert("Đã xảy ra lỗi hệ thống!");
+      toast.error("Đã xảy ra lỗi hệ thống!");
     }
   };
 
@@ -249,7 +251,10 @@ export default function HomePage() {
 
       if (res.ok) {
         setCurrentUser(data.user);
-        alert(`🎉 ${authTab === "login" ? "Đăng nhập" : "Đăng ký"} thành công! Chào mừng ${data.user.displayName}`);
+        toast.success(
+          `Chào mừng ${data.user.displayName}`,
+          `${authTab === "login" ? "Đăng nhập" : "Đăng ký"} thành công`
+        );
         setShowAuthModal(false);
         // Reset form
         setAuthUsername("");
@@ -302,7 +307,7 @@ export default function HomePage() {
       const res = await fetch("/api/auth/logout", { method: "POST" });
       if (res.ok) {
         setCurrentUser(null);
-        alert("Đã đăng xuất tài khoản!");
+        toast.success("Đã đăng xuất tài khoản!");
         fetchStreams(selectedCategory);
         fetchTopKOLs();
       }
@@ -323,7 +328,7 @@ export default function HomePage() {
       if (res.ok) {
         const data = await res.json();
         setCurrentUser(prev => prev ? { ...prev, starBalance: data.starBalance } : null);
-        alert(`🎉 Đã nạp thành công 1000 sao! Số dư mới: ${data.starBalance} sao.`);
+        toast.success(`Đã nạp thành công 1000 sao! Số dư mới: ${data.starBalance} sao.`, "Nạp sao thành công");
       }
     } catch (error) {
       console.error("Lỗi nạp sao:", error);
@@ -335,7 +340,7 @@ export default function HomePage() {
     e.preventDefault();
     if (!currentUser) return;
     if (!newStreamTitle.trim()) {
-      alert("Vui lòng nhập tiêu đề livestream!");
+      toast.warning("Vui lòng nhập tiêu đề livestream!");
       return;
     }
 
@@ -359,11 +364,11 @@ export default function HomePage() {
         router.push(`/streamer/live/${newStream.id}`);
       } else {
         const err = await res.json();
-        alert(err.error || "Không thể tạo phòng stream!");
+        toast.error(err.error || "Không thể tạo phòng stream!");
       }
     } catch (error) {
       console.error("Lỗi tạo stream:", error);
-      alert("Đã xảy ra lỗi hệ thống!");
+      toast.error("Đã xảy ra lỗi hệ thống!");
     } finally {
       setSubmitting(false);
     }
@@ -458,13 +463,13 @@ export default function HomePage() {
               <LiveIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Xem Livestream</span>
             </button>
-            <button className={styles.menuItem} onClick={() => alert("Tính năng Game Center đang phát triển!")} type="button">
+            <button className={styles.menuItem} onClick={() => toast.info("Tính năng Game Center đang phát triển!")} type="button">
               <GameIcon size={20} className={styles.menuIconSvg} />
               <span className={styles.menuLabel}>Game Center</span>
             </button>
             <button className={styles.menuItem} onClick={() => {
               if (!currentUser) {
-                alert("Vui lòng đăng nhập trước khi truy cập trang cá nhân!");
+                toast.warning("Vui lòng đăng nhập trước khi truy cập trang cá nhân!");
               } else {
                 router.push(`/profile/${currentUser.username}`);
               }
@@ -477,7 +482,7 @@ export default function HomePage() {
           <div className={styles.menuGroup}>
             <button className={styles.menuItem} onClick={() => {
               if (!currentUser) {
-                alert("Vui lòng đăng nhập trước khi phát livestream!");
+                toast.warning("Vui lòng đăng nhập trước khi phát livestream!");
               } else {
                 router.push(`/streamer/setup`);
               }
@@ -1067,7 +1072,7 @@ export default function HomePage() {
           <HomeIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Trang chủ</span>
         </button>
-        <button className={styles.bottomNavItem} onClick={() => alert("Tính năng Game Center đang phát triển!")} type="button">
+        <button className={styles.bottomNavItem} onClick={() => toast.info("Tính năng Game Center đang phát triển!")} type="button">
           <GameIcon size={20} className={styles.bottomNavIconSvg} />
           <span className={styles.bottomNavLabel}>Games</span>
         </button>
@@ -1080,7 +1085,7 @@ export default function HomePage() {
         </button>
         <button className={styles.bottomNavItem} onClick={() => {
           if (!currentUser) {
-            alert("Vui lòng đăng nhập trước khi truy cập Kênh của tôi!");
+            toast.warning("Vui lòng đăng nhập trước khi truy cập Kênh của tôi!");
           } else {
             router.push(`/streamer/setup`);
           }

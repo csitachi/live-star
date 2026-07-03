@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './ProfileFeed.module.css';
 
 interface Comment {
@@ -24,6 +25,7 @@ export default function CommentSection({
   currentUserId,
   onCommentsCountChange,
 }: CommentSectionProps) {
+  const router = useRouter();
   const [comments, setComments] = useState<Comment[]>([]);
   const [newCommentText, setNewCommentText] = useState('');
   const [loading, setLoading] = useState(false);
@@ -181,9 +183,10 @@ export default function CommentSection({
                   src={comment.author.avatarUrl || '/avatars/default.png'}
                   alt={comment.author.displayName}
                   className={styles.commentAvatar}
+                  onClick={() => router.push(`/profile/${comment.author.username}`)}
                 />
                 <div className={styles.commentBody}>
-                  <div className={styles.commentHeader}>
+                  <div className={styles.commentHeader} onClick={() => router.push(`/profile/${comment.author.username}`)}>
                     <span className={styles.commentAuthor}>{comment.author.displayName}</span>
                     <span className={styles.commentTime}>
                       {new Date(comment.createdAt).toLocaleDateString('vi-VN', {

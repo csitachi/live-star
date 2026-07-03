@@ -6,6 +6,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useParams, useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { useToast } from "@/components/Toast/ToastContext";
 
 // Nhập các Component đã chia tách độc lập
 import LiveChat, { ChatMessage } from "@/features/stream/components/LiveChat";
@@ -68,6 +69,7 @@ export default function ViewerPage() {
   const router = useRouter();
   const params = useParams();
   const streamId = params.id as string;
+  const toast = useToast();
 
   // State quản lý thông tin tải trang
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -218,11 +220,11 @@ export default function ViewerPage() {
           }));
         }
       } else {
-        alert(data.error || "Không thể mở rương!");
+        toast.error(data.error || "Không thể mở rương!");
       }
     } catch (err) {
       console.error("Lỗi mở rương:", err);
-      alert("Đã xảy ra lỗi khi mở rương!");
+      toast.error("Đã xảy ra lỗi khi mở rương!");
     } finally {
       setClaiming(false);
     }
@@ -239,12 +241,12 @@ export default function ViewerPage() {
     const slotsNum = parseInt(slots);
 
     if (isNaN(starsNum) || starsNum <= 0 || isNaN(slotsNum) || slotsNum <= 0) {
-      alert("Vui lòng nhập số hợp lệ!");
+      toast.warning("Vui lòng nhập số hợp lệ!");
       return;
     }
 
     if (currentUser.starBalance < starsNum) {
-      alert("Số dư của bạn không đủ!");
+      toast.warning("Số dư của bạn không đủ!");
       return;
     }
 
@@ -261,7 +263,7 @@ export default function ViewerPage() {
       });
       const data = await res.json();
       if (res.ok) {
-        alert("Đã thả rương quà thành công!");
+        toast.success("Đã thả rương quà thành công!");
         // Trừ sao cục bộ
         setCurrentUser(prev => prev ? { ...prev, starBalance: prev.starBalance - starsNum } : null);
         // Đồng bộ lên WebSocket
@@ -272,7 +274,7 @@ export default function ViewerPage() {
           }));
         }
       } else {
-        alert(data.error || "Không thể thả rương!");
+        toast.error(data.error || "Không thể thả rương!");
       }
     } catch (err) {
       console.error("Lỗi tạo rương:", err);
@@ -289,7 +291,7 @@ export default function ViewerPage() {
         const authData = await userRes.json();
         
         if (!authData.authenticated || !authData.user) {
-          alert("Vui lòng đăng nhập tại Trang chủ trước!");
+          toast.warning("Vui lòng đăng nhập tại Trang chủ trước!");
           router.push("/");
           return;
         }
@@ -300,7 +302,7 @@ export default function ViewerPage() {
         // Tải chi tiết stream, bình luận cũ và bảng xếp hạng từ PostgreSQL
         const detailRes = await fetch(`/api/streams/${streamId}`);
         if (!detailRes.ok) {
-          alert("Không tìm thấy thông tin livestream này!");
+          toast.error("Không tìm thấy thông tin livestream này!");
           router.push("/");
           return;
         }
@@ -624,7 +626,7 @@ export default function ViewerPage() {
             break;
 
           case "stream-ended":
-            alert("Streamer đã kết thúc buổi phát trực tiếp!");
+            toast.info("Streamer đã kết thúc buổi phát trực tiếp!");
             setStream((prev) => prev ? { ...prev, status: "ENDED" } : null);
             if (pcRef.current) pcRef.current.close();
             stopCanvasAnimation();
@@ -858,7 +860,7 @@ export default function ViewerPage() {
     const gift = GIFT_TIERS[selectedGiftIndex];
     
     if (currentUser.starBalance < gift.amount) {
-      alert("❌ Số dư sao của bạn không đủ! Vui lòng nhấn nút 'Nạp Sao' giả lập ở đầu trang.");
+      toast.warning("Số dư sao của bạn không đủ! Vui lòng nhấn nút 'Nạp Sao' giả lập ở đầu trang.");
       return;
     }
 
@@ -951,11 +953,11 @@ export default function ViewerPage() {
 
         setGiftMessage("");
       } else {
-        alert(resData.error || "Giao dịch tặng sao không thành công!");
+        toast.error(resData.error || "Giao dịch tặng sao không thành công!");
       }
     } catch (err) {
       console.error("Lỗi tặng sao:", err);
-      alert("Đã xảy ra lỗi giao dịch!");
+      toast.error("Đã xảy ra lỗi giao dịch!");
     } finally {
       setGifting(false);
     }
@@ -973,7 +975,7 @@ export default function ViewerPage() {
       if (res.ok) {
         const data = await res.json();
         setCurrentUser(prev => prev ? { ...prev, starBalance: data.starBalance } : null);
-        alert(`🎉 Đã nạp thành công 1000 sao! Số dư mới: ${data.starBalance} sao.`);
+        toast.success(`Đã nạp thành công 1000 sao! Số dư mới: ${data.starBalance} sao.`, "Nạp sao thành công");
       }
     } catch (error) {
       console.error("Lỗi nạp sao:", error);
@@ -1014,7 +1016,7 @@ export default function ViewerPage() {
     if (!currentUser || isWheelSpinning) return;
 
     if (currentUser.starBalance < 50) {
-      alert("❌ Số dư không đủ! Cần tối thiểu 50 sao để quay vòng quay may mắn.");
+      toast.warning("Số dư không đủ! Cần tối thiểu 50 sao để quay vòng quay may mắn.");
       return;
     }
 
@@ -1051,12 +1053,12 @@ export default function ViewerPage() {
         }, 4000);
 
       } else {
-        alert(resData.error || "Giao dịch minigame thất bại!");
+        toast.error(resData.error || "Giao dịch minigame thất bại!");
         setIsWheelSpinning(false);
       }
     } catch (e) {
       console.error("Lỗi spin minigame:", e);
-      alert("Lỗi hệ thống minigame!");
+      toast.error("Lỗi hệ thống minigame!");
       setIsWheelSpinning(false);
     }
   };

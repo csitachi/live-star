@@ -2,6 +2,7 @@
 // Dùng chung cho cả màn hình Streamer Dashboard và Viewer Room.
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
 import { getViewerLevel } from "@/lib/level";
 
@@ -40,6 +41,7 @@ export default function LiveChat({
   placeholder = "Nhập bình luận...",
   styles,
 }: LiveChatProps) {
+  const router = useRouter();
   return (
     <div 
       className={styles.chatSection || ""} 
@@ -69,6 +71,7 @@ export default function LiveChat({
                 src={msg?.sender?.avatarUrl || "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=150"}
                 alt={msg?.sender?.displayName || "Người dùng"}
                 className={styles.msgAvatar}
+                onClick={() => msg?.sender?.username && router.push(`/profile/${msg.sender.username}`)}
               />
               <div className={styles.msgContent}>
                 <span
@@ -88,7 +91,7 @@ export default function LiveChat({
                 >
                   Lv.{lvlInfo.level}
                 </span>
-                <span className={styles.msgSender}>{msg?.sender?.displayName || "Người dùng"}:</span>
+                <span className={styles.msgSender} onClick={() => msg?.sender?.username && router.push(`/profile/${msg.sender.username}`)}>{msg?.sender?.displayName || "Người dùng"}:</span>
                 <span className={msg.isGift ? styles.msgGiftText : ""}>{msg.text}</span>
               </div>
             </div>
